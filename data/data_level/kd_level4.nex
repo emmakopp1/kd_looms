@@ -1,0 +1,38 @@
+#NEXUS
+[Data written by write.nexus.data.R, Mon Apr  8 13:21:08 2024]
+BEGIN DATA;
+  DIMENSIONS NTAX=29 NCHAR=13;
+  FORMAT DATATYPE=STANDARD MISSING=? GAP=- INTERLEAVE=NO symbols="0123456789";
+  MATRIX
+    Liangzhu                0000000000000
+    Meifu_Li                0000000000010
+    Qi_Li                   0000000000010
+    Ha_Li                   0000000000000
+    Run_Li                  0000000000010
+    Tai_Yuan                0010000000000
+    Tai_Xam_Nuea            0010000000001
+    Tai_Isan                0010100000000
+    Tai_Mai_Chau            0000100010001
+    Tai_Lu_Nà_Tăm         0010000000001
+    Tai_Trang_Quan_Son      0010000000001
+    Tai_Trang_Ky_Son        0010000000000
+    Buyi_Xingyi             0100010011000
+    Zhuang_Jingxi           0100010101000
+    Dai_Huayao              0000000000000
+    Dai_Yuxi_Yuanjiang      0000000000000
+    Dai_Jinghong            0000000000000
+    Tai_Phake               0000000000100
+    Dai_Tengchong           0000000000000
+    Zhuang_Napo             1000000000000
+    Zhuang_Longzhou         1000000000000
+    Nung_An                 1000000000000
+    Dong_Tongdao            0000000000000
+    Miao_Zhaoxing           0100000000000
+    Maonan_Hechi            0000000000000
+    Zhuang_Binyang          0000000000000
+    Buyi_Libo               0000001000000
+    Tay_Ban_Rang            0001010010000
+    Tay_Lung_Noi            0001010010000
+  ;
+END;
+
