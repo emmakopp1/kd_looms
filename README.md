@@ -1,7 +1,5 @@
 # Code documentation
 
-# Code Documentation
-
 ## Project Structure
 
 Below is a template for documenting the structure of your codebase. Each entry should include the folder/file name and a brief description of its contents or purpose.
