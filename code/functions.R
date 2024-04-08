@@ -40,7 +40,7 @@ kd_by_level = function(path){
     # Write the data in a nexus file
     write.phyDat(
       kd_level, 
-      sprintf("data/data_level/kd_level%i.nex", i), 
+      sprintf("data/kd_level%i.nex", i), 
       format = "nexus")
   }}
 
