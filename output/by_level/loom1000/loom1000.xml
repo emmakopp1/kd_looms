@@ -51,7 +51,7 @@ name="alignment">
 <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
-<run id="mcmc" spec="MCMC" chainLength="10000000">
+<run id="mcmc" spec="beast.coupledMCMC.CoupledMCMC" chainLength="100000000" storeEvery="10000" chains="4" resampleEvery="1000" logHeatedChains="false" optimise="true" >
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:tree" spec="beast.evolution.tree.Tree" name="stateNode">
             <trait id="dateTrait.t:tree" spec="beast.evolution.tree.TraitSet" traitname="date-backward">
@@ -182,7 +182,7 @@ filter="-">
     <operator id="SAUniformOperatorFBD.t:tree" spec="SAUniform" tree="@Tree.t:tree" weight="20.0"/>
     <operator id="SATreeRootScalerFBD.t:tree" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:tree" weight="1.0"/>
     <operator id="SATreeScalerFBD.t:tree" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:tree" weight="3.0"/>
-    <operator id="tipDatesSampler.LZ" spec="TipDatesRandomWalker" taxonset="@LZ" tree="@Tree.t:tree" weight="1.0" windowSize="1.0"/>
+    <operator id="tipDatesSampler.LZ" spec="SampledNodeDateRandomWalker" taxonset="@LZ" tree="@Tree.t:tree" weight="1.0" windowSize="1.0"/>
     <logger id="tracelog" spec="Logger" fileName="kd_looms_1000.log" logEvery="1000" model="@posterior" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>

@@ -5,9 +5,9 @@ library(readxl)
 library(phangorn)
 library(TreeTools)
 library(here)
-setwd("/Users/kopp/Library/CloudStorage/OneDrive-UniversitéParis-Dauphine/these/KD_loom/")
+path = here("data/Kra-DaiLooms28master-2.xlsx")
 
-kd_xl <- read_excel("data/Kra-DaiLooms28master-2.xlsx", sheet = "Digit", skip = 1) |>
+kd_xl <- read_excel(path, sheet = "Digit", skip = 1) |>
   filter(Character != "Level") |>
   select(!starts_with("...")) |>
   mutate(Character = str_replace_all(Character, " ", "_"))|>

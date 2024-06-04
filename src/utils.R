@@ -1,5 +1,6 @@
 library(here)
-source(here("code/init.R"))
+source(here("src/init.R"))
+library(ape)
 
 remove_burnin = function(trees,burnin_rate){
   #'remove_burnin
@@ -10,39 +11,42 @@ remove_burnin = function(trees,burnin_rate){
   n = as.numeric(length(trees))
   return(trees[as.integer(n*burnin_rate):n])
 }
-myconsensus = function(trees){
-  #' myconcensus
-  #' 
-  #' Compute the consensus tree of multiples trees
-  #' @param trees The trees.
-  #' @example 
-  #' path = "/Users/kopp/Documents/chr_paper/beast/bantu-ctmc-strict-bd/ctmc-strict-bd.trees"
-  #' tree = read.nexus(path)
-  #' tree = remove_burnin(tree,0.9)
-  #' consensus_tree = myconsensus(tree)
+myconsensus = function(trees){ 
   consensus.edges(trees, consensus.tree = consensus(trees, p=.5), rooted=T)    
 }
 
-library(ape)
+# Weigth 1111 : Burnin 90%
+path1111 = "/Users/kopp/Documents/kd_looms/output/by_level/loom1111/kd_loom1111.trees"
+trees1111 = read.nexus(path1111)
+trees1111 = remove_burnin(trees1111,0.9)
+consensus_tree1111 = myconsensus(trees1111)
+plot(consensus_tree1111,main='1111')
+write.tree(consensus_tree1111,here("output/by_level/loom1111/consensus_tree1111.tree"))
 
-path1 = "/Users/kopp/Documents/kd_looms/output/loom1000/kd_looms_1000.trees"
-tree1 = read.nexus(path1)
-tree1 = remove_burnin(tree1,0.4)
-consensus_tree1 = myconsensus(tree1)
-#plot(consensus_tree1)
 
+# Weigth 8421 : Burnin 90%
+path8421 = "/Users/kopp/Documents/kd_looms/output/by_level/loom8421/kd_loom8421.trees"
+trees8421 = read.nexus(path8421)
+trees8421 = remove_burnin(trees8421,0.9)
+consensus_tree8421 = myconsensus(trees8421)
+plot(consensus_tree8421,main='8421')
+write.tree(consensus_tree1111,here("output/by_level/loom8421/consensus_tree8421.tree"))
 
-path2 = "/Users/kopp/Documents/kd_looms/output/loom4100/kd_looms_4100.trees"
-tree2 = read.nexus(path2)
-tree2 = remove_burnin(tree2,0.9)
-consensus_tree2 = myconsensus(tree2)
-#plot(consensus_tree2)
+# Weigth 1000 : Burnin 90%
+path1000 = "/Users/kopp/Documents/kd_looms/output/by_level/loom1000/kd_loom1000.trees"
+trees1000 = read.nexus(path1000)
+trees1000 = remove_burnin(trees1000,0.9)
+consensus_tree1000 = myconsensus(trees1000)
+plot(consensus_tree1000,main='1000')
+write.tree(consensus_tree1000,here("output/by_level/loom1000/consensus_tree1000.tree"))
+
 
 
 # Plot mirror 
+library(phytools)
 obj = cophylo(
-  consensus_tree1,
-  consensus_tree2,
+  consensus_tree1111,
+  consensus_tree1000,
   rotate = T)
 
 plot(obj,
@@ -52,6 +56,4 @@ plot(obj,
      link.col="darkblue",cex=0.01)
 
 
-# write files 
-write.tree(consensus_tree1,"/Users/kopp/Documents/kd_looms/output/loom1000/consensus.tree")
-write.tree(consensus_tree2,"/Users/kopp/Documents/kd_looms/output/loom4100/consensus.tree")
+library(TreeTools)

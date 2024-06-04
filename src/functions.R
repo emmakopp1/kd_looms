@@ -4,6 +4,9 @@ source(here("src/init.R"))
 duplication_with_option = function(weights,option,path){
   # Read data
   kd_xl = read_xls(path)
+  rownames = row.names(kd_xl)
+  kd_xl = as.data.frame(sapply(kd_xl,as.numeric))
+  row.names(kd_xl) = rownames
   
   # Create data frames 
   if (option=='level'){data = create_kd_by_level_df(path)}
@@ -17,7 +20,7 @@ duplication_with_option = function(weights,option,path){
       str_subset("^PS")
     
     basics <- setdiff(colnames(kd_xl),union(simple,complex))
-    data = list(simple=kd_xl[,simple],basic=kd_xl[,basics],complex=kd_xl[,complex])
+    data <- list(simple=kd_xl[,simple],basic=kd_xl[,basics],complex=kd_xl[,complex])
   }
   
   # Duplication
@@ -83,7 +86,7 @@ duplicate_looms = function(weights,option,data){
   }
   
   if (option == "type"){
-    file_names = c("simple","basic","complex")
+    file_names = c("basic","simple","complex")
   }
   
   kd_xl_weighted <- do.call(
@@ -111,12 +114,12 @@ data_to_nexus = function(df,path_out,option){
     df = df %>%
       slice(-which(rownames(df) == "Level"))
   }
+  
+  df[is.na(df)] <- "?"
   df <- df |>
     as.matrix() |>
     MatrixToPhyDat()
   
-  
-    
   write.phyDat(df, path_out, format = "nexus")
 }
 
