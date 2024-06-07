@@ -50,7 +50,7 @@ write.tree(consensus_4sites, here("output/by_level/loom_ctmc_variable_trait/cons
 
 plot.phylo(consensus_4sites, type = "phylogram", edge.width = 2, cex = 0.6)
 
-
+consensus_4sites = read.tree(here("output/by_level/loom_ctmc_variable_trait/consensus_tree_4sites.tree"))
 
 # Plot mirror
 obj <- cophylo(

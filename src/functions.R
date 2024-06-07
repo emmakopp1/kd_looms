@@ -10,18 +10,6 @@ duplication_with_option = function(weights,option,path){
   # Create data frames 
   if (option=='level'){data = create_kd_by_level_df(path)}
   
-  if (option =='type'){
-    # Group different types of looms
-    simple <- colnames(kd_xl) |>
-      str_subset("^FM|HP|RP|RT|RW|MH")
-    
-    complex <- colnames(kd_xl) |>
-      str_subset("^PS")
-    
-    basics <- setdiff(colnames(kd_xl),union(simple,complex))
-    data <- list(simple=kd_xl[,simple],basic=kd_xl[,basics],complex=kd_xl[,complex])
-  }
-  
   # Duplication
   kd_xl_weighted = duplicate_looms(
     weights=weights,
@@ -95,4 +83,17 @@ duplicate_df = function(data, N) {
   return(data[,rep(seq_len(ncol(data)), N) ])
 }
 
+duplicate_df = function(data, N) {
+  #'@description
+  #'This function duplicate a dataframe n times
+  return(data[,rep(seq_len(ncol(data)), N) ])
+}
 
+data_to_nexus = function(df,path_out){
+
+  df <- df |>
+    as.matrix() |>
+    MatrixToPhyDat()
+  
+  write.phyDat(df, path_out, format = "nexus")
+}
