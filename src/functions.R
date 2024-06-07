@@ -1,5 +1,4 @@
 library(here)
-source(here("src/init.R"))
 
 duplication_with_option = function(weights,option,path){
   # Read data
@@ -33,10 +32,6 @@ duplication_with_option = function(weights,option,path){
 }
 
 read_xls = function(path){
-  #'@description
-    #'This function readq the data from the Excel datas.
-  #'@param path Input path
-  #'@returns a dataframe
 
   kd_xls <- read_excel(path, sheet = "Digit", skip = 1) %>%
     select(-starts_with("...")) %>%
@@ -47,11 +42,7 @@ read_xls = function(path){
   }
 
 create_kd_by_level_df = function(path){
-  #'@description
-    #'This function returns 4 dataframes each one containing the looms of level
-  #'@param path path of the data
-  
-  # Import the data
+
   kd_xls = read_xls(path)
   
   # Instanciate a dataframe for a given level i
@@ -104,48 +95,4 @@ duplicate_df = function(data, N) {
   return(data[,rep(seq_len(ncol(data)), N) ])
 }
 
-data_to_nexus = function(df,path_out,option){
-  #'@description
-    #'This function write the data on a nexus file
-  #'@param df dataframe
-  #'@param path_out path to stock the nexus file
 
-  if (option=="type"){
-    df = df %>%
-      slice(-which(rownames(df) == "Level"))
-  }
-  
-  df[is.na(df)] <- "?"
-  df <- df |>
-    as.matrix() |>
-    MatrixToPhyDat()
-  
-  write.phyDat(df, path_out, format = "nexus")
-}
-
-kd_by_level_nex = function(path){
-  #'@description
-  #'This function create 4 nexus files where each file contains a level of looms
-  #'@param path path of the data
-  
-  kd_xls = read_xls(path)
-  
-  for (i in 1:4){
-    # Pre-process data
-    kd_level <- kd_xls %>%
-      t() %>%
-      as.data.frame() %>%
-      dplyr::filter(Level == i) %>%
-      select(-Level) %>%
-      t() %>%
-      as.data.frame() %>%
-      as.matrix() %>%
-      MatrixToPhyDat()
-    
-    # Write the data in a nexus file
-    write.phyDat(
-      kd_level, 
-      sprintf("data/kd_level%i.nex", i), 
-      format = "nexus")
-  }
-  return()}

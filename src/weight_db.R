@@ -5,8 +5,7 @@ library(stringr)
 
 # Init
 path = here("data/Kra-DaiLooms28master-2.xlsx")
-#weight_type = c(1,0,0)
-weight_level = c(8,4,2,1) 
+weight_level = c(20,0,0,0) 
 output_path = paste0(
   "output/by_level/loom",
   paste(weight_level,collapse =''),
