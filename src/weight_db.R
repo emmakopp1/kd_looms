@@ -16,6 +16,8 @@ path <- here("data/Kra-DaiLooms28master-2.xlsx")
 weight_level <- c(5, 0, 0, 0)
 output_path <- paste0("output/NexusFiles/", "looms_", paste(weight_level, collapse = ""), ".nex")
 
+
+
 kd_xl_weighted <- duplication(weights = weight_level,path = path)
 
 # Export

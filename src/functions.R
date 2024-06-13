@@ -21,7 +21,6 @@ duplication <- function(weights, path) {
 }
 
 create_kd_by_level_df <- function(path) {
-  kd_xls <- read_xls(path)
 
   # Instanciate a dataframe for a given level i
   kd_to_level <- function(i, kd_xls) {
