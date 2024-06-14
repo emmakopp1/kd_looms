@@ -11,13 +11,14 @@ dir.create(here("output/figures"))
 wd <- 14
 base_font <- "Noto Sans Condensed"
 base_font_size <- 10
-# theme_set(
-#   theme_minimal(base_family = base_font, base_size = base_font_size) +
-#     theme(
-#       legend.position = "bottom",
-#       aspect.ratio = .618
-#     )
-# )
+theme_set(
+  theme_minimal(base_family = base_font, base_size = base_font_size) +
+    theme(
+      legend.text = element_text(family = base_font)
+      #       legend.position = "bottom",
+      #       aspect.ratio = .618
+    )
+)
 
 loom_groups_types <- read_csv(here("data/loom_groups_types.csv"))
 
@@ -31,17 +32,40 @@ cs_tree1000_edges$node.label[1] <- NA
 cs_tree1000_edges$tip.label <- str_replace_all(cs_tree1000_edges$tip.label, "_", " ")
 cs_tree1000_edges$edge.length <- cs_tree1000_edges$edge.length[-length(cs_tree1000_edges$edge.length)]
 
+
+cs_theme <- theme(
+  aspect.ratio = 1.15,
+  legend.position = "inside",
+  legend.justification = c(0, 1),
+  legend.text = element_text(
+    family = base_font,
+    size = base_font_size - 1,
+    margin = margin(0, 0, 0, 0, unit = "line")
+  ),
+  legend.title = element_text(
+    family = base_font,
+    size = base_font_size,
+    margin = margin(0, 0, .5, 0, unit = "line")
+  ),
+  legend.key.spacing.y = unit(.25, "line"),
+  legend.margin = margin(0, 0, 0, 0, unit = "line"),
+  legend.box.margin = margin(0, 0, 0, 0, unit = "line"),
+  legend.box.spacing = unit(0, "pt")
+)
+
 cs_tree1000_plot <- cs_tree1000_edges |>
   fortify() |>
   left_join(loom_groups_types, by = join_by(label == group)) |>
+  mutate(type_label = str_replace(type_label, ", ", ",\n")) |>
   ggtree(ladderize = TRUE) +
-  geom_tiplab(aes(fill = fct_rev(type)), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
-  # geom_tiplab(aes(color = type2), family = base_font, size = base_font_size / .pt) +
+  geom_tiplab(aes(fill = fct_rev(type_label)), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
   geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
   geom_rootedge(.25) +
   coord_cartesian(clip = "off", expand = FALSE) +
   scale_fill_few(palette = "Light") +
-  theme(plot.margin = margin(0, 2.5, 0, 0, unit = "line"), aspect.ratio = 1.15, legend.position = "none")
+  guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
+  theme(plot.margin = margin(0, 2.5, 0, 0, unit = "line")) +
+  cs_theme
 ggsave(here("output/figures/cs_tree1000.pdf"), cs_tree1000_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/cs_tree1000.pdf"))
 

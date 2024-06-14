@@ -1,30 +1,30 @@
-group,type,type2
-Liangzhu,FBBS,FBBS
-Meifu Li,FBBS,FBBS
-Qi Li,FBBS,FBBS
-Ha Li,FBBS,FBBS
-Run Li,FBBS,FBBS
-Tai Yuan,2LH,FCB
-Tai Xam Nuea,2LH,FCB
-Tai Isan,2LH,FCB
-Tai Mai Chau,2LH,FCB
-Tai Lu Nà Tăm,2LH,FCB
-Tai Trang Quan Son,2LH,FCB
-Tai Trang Ky Son,2LH,FCB
-Buyi Xingyi,2LH,FCB
-Zhuang Jingxi,2LHcant,FCB
-Dai Huayao,BFYRH,BTF
-Dai Yuxi Yuanjiang,BFYRH,BTF
-Dai Jinghong,BFYRH,BTF
-Tai Phake,BFYRH,BTF
-Dai Tengchong,4LH,FCB
-Zhuang Napo,BFSRH,BTF
-Zhuang Longzhou,BFSRH,BTF
-Nung An,BFSRH,BTF
-Dong Tongdao,BFYRH,BTF
-Miao Zhaoxing,1H1S,FCB
-Maonan Hechi,BFYRH,BTF
-Zhuang Binyang,BFYRH,BTF
-Buyi Libo,BFYRH,BTF
-Tay Ban Rang,2LHcant,FCB
-Tay Lung Noi,2LHcant,FCB
+group,type_code,type_label
+Liangzhu,FBBS,Foot-braced backstrap loom
+Meifu Li,FBBS,Foot-braced backstrap loom
+Qi Li,FBBS,Foot-braced backstrap loom
+Ha Li,FBBS,Foot-braced backstrap loom
+Run Li,FBBS,Foot-braced backstrap loom
+Tai Yuan,2LH,"Fixed cloth beam frame loom, box frame"
+Tai Xam Nuea,2LH,"Fixed cloth beam frame loom, box frame"
+Tai Isan,2LH,"Fixed cloth beam frame loom, box frame"
+Tai Mai Chau,2LH,"Fixed cloth beam frame loom, box frame"
+Tai Lu Nà Tăm,2LH,"Fixed cloth beam frame loom, box frame"
+Tai Trang Quan Son,2LH,"Fixed cloth beam frame loom, box frame"
+Tai Trang Ky Son,2LH,"Fixed cloth beam frame loom, box frame"
+Buyi Xingyi,2LH,"Fixed cloth beam frame loom, box frame"
+Zhuang Jingxi,2LHcant,"Fixed cloth beam frame loom, cantilever frame"
+Dai Huayao,BFYRH,"Body-tensioned frame loom, Y rocker heddle"
+Dai Yuxi Yuanjiang,BFYRH,"Body-tensioned frame loom, Y rocker heddle"
+Dai Jinghong,BFYRH,"Body-tensioned frame loom, Y rocker heddle"
+Tai Phake,BFYRH,"Body-tensioned frame loom, Y rocker heddle"
+Dai Tengchong,4LH,Fixed cloth beam loom
+Zhuang Napo,BFSRH,"Body-tensioned frame loom, short rocker heddle"
+Zhuang Longzhou,BFSRH,"Body-tensioned frame loom, short rocker heddle"
+Nung An,BFSRH,"Body-tensioned frame loom, short rocker heddle"
+Dong Tongdao,BFYRH,"Body-tensioned frame loom, Y rocker heddle"
+Miao Zhaoxing,1H1S,"Fixed cloth beam loom, unique type"
+Maonan Hechi,BFYRH,"Body-tensioned frame loom, Y rocker heddle"
+Zhuang Binyang,BFYRH,"Body-tensioned frame loom, Y rocker heddle"
+Buyi Libo,BFYRH,"Body-tensioned frame loom, Y rocker heddle"
+Tay Ban Rang,2LHcant,"Fixed cloth beam frame loom, cantilever frame"
+Tay Lung Noi,2LHcant,"Fixed cloth beam frame loom, cantilever frame"
