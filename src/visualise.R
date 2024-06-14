@@ -1,9 +1,13 @@
 library(here)
 library(tidyverse)
 library(phangorn)
-library(phytools)
-library(treeio)
 library(ggtree)
+nodeid.tbl_tree <- utils::getFromNamespace("nodeid.tbl_tree", "tidytree")
+rootnode.tbl_tree <- utils::getFromNamespace("rootnode.tbl_tree", "tidytree")
+offspring.tbl_tree <- utils::getFromNamespace("offspring.tbl_tree", "tidytree")
+offspring.tbl_tree_item <- utils::getFromNamespace(".offspring.tbl_tree_item", "tidytree")
+child.tbl_tree <- utils::getFromNamespace("child.tbl_tree", "tidytree")
+parent.tbl_tree <- utils::getFromNamespace("parent.tbl_tree", "tidytree")
 library(ggthemes)
 library(knitr)
 
@@ -74,7 +78,7 @@ cs_tree1111_plot <- cs_tree1111 |>
   fortify() |>
   left_join(loom_groups_types, by = join_by(label == group)) |>
   mutate(type_label = str_replace(type_label, ", ", ",\n")) |>
-  ggtree(ladderize = TRUE) +
+  ggtree(ladderize = FALSE) +
   geom_tiplab(aes(fill = fct_rev(type_label)), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
   geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
   geom_rootedge(.25) +
@@ -83,6 +87,8 @@ cs_tree1111_plot <- cs_tree1111 |>
   guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
   cs_theme +
   theme(plot.margin = margin(0, 5.4, 0, 0, unit = "line"))
+# cs_tree1111_plot + geom_nodelab(aes(label = node))
+cs_tree1111_plot <- flip(cs_tree1111_plot, 32, 43)
 ggsave(here("output/figures/cs_tree1111.pdf"), cs_tree1111_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/cs_tree1111.pdf"))
 
