@@ -15,7 +15,7 @@ dir.create(here("output/figures"))
 wd <- 14
 lwd <- 1 / .pt
 base_font <- "Noto Sans Condensed"
-base_font_size <- 10
+base_font_size <- 9
 theme_set(
   theme_minimal(base_family = base_font, base_size = base_font_size) +
     theme(
@@ -65,7 +65,7 @@ cs_tree1000_plot <- cs_tree1000 |>
   coord_cartesian(clip = "off", expand = FALSE) +
   scale_fill_few(palette = "Light") +
   guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
-  theme(plot.margin = margin(0, 3, 0, 0, unit = "line")) +
+  theme(plot.margin = margin(0, 2.4, 0, 0, unit = "line")) +
   cs_theme
 ggsave(here("output/figures/cs_tree1000.pdf"), cs_tree1000_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/cs_tree1000.pdf"))
@@ -87,7 +87,7 @@ cs_tree1111_plot <- cs_tree1111 |>
   scale_fill_few(palette = "Light") +
   guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
   cs_theme +
-  theme(plot.margin = margin(0, 5.4, 0, 0, unit = "line"))
+  theme(plot.margin = margin(0, 4.98, 0, 0, unit = "line"))
 # cs_tree1111_plot + geom_nodelab(aes(label = node))
 cs_tree1111_plot <- flip(cs_tree1111_plot, 32, 43)
 ggsave(here("output/figures/cs_tree1111.pdf"), cs_tree1111_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
@@ -110,7 +110,7 @@ cs_tree8421_plot <- cs_tree8421 |>
   scale_fill_few(palette = "Light") +
   guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
   cs_theme +
-  theme(plot.margin = margin(0, 5.3, 0, 0, unit = "line"))
+  theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line"))
 ggsave(here("output/figures/cs_tree8421.pdf"), cs_tree8421_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/cs_tree8421.pdf"))
 
