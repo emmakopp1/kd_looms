@@ -13,6 +13,7 @@ library(knitr)
 
 dir.create(here("output/figures"))
 wd <- 14
+lwd <- 1 / .pt
 base_font <- "Noto Sans Condensed"
 base_font_size <- 10
 theme_set(
@@ -57,10 +58,10 @@ cs_tree1000_plot <- cs_tree1000 |>
   fortify() |>
   left_join(loom_groups_types, by = join_by(label == group)) |>
   mutate(type_label = str_replace(type_label, ", ", ",\n")) |>
-  ggtree(ladderize = TRUE) +
+  ggtree(ladderize = TRUE, size = lwd) +
   geom_tiplab(aes(fill = fct_rev(type_label)), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
   geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
-  geom_rootedge(.25) +
+  geom_rootedge(.25, linewidth = lwd) +
   coord_cartesian(clip = "off", expand = FALSE) +
   scale_fill_few(palette = "Light") +
   guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
@@ -78,10 +79,10 @@ cs_tree1111_plot <- cs_tree1111 |>
   fortify() |>
   left_join(loom_groups_types, by = join_by(label == group)) |>
   mutate(type_label = str_replace(type_label, ", ", ",\n")) |>
-  ggtree(ladderize = FALSE) +
+  ggtree(ladderize = FALSE, size = lwd) +
   geom_tiplab(aes(fill = fct_rev(type_label)), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
   geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
-  geom_rootedge(.25) +
+  geom_rootedge(.25, linewidth = lwd) +
   coord_cartesian(clip = "off", expand = FALSE) +
   scale_fill_few(palette = "Light") +
   guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
@@ -101,10 +102,10 @@ cs_tree8421_plot <- cs_tree8421 |>
   fortify() |>
   left_join(loom_groups_types, by = join_by(label == group)) |>
   mutate(type_label = str_replace(type_label, ", ", ",\n")) |>
-  ggtree(ladderize = TRUE) +
+  ggtree(ladderize = TRUE, size = lwd) +
   geom_tiplab(aes(fill = fct_rev(type_label)), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
   geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
-  geom_rootedge(.25) +
+  geom_rootedge(.25, linewidth = lwd) +
   coord_cartesian(clip = "off", expand = FALSE) +
   scale_fill_few(palette = "Light") +
   guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
