@@ -9,6 +9,7 @@ offspring.tbl_tree_item <- utils::getFromNamespace(".offspring.tbl_tree_item", "
 child.tbl_tree <- utils::getFromNamespace("child.tbl_tree", "tidytree")
 parent.tbl_tree <- utils::getFromNamespace("parent.tbl_tree", "tidytree")
 library(ggthemes)
+library(ggridges)
 library(knitr)
 
 dir.create(here("output/figures"))
@@ -118,3 +119,19 @@ plot_crop(here("output/figures/cs_tree8421.pdf"))
 # (cs_tree1000_plot + cs_tree1111_plot + cs_tree8421_plot) & theme(plot.margin = margin(1, 5, 0, 0, unit = "line"))
 # ggsave(here("output/figures/cs.pdf"), device = cairo_pdf, width = wd*3.5, height = wd*2, units = "cm")
 # plot_crop(here("output/figures/cs.pdf"))
+
+kd_lgs_ages <- read_csv(here("output/kd_lgs_ages.csv"))
+
+kd_lgs_ages_plot <- kd_lgs_ages |>
+  mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
+  ggplot(aes(x = age * 1000, y = group, height = after_stat(density))) +
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2, color = "white", fill = few_pal("Light")(2)[1]) +
+  geom_density_ridges(fill = NA, color = "gray40") +
+  scale_x_reverse() +
+  # scale_x_reverse(limits = c(15000, 0)) +
+  scale_y_discrete(expand = expansion(add = c(0.5, 1.5))) +
+  xlab("age (years BP)") +
+  ylab("group") +
+  theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618)
+ggsave(here("output/figures/kd_lgs_ages_plot.pdf"), kd_lgs_ages_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd_lgs_ages_plot.pdf"))

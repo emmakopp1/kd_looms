@@ -23,3 +23,26 @@ tree8421 <- tree8421[seq(2, length(tree8421), by = round(length(tree8421) / 1000
 cs_tree8421 <- consensus(tree8421, p = .5, rooted = TRUE)
 cs_tree8421 <- consensus.edges(tree8421, consensus.tree = cs_tree8421, rooted = TRUE)
 write.tree(cs_tree8421, here("output/trees/kd_loom8421_consensus.tree"))
+
+
+lgs_trees <- read.nexus(here("data/languages/kd2.trees"))
+lgs_trees <- lgs_trees[seq(2, length(lgs_trees), by = round(length(lgs_trees) / 1000))]
+
+getMRCA_age <- function(tree, tips) {
+  tips <- if (is.character(tips)) which(tree$tip.label %in% tips) else tips
+  mrca <- ifelse(length(tips) > 1, getMRCA(tree, tips), tips)
+  root_age <- max(node.depth.edgelength(tree))
+  root_age - node.depth.edgelength(tree)[mrca]
+}
+
+lgs_trees[[1]]$tip.label
+getMRCA_age(lgs_trees, lgs_trees[[1]]$tip.label)
+kd_lgs_ages <- lgs_trees |>
+  seq_along() |>
+  map_df(~ tibble(
+    `Kra-Dai` = getMRCA_age(lgs_trees[[.x]], lgs_trees[[1]]$tip.label),
+    `Kam-Tai` = getMRCA_age(lgs_trees[[.x]], str_subset(lgs_trees[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
+    `Tai-Yay` = getMRCA_age(lgs_trees[[.x]], str_subset(lgs_trees[[1]]$tip.label, "^(Tc|Tn|Tsw)"))
+  )) |> 
+  pivot_longer(everything(), names_to = "group", values_to = "age")
+write_csv(kd_lgs_ages, here("output/kd_lgs_ages.csv"))
