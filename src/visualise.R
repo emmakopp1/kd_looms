@@ -17,19 +17,8 @@ wd <- 14
 lwd <- 1 / .pt
 base_font <- "Noto Sans Condensed"
 base_font_size <- 9
-theme_set(
-  theme_minimal(base_family = base_font, base_size = base_font_size) +
-    theme(
-      legend.text = element_text(family = base_font)
-      #       legend.position = "bottom",
-      #       aspect.ratio = .618
-    )
-)
-
-cs_theme <- theme(
+xtheme <- theme(
   aspect.ratio = 1.15,
-  legend.position = "inside",
-  legend.justification = c(0, 1),
   legend.text = element_text(
     family = base_font,
     size = base_font_size - 1,
@@ -40,11 +29,16 @@ cs_theme <- theme(
     size = base_font_size,
     margin = margin(0, 0, .5, 0, unit = "line")
   ),
+  legend.position = c(0, 1),
+  legend.justification = c(0, 1),
   legend.key.spacing.y = unit(.25, "line"),
   legend.margin = margin(0, 0, 0, 0, unit = "line"),
   legend.box.margin = margin(0, 0, 0, 0, unit = "line"),
   legend.box.spacing = unit(0, "pt")
+  #       legend.position = "bottom",
+  #       aspect.ratio = .618
 )
+theme_set(xtheme)
 
 kd_looms_languages <- read_csv(here("data/kd_looms_languages.csv")) |>
   mutate(loom_type = str_replace(loom_type, ", ", ",\n")) |>
@@ -63,7 +57,7 @@ cs_tree1000$tip.label <- str_replace_all(cs_tree1000$tip.label, "_", " ")
 
 cs_tree1000_plot <- cs_tree1000 |>
   fortify() |>
-  left_join(groups_types, by = join_by(label == group)) |>
+  left_join(kd_looms_languages, by = join_by(label == group)) |>
   ggtree(ladderize = TRUE, size = lwd) +
   geom_tiplab(aes(fill = loom_type), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
   geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
@@ -72,7 +66,7 @@ cs_tree1000_plot <- cs_tree1000 |>
   scale_fill_few(palette = "Light") +
   guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
   theme(plot.margin = margin(0, 2.4, 0, 0, unit = "line")) +
-  cs_theme
+  xtheme
 ggsave(here("output/figures/cs_tree1000.pdf"), cs_tree1000_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/cs_tree1000.pdf"))
 
@@ -83,7 +77,7 @@ cs_tree1111$tip.label <- str_replace_all(cs_tree1111$tip.label, "_", " ")
 
 cs_tree1111_plot <- cs_tree1111 |>
   fortify() |>
-  left_join(groups_types, by = join_by(label == group)) |>
+  left_join(kd_looms_languages, by = join_by(label == group)) |>
   ggtree(ladderize = FALSE, size = lwd) +
   geom_tiplab(aes(fill = loom_type), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
   geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
@@ -105,7 +99,7 @@ cs_tree8421$tip.label <- str_replace_all(cs_tree8421$tip.label, "_", " ")
 
 cs_tree8421_plot <- cs_tree8421 |>
   fortify() |>
-  left_join(groups_types, by = join_by(label == group)) |>
+  left_join(kd_looms_languages, by = join_by(label == group)) |>
   ggtree(ladderize = TRUE, size = lwd) +
   geom_tiplab(aes(fill = loom_type), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt, alpha = .95) +
   geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
@@ -136,8 +130,10 @@ kd_lgs_ages_plot <- kd_lgs_ages |>
   scale_x_reverse() +
   # scale_x_reverse(limits = c(15000, 0)) +
   scale_y_discrete(expand = expansion(add = c(0.5, 1.5))) +
-  xlab("age (years BP)") +
-  ylab("group") +
+  xlab("Age (years BP)") +
+  ylab("Language group") +
+  theme_minimal(base_size = base_font_size, base_family = base_font) +
+  xtheme +
   theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618)
 ggsave(here("output/figures/kd_lgs_ages_plot.pdf"), kd_lgs_ages_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_lgs_ages_plot.pdf"))
@@ -149,14 +145,14 @@ kd_lgs_cs <- read.tree(here("output/trees/kd_lgs_consensus.tree"))
 kd_lgs_cs$root.edge <- 0
 
 p1 <- ggtree(kd_lgs_cs, ladderize = TRUE)
-p2 <- ggtree(cs_tree1111, ladderize = TRUE) |> 
-  flip(32, 43) |> 
-  rotate(35) |> 
-  rotate(54) |> 
-  flip(50, 44) |> 
-  rotate(50) |> 
-  rotate(44) |> 
-  rotate(45) |> 
+p2 <- ggtree(cs_tree1111, ladderize = TRUE) |>
+  flip(32, 43) |>
+  rotate(35) |>
+  rotate(54) |>
+  flip(50, 44) |>
+  rotate(50) |>
+  rotate(44) |>
+  rotate(45) |>
   rotate(55)
 d1 <- p1$data |>
   mutate(language = label) |>
@@ -189,7 +185,7 @@ d2$x <- max(d2$x) - d2$x + max(d1$x)
 d2$x <- d2$x + (max(c(d1$x, d2$x)) - min(c(d1$x, d2$x))) / 100 * 15
 d2$y <- ((d2$y - min(d2$y)) / (max(d2$y) - min(d2$y))) * (max(ry) - min(ry)) + min(ry)
 
-pp <- p1 +#|> flip(105, 147) +#|> flip(106,132) +
+pp <- p1 + #|> flip(105, 147) +#|> flip(106,132) +
   geom_tree(data = d2)
 dd <- bind_rows(d1, d2) %>%
   filter(!is.na(group) & !is.na(language))
@@ -197,15 +193,12 @@ dd <- bind_rows(d1, d2) %>%
 pp + geom_line(aes(x, y, group = language), data = dd, color = "grey") +
   # geom_nodelab(aes(label = node)) +
   geom_tippoint(data = left_join(d1, select(lnggroup_loom, lng_group, lng_col)), aes(color = lng_col), size = 1) +
-  scale_color_identity(guide = "legend", name = "Language group", labels = lnggroup_loom$lng_group_name) +
+  scale_color_identity(guide = guide_legend(order = 1, , override.aes = list(size = 4), theme = theme(legend.key.spacing.y = unit(0, "line"))), name = "Language group", labels = lnggroup_loom$lng_group_name) +
+  xtheme +
   ggnewscale::new_scale_colour() +
   # geom_nodelab(data = d2, aes(label = node)) +
   geom_tippoint(data = d2, aes(color = loom_type), size = 1) +
-  scale_color_few(palette = "Light", name = "Loom type") +
-  cs_theme +
-  theme(aspect.ratio = 1, legend.position = "left")
-  # theme(legend.position = c("bottom", "top"))
-  # theme(legend.justification = list(c(0, 1), c(1, 1)))
+  scale_color_few(palette = "Light", name = "Loom type", guide = guide_legend(order = 2, override.aes = list(size = 4))) +
+  theme(legend.position = c(0.5, 1), legend.justification = c(.5, 1), legend.box = "horizontal", legend.spacing.x = unit(14, "line"), aspect.ratio = 1)
 ggsave(here("output/figures/cophylogeny.pdf"), device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/cophylogeny.pdf"))
-
