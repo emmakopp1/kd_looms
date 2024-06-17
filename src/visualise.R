@@ -149,48 +149,63 @@ kd_lgs_cs <- read.tree(here("output/trees/kd_lgs_consensus.tree"))
 kd_lgs_cs$root.edge <- 0
 
 p1 <- ggtree(kd_lgs_cs, ladderize = TRUE)
-p2 <- ggtree(cs_tree1111, ladderize = TRUE)
+p2 <- ggtree(cs_tree1111, ladderize = TRUE) |> 
+  flip(32, 43) |> 
+  rotate(35) |> 
+  rotate(54) |> 
+  flip(50, 44) |> 
+  rotate(50) |> 
+  rotate(44) |> 
+  rotate(45) |> 
+  rotate(55)
 d1 <- p1$data |>
   mutate(language = label) |>
   left_join(kd_looms_languages) |>
   mutate(lng_group = str_extract(language, "^[A-Z][a-z]+(?=[A-Z])"))
 lnggroup_loom <- tribble(
-  ~lng_group, ~loom_code,
-  "Be", NA,
-  "Kra", NA,
-  "Hlai", "FBBS",
-  "Ks", "BFYRH",
-  "Tn", NA,
-  "Tsw", NA,
-  "Tc", "BFSRH"
+  ~lng_group, ~lng_group_name, ~loom_code,
+  "Be", "Ong-Be", NA,
+  "Kra", "Kra", NA,
+  "Hlai", "Hlai", "FBBS",
+  "Ks", "Kam-Sui", "BFYRH",
+  "Tn", "Northern Tai", NA,
+  "Tsw", "Southwestern Tai", "2LH",
+  "Tc", "Central Tai", "BFSRH"
 ) |>
   full_join(distinct(d1, lng_group)) |>
   filter(!is.na(lng_group)) |>
   full_join(distinct(kd_looms_languages, loom_code, loom_type)) |>
   arrange(loom_type) |>
-  mutate(lng_col = c(few_pal("Dark")(8), "black", "grey30", "grey50")) |>
+  mutate(lng_col = c(few_pal("Dark")(8), "black", "grey50")) |>
   filter(!is.na(lng_group))
 
 d2 <- p2$data |>
   mutate(group = label) |>
   left_join(kd_looms_languages)
-ry <- filter(d1, !is.na(group) & !is.na(language))$y
+# ry <- filter(d1, !is.na(group) & !is.na(language))$y
+ry <- d1$y
 d2$x <- ((d2$x - min(d2$x)) / (max(d2$x) - min(d2$x))) * (max(d1$x) - min(d1$x)) + min(d1$x)
 d2$x <- max(d2$x) - d2$x + max(d1$x)
-d2$x <- d2$x + (max(c(d1$x, d2$x)) - min(c(d1$x, d2$x))) / 100 * 10
+d2$x <- d2$x + (max(c(d1$x, d2$x)) - min(c(d1$x, d2$x))) / 100 * 15
 d2$y <- ((d2$y - min(d2$y)) / (max(d2$y) - min(d2$y))) * (max(ry) - min(ry)) + min(ry)
 
-pp <- p1 + geom_tree(data = d2)
+pp <- p1 +#|> flip(105, 147) +#|> flip(106,132) +
+  geom_tree(data = d2)
 dd <- bind_rows(d1, d2) %>%
   filter(!is.na(group) & !is.na(language))
 
 pp + geom_line(aes(x, y, group = language), data = dd, color = "grey") +
-  geom_tippoint(data = left_join(d1, select(lnggroup_loom, lng_group, lng_col)), aes(color = lng_col), size = 3) +
-  scale_color_identity(guide = "legend", name = "Language group", labels = lnggroup_loom$lng_group) +
+  # geom_nodelab(aes(label = node)) +
+  geom_tippoint(data = left_join(d1, select(lnggroup_loom, lng_group, lng_col)), aes(color = lng_col), size = 1) +
+  scale_color_identity(guide = "legend", name = "Language group", labels = lnggroup_loom$lng_group_name) +
   ggnewscale::new_scale_colour() +
-  geom_tippoint(data = d2, aes(color = loom_type), size = 3) +
-  scale_color_few(palette = "Light") +
-  theme(legend.position = "bottom")
+  # geom_nodelab(data = d2, aes(label = node)) +
+  geom_tippoint(data = d2, aes(color = loom_type), size = 1) +
+  scale_color_few(palette = "Light", name = "Loom type") +
+  cs_theme +
+  theme(aspect.ratio = 1, legend.position = "left")
+  # theme(legend.position = c("bottom", "top"))
+  # theme(legend.justification = list(c(0, 1), c(1, 1)))
+ggsave(here("output/figures/cophylogeny.pdf"), device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/cophylogeny.pdf"))
 
-
-kd_lgs_cs$tip.label
