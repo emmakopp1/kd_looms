@@ -55,19 +55,19 @@ kd_lgs_ages <- lgs_trees |>
     `Kra-Dai` = getMRCA_age(lgs_trees[[.x]], lgs_trees[[1]]$tip.label),
     `Kam-Tai` = getMRCA_age(lgs_trees[[.x]], str_subset(lgs_trees[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
     `Tai-Yay` = getMRCA_age(lgs_trees[[.x]], str_subset(lgs_trees[[1]]$tip.label, "^(Tc|Tn|Tsw)"))
-  )) |> 
+  )) |>
   pivot_longer(everything(), names_to = "group", values_to = "age")
 write_csv(kd_lgs_ages, here("output/kd_lgs_ages.csv"))
 
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
-mutationrate_bylevel <- parse_beast_tracelog_file(here("data/beast/loom_ctmc_variable_trait/loom_ctmc_variable_trait.log")) |> 
-  as_tibble() |> 
-  select(mutationRate.s.level1, mutationRate.s.level2, mutationRate.s.level3, mutationRate.s.level4) |> 
+mutationrate_bylevel <- parse_beast_tracelog_file(here("data/beast/loom_ctmc_variable_trait/loom_ctmc_variable_trait.log")) |>
+  as_tibble() |>
+  select(mutationRate.s.level1, mutationRate.s.level2, mutationRate.s.level3, mutationRate.s.level4) |>
   rowid_to_column()
 
-mutationrate_bylevel_tb <- mutationrate_bylevel |> 
-  filter(!(rowid %in% 1:((nrow(mutationrate_bylevel) - 1) * .1))) |> 
-  pivot_longer(-rowid, names_to = "level", values_to = "rate") |> 
+mutationrate_bylevel_tb <- mutationrate_bylevel |>
+  filter(!(rowid %in% 1:((nrow(mutationrate_bylevel) - 1) * .1))) |>
+  pivot_longer(-rowid, names_to = "level", values_to = "rate") |>
   mutate(level = str_remove_all(level, "[^0-9]"))
