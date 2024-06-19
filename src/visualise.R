@@ -45,6 +45,7 @@ theme_set(xtheme)
 plt <- tableau_color_pal("Classic 10 Medium")(10)
 plt2 <- tableau_color_pal("Classic 10")(10)
 plt3 <- tableau_color_pal("Classic 10 Light")(10)
+xcol <- few_pal("Light")(2)[1]
 
 kd_looms_languages <- read_csv(here("data/kd_looms_languages.csv")) |>
   mutate(loom_type = str_replace(loom_type, ", ", ",\n")) |>
@@ -127,7 +128,7 @@ kd_lgs_ages <- read_csv(here("output/kd_lgs_ages.csv"))
 kd_lgs_ages_plot <- kd_lgs_ages |>
   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
   ggplot(aes(x = age * 1000, y = group, height = after_stat(density))) +
-  stat_density_ridges(quantile_lines = TRUE, quantiles = 2, color = "white", fill = few_pal("Light")(2)[1]) +
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2, color = "white", fill = xcol) +
   geom_density_ridges(fill = NA, color = "gray40") +
   scale_x_reverse() +
   # scale_x_reverse(limits = c(15000, 0)) +
@@ -263,9 +264,27 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
+library(ggforce)
+library(ggdist)
 mutationrate_bylevel_tb <- read_csv(here("output/mutationrate_bylevel.csv"))
 
-mutationrate_bylevel_tb |> 
-  ggplot(aes(x = level, y = rate)) +
-  geom_boxplot() +
-  theme_minimal()
+mutationrate_bylevel_tb |>
+  ggplot(aes(x = factor(level), y = rate)) +
+  # geom_violin(fill = xcol, linewidth = lwd, color = NA, scale = "count") +
+  # geom_point(aes(color = factor(level)), size = .001, alpha = .3, position = position_jitter(seed = 1, width = .4)) +
+  # scale_color_few() +
+  # stat_halfeye(fill = xcol, justification = -.2) +
+  stat_slab(limits = c(0,NA), justification = -.1) +
+  stat_slabinterval(show_slab = FALSE, justification = .1, .width = c(.5, .95)) +
+  geom_boxplot(width = .15, linewidth = lwd, outliers = FALSE, outlier.size = .25, outlier.alpha = .5, outlier.color = "grey50", color = few_pal("Dark")(2)[2]) +
+  # ggdist::stat_halfeye(fill = xcol, point_colour = few_pal("Dark")(2)[2], color = few_pal("Medium")(2)[2], justification = -.1) +
+  stat_summary(geom = "text", fun = "median", aes(label = round(..y.., 2)), family = base_font, size = base_font_size/.pt, vjust = 2) +
+  # stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "pointrange", color = "black") +
+  # geom_sina(size = .00005) +
+  # geom_boxplot() +
+  # xtheme +
+  xlab("Level") +
+  ylab("Mutation rate") +
+  coord_flip() +
+  theme_minimal(base_family = base_font, base_size = base_font_size) +
+  theme(aspect.ratio = .618, panel.grid.major.x = element_blank())
