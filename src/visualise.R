@@ -269,22 +269,19 @@ library(ggdist)
 mutationrate_bylevel_tb <- read_csv(here("output/mutationrate_bylevel.csv"))
 
 mutationrate_bylevel_tb |>
-  ggplot(aes(x = factor(level), y = rate)) +
-  # geom_violin(fill = xcol, linewidth = lwd, color = NA, scale = "count") +
-  # geom_point(aes(color = factor(level)), size = .001, alpha = .3, position = position_jitter(seed = 1, width = .4)) +
-  # scale_color_few() +
-  # stat_halfeye(fill = xcol, justification = -.2) +
-  stat_slab(limits = c(0,NA), justification = -.1) +
-  stat_slabinterval(show_slab = FALSE, justification = .1, .width = c(.5, .95)) +
-  geom_boxplot(width = .15, linewidth = lwd, outliers = FALSE, outlier.size = .25, outlier.alpha = .5, outlier.color = "grey50", color = few_pal("Dark")(2)[2]) +
-  # ggdist::stat_halfeye(fill = xcol, point_colour = few_pal("Dark")(2)[2], color = few_pal("Medium")(2)[2], justification = -.1) +
-  stat_summary(geom = "text", fun = "median", aes(label = round(..y.., 2)), family = base_font, size = base_font_size/.pt, vjust = 2) +
+  ggplot(aes(y = factor(level), x = rate)) +
+  # geom_density_ridges(fill = NA, color = NA, scale = 1) +
+  stat_density_ridges(aes(fill = .5 - abs(.5 - after_stat(ecdf))), geom = "density_ridges_gradient", calc_ecdf = TRUE, scale = 1, panel_scaling = FALSE, color = "gray50", linewidth = lwd) +
+  # stat_slab(fill = xcol, limits = c(0,NA), justification = -.1) +
+  # geom_boxplot(width = .2, linewidth = lwd, outliers = FALSE, outlier.size = .25, outlier.alpha = .5, outlier.color = "grey50", color = few_pal("Dark")(2)[2], staplewidth = .75) +
+  stat_summary(geom = "text", fun = "median", aes(label = round(..x.., 2)), family = base_font, size = base_font_size / .pt, vjust = 2) +
+  # stat_summary(geom = "point", fun = "mean", vjust = 2, color = few_pal("Dark")(2)[2], shape = 5) +
   # stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "pointrange", color = "black") +
-  # geom_sina(size = .00005) +
-  # geom_boxplot() +
-  # xtheme +
-  xlab("Level") +
-  ylab("Mutation rate") +
-  coord_flip() +
-  theme_minimal(base_family = base_font, base_size = base_font_size) +
-  theme(aspect.ratio = .618, panel.grid.major.x = element_blank())
+  ylab("Level") +
+  xlab("Mutation rate") +
+  xlim(0, 2) +
+  scale_fill_distiller(palette = "YlOrBr", name = "Tail probability") +
+  # scale_fill_viridis_c(name = "Tail probability", option = "E", direction = 1) +
+  theme_minimal(base_size = base_font_size, base_family = base_font) +
+  xtheme +
+  theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618, legend.position = "right")
