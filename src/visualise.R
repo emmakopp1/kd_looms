@@ -230,11 +230,11 @@ kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) %>%
   filter(!is.na(group) & !is.na(language)) |>
   mutate(pb = group %in% kd_loom_pb)
 
-kd_loom_hl <- c(
-  getMRCA(kd_cophylo$trees[[2]], c("Dai Huayao", "Dai Yuxi Yuanjiang", "Dai Jinghong")),
-  getMRCA(kd_cophylo$trees[[2]], c("Zhuang Napo", "Zhuang Longzhou", "Nung An")),
-  which(kd_cophylo$trees[[2]]$tip.label == "Tai Phake")
-)
+# kd_loom_hl <- c(
+#   getMRCA(kd_cophylo$trees[[2]], c("Dai Huayao", "Dai Yuxi Yuanjiang", "Dai Jinghong")),
+#   getMRCA(kd_cophylo$trees[[2]], c("Zhuang Napo", "Zhuang Longzhou", "Nung An")),
+#   which(kd_cophylo$trees[[2]]$tip.label == "Tai Phake")
+# )
 
 kd_cophylo_plot <- kd_lng_loom_tree +
   # geom_tree(data = kd_lng_tree_data, aes(color = lng_col)) +
@@ -282,3 +282,42 @@ kd_looms_mu_plot <- mutationrate_bylevel_tb |>
   theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618, legend.position = "right")
 ggsave(here("output/figures/kd_looms_mu_plot.pdf"), device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_looms_mu_plot.pdf"))
+
+
+# Maps --------------------------------------------------------------------
+
+library(sf)
+# library(geodata)
+library(rnaturalearth)
+
+kd_lngs_pts <- read_csv(here("data/kd_lngs_locs.csv")) |>
+  filter(!is.na(lon)) |>
+  mutate(lng_group = str_extract(language, "^[A-Z][a-z]+(?=[A-Z])")) |>
+  mutate(lng_group = factor(lng_group, levels = levels(lnggroup_loom$lng_group))) |>
+  left_join(lnggroup_loom) |>
+  st_as_sf(coords = c("lon", "lat"), crs = 4326)
+
+kd_looms_pts <- read_csv(here("data/kd_looms_locs.csv")) |>
+  filter(!is.na(lon) & !is.na(loom)) |>
+  st_as_sf(coords = c("lon", "lat"), crs = 4326)
+
+kd_bbx <- bind_rows(kd_lngs_pts, kd_looms_pts) |>
+  st_bbox() |>
+  st_as_sfc() |>
+  st_buffer(100)
+
+read_csv(here("data/kd_lngs_locs.csv")) |>
+  filter(lon < 60)
+
+ne_countries() |>
+  filter(continent %in% c("Asia", "Oceania")) |>
+  st_crop(kd_bbx) |>
+  ggplot() +
+  geom_sf() +
+  geom_sf(data = kd_bbx, fill = NA) +
+  geom_sf(data = kd_lngs_pts, aes(color = lng_col)) +
+  scale_color_identity(guide = guide_legend(override.aes = list(size = 4), theme = theme(legend.key.spacing.y = unit(0, "line"))), name = "Language group", labels = lnggroup_loom$lng_group_name) +
+  coord_sf(crs = 4326) +
+  # theme_map() +
+  xtheme +
+  theme(legend.position = "right")
