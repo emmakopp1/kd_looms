@@ -127,17 +127,19 @@ kd_lgs_ages <- read_csv(here("output/kd_lgs_ages.csv"))
 
 kd_lgs_ages_plot <- kd_lgs_ages |>
   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
-  ggplot(aes(x = age * 1000, y = group, height = after_stat(density))) +
-  stat_density_ridges(quantile_lines = TRUE, quantiles = 2, color = "white", fill = xcol) +
-  geom_density_ridges(fill = NA, color = "gray40") +
-  scale_x_reverse() +
-  # scale_x_reverse(limits = c(15000, 0)) +
-  scale_y_discrete(expand = expansion(add = c(0.5, 1.5))) +
+  ggplot(aes(x = age * 1000, y = group)) +
+  stat_density_ridges(aes(fill = .5 - abs(.5 - after_stat(ecdf))), geom = "density_ridges_gradient", calc_ecdf = TRUE, scale = 1, panel_scaling = FALSE, color = "gray50", linewidth = lwd) +
+  stat_summary(geom = "text", fun = "median", aes(label = round(..x..)), family = base_font, size = base_font_size / .pt, vjust = 1.5) +
+  scale_fill_distiller(palette = "PuBu", direction = 1, limits = c(0, .5), name = "Tail\nprobability") +
+  xlab("Age (years BP)") +
+  ylab("Language group") +
+  scale_x_reverse(limits = c(10000, 0)) +
+  # scale_y_discrete(expand = expansion(add = c(0.5, 1.5))) +
   xlab("Age (years BP)") +
   ylab("Language group") +
   theme_minimal(base_size = base_font_size, base_family = base_font) +
   xtheme +
-  theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618)
+  theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618, legend.position = "right")
 ggsave(here("output/figures/kd_lgs_ages_plot.pdf"), kd_lgs_ages_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_lgs_ages_plot.pdf"))
 
@@ -264,24 +266,19 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
-library(ggforce)
-library(ggdist)
 mutationrate_bylevel_tb <- read_csv(here("output/mutationrate_bylevel.csv"))
 
-mutationrate_bylevel_tb |>
+kd_looms_mu_plot <- mutationrate_bylevel_tb |>
   ggplot(aes(y = factor(level), x = rate)) +
-  # geom_density_ridges(fill = NA, color = NA, scale = 1) +
   stat_density_ridges(aes(fill = .5 - abs(.5 - after_stat(ecdf))), geom = "density_ridges_gradient", calc_ecdf = TRUE, scale = 1, panel_scaling = FALSE, color = "gray50", linewidth = lwd) +
-  # stat_slab(fill = xcol, limits = c(0,NA), justification = -.1) +
-  # geom_boxplot(width = .2, linewidth = lwd, outliers = FALSE, outlier.size = .25, outlier.alpha = .5, outlier.color = "grey50", color = few_pal("Dark")(2)[2], staplewidth = .75) +
-  stat_summary(geom = "text", fun = "median", aes(label = round(..x.., 2)), family = base_font, size = base_font_size / .pt, vjust = 2) +
-  # stat_summary(geom = "point", fun = "mean", vjust = 2, color = few_pal("Dark")(2)[2], shape = 5) +
-  # stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "pointrange", color = "black") +
+  stat_summary(geom = "text", fun = "median", aes(label = round(..x.., 2)), family = base_font, size = base_font_size / .pt, vjust = 1.5) +
   ylab("Level") +
   xlab("Mutation rate") +
   xlim(0, 2) +
-  scale_fill_distiller(palette = "YlOrBr", name = "Tail probability") +
-  # scale_fill_viridis_c(name = "Tail probability", option = "E", direction = 1) +
+  # scale_fill_distiller(palette = "RdPu", direction = 1, limits = c(0, .5), name = "Tail\nprobability") +
+  scale_fill_distiller(palette = "PuBu", direction = 1, limits = c(0, .5), name = "Tail\nprobability") +
   theme_minimal(base_size = base_font_size, base_family = base_font) +
   xtheme +
   theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618, legend.position = "right")
+ggsave(here("output/figures/kd_looms_mu_plot.pdf"), device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd_looms_mu_plot.pdf"))
