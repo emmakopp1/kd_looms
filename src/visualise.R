@@ -259,3 +259,13 @@ kd_cophylo_plot <- kd_lng_loom_tree +
   theme(legend.spacing.x = unit(14, "line"), aspect.ratio = 1.25, legend.position.inside = c(.5, .96), legend.justification.inside = c(.5, 1), legend.box = "horizontal", legend.background = element_blank())
 ggsave(here("output/figures/kd_cophylo_plot.pdf"), device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
+
+
+# Mutation rates --------------------------------------------------------------------------------------------------
+
+mutationrate_bylevel_tb <- read_csv(here("output/mutationrate_bylevel.csv"))
+
+mutationrate_bylevel_tb |> 
+  ggplot(aes(x = level, y = rate)) +
+  geom_boxplot() +
+  theme_minimal()

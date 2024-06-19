@@ -2,7 +2,7 @@ library(here)
 library(tidyverse)
 library(phangorn)
 library(phytools)
-# library(treeio)
+library(tracerer)
 
 dir.create(here("output/trees"))
 ntrees <- 1000
@@ -60,21 +60,14 @@ kd_lgs_ages <- lgs_trees |>
 write_csv(kd_lgs_ages, here("output/kd_lgs_ages.csv"))
 
 
+# Mutation rates --------------------------------------------------------------------------------------------------
 
-# If you load the outputs in Tracer, you can observe the evolution levels of each gamma rate corresponding to the rate of evolution at each level. For example, you should look at the parameter mutationRate.s:level.
-# The box plot displays the statistics for each level. It shows that the rate for level 1 is lower than the others. Additionally, it reveals that mutationRate.s:level2 is less than mutationRate.s:level3 which is also positive news. Finally, mutationRate.s:level4 is equal to 0.8. This result is unexpected; however, with only 13 looms in level 4, it may be insufficient for an accurate estimation.
-
-library(tracerer)
 mutationrate_bylevel <- parse_beast_tracelog_file(here("data/beast/loom_ctmc_variable_trait/loom_ctmc_variable_trait.log")) |> 
   as_tibble() |> 
   select(mutationRate.s.level1, mutationRate.s.level2, mutationRate.s.level3, mutationRate.s.level4) |> 
   rowid_to_column()
+
 mutationrate_bylevel_tb <- mutationrate_bylevel |> 
   filter(!(rowid %in% 1:((nrow(mutationrate_bylevel) - 1) * .1))) |> 
   pivot_longer(-rowid, names_to = "level", values_to = "rate") |> 
   mutate(level = str_remove_all(level, "[^0-9]"))
-
-mutationrate_bylevel_tb |> 
-  ggplot(aes(x = level, y = rate)) +
-  geom_boxplot() +
-  theme_minimal()
