@@ -82,4 +82,3 @@ kd_looms_mu_summary <- mutationrate_bylevel_tb |>
   rename(n_chars = n)
 
 write_csv(kd_looms_mu_summary, here("output/kd_looms_mu_summary.csv"))
-

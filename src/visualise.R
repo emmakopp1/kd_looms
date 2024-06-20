@@ -13,8 +13,11 @@ parent.tbl_tree <- utils::getFromNamespace("parent.tbl_tree", "tidytree")
 library(ggthemes)
 library(ggridges)
 library(knitr)
+library(kableExtra)
 
 dir.create(here("output/figures"))
+dir.create(here("output/tables"))
+
 wd <- 14
 lwd <- 1 / .pt
 base_font <- "Noto Sans Condensed"
@@ -283,10 +286,17 @@ kd_looms_mu_plot <- mutationrate_bylevel_tb |>
 ggsave(here("output/figures/kd_looms_mu_plot.pdf"), kd_looms_mu_plot, device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_looms_mu_plot.pdf"))
 
-kd_looms_chr_levels <- read_csv(here("output/kd_looms_chr_levels.csv")) |> 
-  rename(level = Level)
+kd_looms_mu_summary <- read_csv(here("output/kd_looms_mu_summary.csv"))
 
-
+kd_looms_mu_summary |> 
+  mutate(across(everything(), ~ round(.x, 2))) |> 
+  unite(hdi, hdi_lower, hdi_upper, sep = ", ") |> 
+  mutate(hdi = paste0("[", hdi, "]")) |> 
+  rename(characters = n_chars, `95% HPDI` = hdi) |> 
+  kbl(digits = 2,
+      format = "latex", booktabs = TRUE
+      ) |> 
+  write_lines(here("output/tables/kd_looms_mu_summary.tex"))
 
 # Maps --------------------------------------------------------------------
 
