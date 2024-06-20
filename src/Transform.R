@@ -3,6 +3,7 @@ library(tidyverse)
 library(phangorn)
 library(phytools)
 library(tracerer)
+library(HDInterval)
 
 dir.create(here("output/trees"))
 ntrees <- 1000
@@ -57,6 +58,7 @@ kd_lgs_ages <- lgs_trees |>
     `Tai-Yay` = getMRCA_age(lgs_trees[[.x]], str_subset(lgs_trees[[1]]$tip.label, "^(Tc|Tn|Tsw)"))
   )) |>
   pivot_longer(everything(), names_to = "group", values_to = "age")
+
 write_csv(kd_lgs_ages, here("output/kd_lgs_ages.csv"))
 
 
@@ -71,3 +73,13 @@ mutationrate_bylevel_tb <- mutationrate_bylevel |>
   filter(!(rowid %in% 1:((nrow(mutationrate_bylevel) - 1) * .1))) |>
   pivot_longer(-rowid, names_to = "level", values_to = "rate") |>
   mutate(level = str_remove_all(level, "[^0-9]"))
+
+kd_looms_mu_summary <- mutationrate_bylevel_tb |> 
+  group_by(level) |> 
+  summarise(mean = mean(rate), median = median(rate), sd = sd(rate), hdi_lower = hdi(rate)["lower"], hdi_upper = hdi(rate)["upper"]) |> 
+  left_join(count(kd_looms_chr_levels, level)) |> 
+  relocate(n, .after = level) |> 
+  rename(n_chars = n)
+
+write_csv(kd_looms_mu_summary, here("output/kd_looms_mu_summary.csv"))
+

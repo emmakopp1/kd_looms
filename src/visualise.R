@@ -280,8 +280,12 @@ kd_looms_mu_plot <- mutationrate_bylevel_tb |>
   theme_minimal(base_size = base_font_size, base_family = base_font) +
   xtheme +
   theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618, legend.position = "right")
-ggsave(here("output/figures/kd_looms_mu_plot.pdf"), device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
+ggsave(here("output/figures/kd_looms_mu_plot.pdf"), kd_looms_mu_plot, device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_looms_mu_plot.pdf"))
+
+kd_looms_chr_levels <- read_csv(here("output/kd_looms_chr_levels.csv")) |> 
+  rename(level = Level)
+
 
 
 # Maps --------------------------------------------------------------------
