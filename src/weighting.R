@@ -17,6 +17,8 @@ chr_levels <- looms_m_levels |>
   ) |>
   select(-Taxon)
 
+write_csv(chr_levels, here("output/kd_looms_chr_levels.csv"))
+
 looms_m_weighted <- looms_m_levels |>
   filter(Taxon != "Level") |>
   pivot_longer(
