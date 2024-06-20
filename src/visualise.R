@@ -268,6 +268,17 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 kd_lgs_ages_summary <- read_csv(here("output/kd_lgs_ages_summary.csv"))
 
+kd_lgs_ages_summary |>
+  mutate(across(where(is.numeric), ~ round(.x, 2))) |>
+  unite(hdi, hdi_lower, hdi_upper, sep = ", ") |>
+  mutate(hdi = paste0("[", hdi, "]")) |>
+  rename(languages = n_lngs, `95% HPDI` = hdi) |>
+  kbl(
+    digits = 2,
+    format = "latex", booktabs = TRUE
+  ) |>
+  write_lines(here("output/tables/kd_lngs_ages_summary.tex"))
+
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
@@ -290,14 +301,15 @@ plot_crop(here("output/figures/kd_looms_mu_plot.pdf"))
 
 kd_looms_mu_summary <- read_csv(here("output/kd_looms_mu_summary.csv"))
 
-kd_looms_mu_summary |> 
-  mutate(across(everything(), ~ round(.x, 2))) |> 
-  unite(hdi, hdi_lower, hdi_upper, sep = ", ") |> 
-  mutate(hdi = paste0("[", hdi, "]")) |> 
-  rename(characters = n_chars, `95% HPDI` = hdi) |> 
-  kbl(digits = 2,
-      format = "latex", booktabs = TRUE
-      ) |> 
+kd_looms_mu_summary |>
+  mutate(across(everything(), ~ round(.x, 2))) |>
+  unite(hdi, hdi_lower, hdi_upper, sep = ", ") |>
+  mutate(hdi = paste0("[", hdi, "]")) |>
+  rename(characters = n_chars, `95% HPDI` = hdi) |>
+  kbl(
+    digits = 2,
+    format = "latex", booktabs = TRUE
+  ) |>
   write_lines(here("output/tables/kd_looms_mu_summary.tex"))
 
 
