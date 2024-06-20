@@ -22,8 +22,7 @@ wd <- 14
 lwd <- 1 / .pt
 base_font <- "Noto Sans Condensed"
 base_font_size <- 9
-xtheme <- theme(
-  aspect.ratio = 1.15,
+ytheme <- theme(
   legend.text = element_text(
     family = base_font,
     size = base_font_size - 1,
@@ -43,6 +42,7 @@ xtheme <- theme(
   #       legend.position = "bottom",
   #       aspect.ratio = .618
 )
+xtheme <- ytheme + theme(aspect.ratio = 1.15)
 theme_set(xtheme)
 
 plt <- tableau_color_pal("Classic 10 Medium")(10)
@@ -146,6 +146,18 @@ kd_lgs_ages_plot <- kd_lgs_ages |>
 ggsave(here("output/figures/kd_lgs_ages_plot.pdf"), kd_lgs_ages_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_lgs_ages_plot.pdf"))
 
+kd_lgs_ages_summary <- read_csv(here("output/kd_lgs_ages_summary.csv"))
+
+kd_lgs_ages_summary |>
+  mutate(across(where(is.numeric), ~ round(.x, 2))) |>
+  unite(hdi, hdi_lower, hdi_upper, sep = ", ") |>
+  mutate(hdi = paste0("[", hdi, "]")) |>
+  rename(languages = n_lngs, `95% HPDI` = hdi) |>
+  kbl(
+    digits = 2,
+    format = "latex", booktabs = TRUE
+  ) |>
+  write_lines(here("output/tables/kd_lngs_ages_summary.tex"))
 
 # Cophylogeny -----------------------------------------------------------------------------------------------------
 
@@ -266,20 +278,6 @@ kd_cophylo_plot <- kd_lng_loom_tree +
 ggsave(here("output/figures/kd_cophylo_plot.pdf"), device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
-kd_lgs_ages_summary <- read_csv(here("output/kd_lgs_ages_summary.csv"))
-
-kd_lgs_ages_summary |>
-  mutate(across(where(is.numeric), ~ round(.x, 2))) |>
-  unite(hdi, hdi_lower, hdi_upper, sep = ", ") |>
-  mutate(hdi = paste0("[", hdi, "]")) |>
-  rename(languages = n_lngs, `95% HPDI` = hdi) |>
-  kbl(
-    digits = 2,
-    format = "latex", booktabs = TRUE
-  ) |>
-  write_lines(here("output/tables/kd_lngs_ages_summary.tex"))
-
-
 # Mutation rates --------------------------------------------------------------------------------------------------
 
 mutationrate_bylevel_tb <- read_csv(here("output/mutationrate_bylevel.csv"))
@@ -316,8 +314,9 @@ kd_looms_mu_summary |>
 # Maps --------------------------------------------------------------------
 
 library(sf)
-# library(geodata)
 library(rnaturalearth)
+theme_set(theme_bw() + ytheme)
+
 
 kd_lngs_pts <- read_csv(here("data/kd_lngs_locs.csv")) |>
   filter(!is.na(lon)) |>
@@ -328,25 +327,103 @@ kd_lngs_pts <- read_csv(here("data/kd_lngs_locs.csv")) |>
 
 kd_looms_pts <- read_csv(here("data/kd_looms_locs.csv")) |>
   filter(!is.na(lon) & !is.na(loom)) |>
+  rename(language = loom) |>
+  left_join(kd_looms_languages) |>
+  arrange(loom_type) |>
+  mutate(loom_type = str_replace_all(loom_type, "\\n", " ")) |>
+  mutate(loom_type = str_replace_all(loom_type, ", ", ",\n")) |>
+  mutate(loom_type = fct_inorder(loom_type)) |>
   st_as_sf(coords = c("lon", "lat"), crs = 4326)
 
-kd_bbx <- bind_rows(kd_lngs_pts, kd_looms_pts) |>
+kd_bbx_lat <- bind_rows(kd_lngs_pts, kd_looms_pts) |>
   st_bbox() |>
   st_as_sfc() |>
-  st_buffer(100)
+  st_buffer(80 * 10^3) |>
+  st_bbox()
 
-read_csv(here("data/kd_lngs_locs.csv")) |>
-  filter(lon < 60)
+kd_bbx_lon <- bind_rows(kd_lngs_pts, kd_looms_pts) |>
+  st_bbox() |>
+  st_as_sfc() |>
+  st_buffer(400 * 10^3) |>
+  st_bbox()
 
-ne_countries() |>
+kd_bbx <- kd_bbx_lon
+kd_bbx["ymin"] <- kd_bbx_lat["ymin"]
+kd_bbx["ymax"] <- kd_bbx_lat["ymax"]
+
+# prj <- "+proj=cea +lon_0=106 +lat_ts=22 +datum=WGS84 +units=m +no_defs"
+# prj <- "+proj=cea +lon_0=103 +lat_ts=17 +datum=WGS84 +units=m +no_defs"
+# prj <- "+proj=aea +lon_0=103 +lat_1=9.6666667 +lat_2=24.3333333 +lat_0=17 +datum=WGS84 +units=m +no_defs"
+prj <- "+proj=aea +lon_0=102.9741586 +lat_1=9.6945833 +lat_2=25.0240278 +lat_0=17.3593056 +datum=WGS84 +units=m +no_defs"
+
+# limits_bbx <- tibble(lon = c(86, 120), lat = c(28, 6)) |>
+#   st_as_sf(coords = c("lon", "lat"), crs = 4326) |>
+#   st_bbox()
+
+asia <- ne_countries(scale = "medium") |>
   filter(continent %in% c("Asia", "Oceania")) |>
-  st_crop(kd_bbx) |>
+  st_transform(prj) |>
+  st_crop(st_transform(st_as_sfc(kd_bbx), prj))
+
+country_lbs <- asia |>
+  select(label_x, label_y, name_en) |>
+  filter(!(name_en %in% c("Hong Kong", "Macau", "Malaysia", "India"))) |>
+  mutate(name_en = str_remove(name_en, ".+ ")) |>
+  mutate(label_y = ifelse(name_en == "China", 28, label_y)) |>
+  mutate(hjust = ifelse(name_en == "Bangladesh", 0, .5)) |>
+  st_drop_geometry() |>
+  st_as_sf(coords = c("label_x", "label_y"), crs = 4326)
+
+asia |>
+  select(label_x, label_y, name_en) |>
+  filter(!(name_en %in% c("Hong Kong", "Macau", "Malaysia", "India"))) |>
+  mutate(name_en = str_remove(name_en, ".+ ")) |>
+  mutate(label_y = ifelse(name_en == "China", 28, label_y))
+
+asia_u <- asia |>
+  st_union()
+
+asia |>
   ggplot() +
-  geom_sf() +
-  geom_sf(data = kd_bbx, fill = NA) +
-  geom_sf(data = kd_lngs_pts, aes(color = lng_col)) +
+  geom_sf(fill = "white", linetype = "dashed", linewidth = lwd) +
+  geom_sf(data = asia_u, fill = NA, linewidth = lwd) +
+  geom_sf_text(data = country_lbs, aes(label = name_en, hjust = hjust), family = base_font, size = base_font_size / .pt) +
+  geom_sf(data = kd_lngs_pts, aes(color = lng_col), size = 1) +
   scale_color_identity(guide = guide_legend(override.aes = list(size = 4), theme = theme(legend.key.spacing.y = unit(0, "line"))), name = "Language group", labels = lnggroup_loom$lng_group_name) +
-  coord_sf(crs = 4326) +
-  # theme_map() +
-  xtheme +
-  theme(legend.position = "right")
+  xlab(NULL) +
+  ylab(NULL) +
+  coord_sf(crs = prj, clip = "on", expand = FALSE) +
+  theme(
+    legend.position = "right",
+    legend.margin = margin(0, 0, 0, .5, unit = "line"),
+    legend.key = element_rect(fill = NA),
+    legend.text = element_text(size = base_font_size),
+    axis.text = element_text(family = base_font, size = (base_font_size - 1)),
+    panel.background = element_rect(fill = "grey85")
+  )
+
+ggsave(here("output/figures/kd_lngs_map.pdf"), device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd_lngs_map.pdf"))
+
+asia |>
+  ggplot() +
+  geom_sf(fill = "white", linetype = "dashed", linewidth = lwd) +
+  geom_sf(data = asia_u, fill = NA, linewidth = lwd) +
+  geom_sf_text(data = country_lbs, aes(label = name_en, hjust = hjust), family = base_font, size = base_font_size / .pt) +
+  geom_sf(data = kd_looms_pts, aes(color = loom_type), size = 1) +
+  scale_color_manual(values = plt, name = "Loom type", guide = guide_legend(override.aes = list(size = 4), theme = theme(legend.key.spacing.y = unit(0, "line")))) +
+  xlab(NULL) +
+  ylab(NULL) +
+  coord_sf(crs = prj, clip = "on", expand = FALSE) +
+  theme(
+    legend.position = "right",
+    legend.margin = margin(0, 0, 0, .5, unit = "line"),
+    legend.key = element_rect(fill = NA),
+    legend.text = element_text(size = base_font_size),
+    legend.key.height = unit(1.75, "line"),
+    axis.text = element_text(family = base_font, size = (base_font_size - 1)),
+    panel.background = element_rect(fill = "grey85")
+  )
+
+ggsave(here("output/figures/kd_looms_map.pdf"), device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd_looms_map.pdf"))
