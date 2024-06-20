@@ -12,6 +12,7 @@ child.tbl_tree <- utils::getFromNamespace("child.tbl_tree", "tidytree")
 parent.tbl_tree <- utils::getFromNamespace("parent.tbl_tree", "tidytree")
 library(ggthemes)
 library(ggridges)
+library(ggcharts)
 library(knitr)
 library(kableExtra)
 
@@ -39,8 +40,6 @@ ytheme <- theme(
   legend.margin = margin(0, 0, 0, 0, unit = "line"),
   legend.box.margin = margin(0, 0, 0, 0, unit = "line"),
   legend.box.spacing = unit(0, "pt")
-  #       legend.position = "bottom",
-  #       aspect.ratio = .618
 )
 xtheme <- ytheme + theme(aspect.ratio = 1.15)
 theme_set(xtheme)
@@ -59,69 +58,71 @@ kd_looms_languages <- read_csv(here("data/kd_looms_languages.csv")) |>
 
 # Consensus trees for looms ---------------------------------------------------------------------------------------
 
-cs_tree1000 <- read.tree(here("output/trees/kd_loom1000_consensus.tree"))
-# cs_tree1000_edges$root.edge <- 0
-cs_tree1000$node.label <- round(as.numeric(cs_tree1000$node.label), 2) * 100
-cs_tree1000$node.label[1] <- NA
-cs_tree1000$tip.label <- str_replace_all(cs_tree1000$tip.label, "_", " ")
-# cs_tree1000$edge.length <- cs_tree1000$edge.length[-length(cs_tree1000$edge.length)]
+kd_loom1000_cs_tree <- read.tree(here("output/trees/kd_loom1000_consensus.tree"))
+# kd_loom1000_cs_tree_edges$root.edge <- 0
+kd_loom1000_cs_tree$node.label <- round(as.numeric(kd_loom1000_cs_tree$node.label), 2) * 100
+kd_loom1000_cs_tree$node.label[1] <- NA
+kd_loom1000_cs_tree$tip.label <- str_replace_all(kd_loom1000_cs_tree$tip.label, "_", " ")
+# kd_loom1000_cs_tree$edge.length <- kd_loom1000_cs_tree$edge.length[-length(kd_loom1000_cs_tree$edge.length)]
 
-cs_tree1000_plot <- cs_tree1000 |>
+cs_tree <- function(tr) {
+  ggtree(tr, ladderize = TRUE, size = lwd) +
+    geom_tiplab(aes(fill = loom_type),
+                geom = "label",
+                label.size = 0,
+                label.padding = unit(.15, "lines"),
+                family = base_font, size = base_font_size / .pt
+    ) +
+    geom_nodelab(
+      family = base_font,
+      size = (base_font_size - 1) / .pt,
+      hjust = 1.5,
+      vjust = -.5
+    ) +
+    geom_rootedge(.25, linewidth = lwd) +
+    coord_cartesian(clip = "off", expand = FALSE) +
+    scale_fill_manual(values = plt3) +
+    guides(fill = guide_legend(
+      title = "Loom type",
+      override.aes = aes(label = "     ")
+    )) +
+    xtheme
+}
+
+kd_loom1000_cs_tree_plot <- kd_loom1000_cs_tree |>
   fortify() |>
   left_join(kd_looms_languages, by = join_by(label == group)) |>
-  ggtree(ladderize = TRUE, size = lwd) +
-  geom_tiplab(aes(fill = loom_type), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt) +
-  geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
-  geom_rootedge(.25, linewidth = lwd) +
-  coord_cartesian(clip = "off", expand = FALSE) +
-  scale_fill_manual(values = plt3) +
-  guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
-  theme(plot.margin = margin(0, 2.4, 0, 0, unit = "line")) +
-  xtheme
-ggsave(here("output/figures/cs_tree1000.pdf"), cs_tree1000_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/cs_tree1000.pdf"))
+  cs_tree()
+ggsave(here("output/figures/kd_loom1000_cs_tree.pdf"), kd_loom1000_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd_loom1000_cs_tree.pdf"))
 
-cs_tree1111 <- read.tree(here("output/trees/kd_loom1111_consensus.tree"))
-cs_tree1111$node.label <- round(as.numeric(cs_tree1111$node.label), 2) * 100
-cs_tree1111$node.label[1] <- NA
-cs_tree1111$tip.label <- str_replace_all(cs_tree1111$tip.label, "_", " ")
+kd_loom1111_cs_tree <- read.tree(here("output/trees/kd_loom1111_consensus.tree"))
+kd_loom1111_cs_tree$node.label <- round(as.numeric(kd_loom1111_cs_tree$node.label), 2) * 100
+kd_loom1111_cs_tree$node.label[1] <- NA
+kd_loom1111_cs_tree$tip.label <- str_replace_all(kd_loom1111_cs_tree$tip.label, "_", " ")
 
-cs_tree1111_plot <- cs_tree1111 |>
+kd_loom1111_cs_tree_plot <- kd_loom1111_cs_tree |>
   fortify() |>
   left_join(kd_looms_languages, by = join_by(label == group)) |>
-  ggtree(ladderize = FALSE, size = lwd) +
-  geom_tiplab(aes(fill = loom_type), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt) +
-  geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
-  geom_rootedge(.25, linewidth = lwd) +
-  coord_cartesian(clip = "off", expand = FALSE) +
-  scale_fill_manual(values = plt3) +
-  guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
-  theme(plot.margin = margin(0, 4.98, 0, 0, unit = "line")) +
-  xtheme
-# cs_tree1111_plot + geom_nodelab(aes(label = node))
-cs_tree1111_plot <- flip(cs_tree1111_plot, 32, 43)
-ggsave(here("output/figures/cs_tree1111.pdf"), cs_tree1111_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/cs_tree1111.pdf"))
+  cs_tree() +
+  theme(plot.margin = margin(0, 4.98, 0, 0, unit = "line"))
+# kd_loom1111_cs_tree_plot + geom_nodelab(aes(label = node))
+kd_loom1111_cs_tree_plot <- flip(kd_loom1111_cs_tree_plot, 32, 43)
+ggsave(here("output/figures/kd_loom1111_cs_tree.pdf"), kd_loom1111_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd_loom1111_cs_tree.pdf"))
 
-cs_tree8421 <- read.tree(here("output/trees/kd_loom8421_consensus.tree"))
-cs_tree8421$node.label <- round(as.numeric(cs_tree8421$node.label), 2) * 100
-cs_tree8421$node.label[1] <- NA
-cs_tree8421$tip.label <- str_replace_all(cs_tree8421$tip.label, "_", " ")
+kd_loom8421_cs_tree <- read.tree(here("output/trees/kd_loom8421_consensus.tree"))
+kd_loom8421_cs_tree$node.label <- round(as.numeric(kd_loom8421_cs_tree$node.label), 2) * 100
+kd_loom8421_cs_tree$node.label[1] <- NA
+kd_loom8421_cs_tree$tip.label <- str_replace_all(kd_loom8421_cs_tree$tip.label, "_", " ")
 
-cs_tree8421_plot <- cs_tree8421 |>
+kd_loom8421_cs_tree_plot <- kd_loom8421_cs_tree |>
   fortify() |>
   left_join(kd_looms_languages, by = join_by(label == group)) |>
-  ggtree(ladderize = TRUE, size = lwd) +
-  geom_tiplab(aes(fill = loom_type), geom = "label", label.size = 0, label.padding = unit(.15, "lines"), family = base_font, size = base_font_size / .pt) +
-  geom_nodelab(family = base_font, size = (base_font_size - 1) / .pt, hjust = 1.5, vjust = -.5) +
-  geom_rootedge(.25, linewidth = lwd) +
-  coord_cartesian(clip = "off", expand = FALSE) +
-  scale_fill_manual(values = plt3) +
-  guides(fill = guide_legend(title = "Loom type", override.aes = aes(label = "     "))) +
-  theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line")) +
-  xtheme
-ggsave(here("output/figures/cs_tree8421.pdf"), cs_tree8421_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/cs_tree8421.pdf"))
+  cs_tree +
+  theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line"))
+ggsave(here("output/figures/kd_loom8421_cs_tree.pdf"), kd_loom8421_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd_loom8421_cs_tree.pdf"))
 
 
 # Age density distribution for languages --------------------------------------------------------------------------
@@ -166,7 +167,7 @@ kd_lgs_cs$root.edge <- 0
 
 kd_loom_pb <- c("Dai Huayao", "Dai Yuxi Yuanjiang", "Dai Jinghong", "Zhuang Napo", "Zhuang Longzhou", "Nung An", "Tai Phake")
 
-kd_looms_cs <- cs_tree1111 |>
+kd_looms_cs <- kd_loom1111_cs_tree |>
   fortify() |>
   left_join(kd_looms_languages, by = join_by(label == group)) |>
   mutate(label = ifelse(label %in% kd_loom_pb, label, language)) |>
@@ -315,8 +316,10 @@ kd_looms_mu_summary |>
 
 library(sf)
 library(rnaturalearth)
-theme_set(theme_bw() + ytheme)
+library(patchwork)
+library(ggspatial)
 
+theme_set(theme_bw() + ytheme)
 
 kd_lngs_pts <- read_csv(here("data/kd_lngs_locs.csv")) |>
   filter(!is.na(lon)) |>
@@ -356,10 +359,6 @@ kd_bbx["ymax"] <- kd_bbx_lat["ymax"]
 # prj <- "+proj=aea +lon_0=103 +lat_1=9.6666667 +lat_2=24.3333333 +lat_0=17 +datum=WGS84 +units=m +no_defs"
 prj <- "+proj=aea +lon_0=102.9741586 +lat_1=9.6945833 +lat_2=25.0240278 +lat_0=17.3593056 +datum=WGS84 +units=m +no_defs"
 
-# limits_bbx <- tibble(lon = c(86, 120), lat = c(28, 6)) |>
-#   st_as_sf(coords = c("lon", "lat"), crs = 4326) |>
-#   st_bbox()
-
 asia <- ne_countries(scale = "medium") |>
   filter(continent %in% c("Asia", "Oceania")) |>
   st_transform(prj) |>
@@ -367,32 +366,44 @@ asia <- ne_countries(scale = "medium") |>
 
 country_lbs <- asia |>
   select(label_x, label_y, name_en) |>
-  filter(!(name_en %in% c("Hong Kong", "Macau", "Malaysia", "India"))) |>
+  filter(!(name_en %in% c("Hong Kong", "Macau", "Malaysia"))) |>
   mutate(name_en = str_remove(name_en, ".+ ")) |>
   mutate(label_y = ifelse(name_en == "China", 28, label_y)) |>
+  mutate(label_y = ifelse(name_en == "India", 26, label_y)) |>
+  mutate(label_x = ifelse(name_en == "India", 92, label_x)) |>
   mutate(hjust = ifelse(name_en == "Bangladesh", 0, .5)) |>
   st_drop_geometry() |>
   st_as_sf(coords = c("label_x", "label_y"), crs = 4326)
 
-asia |>
-  select(label_x, label_y, name_en) |>
-  filter(!(name_en %in% c("Hong Kong", "Macau", "Malaysia", "India"))) |>
-  mutate(name_en = str_remove(name_en, ".+ ")) |>
-  mutate(label_y = ifelse(name_en == "China", 28, label_y))
-
 asia_u <- asia |>
   st_union()
 
-asia |>
+bg_map <- asia |>
   ggplot() +
   geom_sf(fill = "white", linetype = "dashed", linewidth = lwd) +
   geom_sf(data = asia_u, fill = NA, linewidth = lwd) +
-  geom_sf_text(data = country_lbs, aes(label = name_en, hjust = hjust), family = base_font, size = base_font_size / .pt) +
-  geom_sf(data = kd_lngs_pts, aes(color = lng_col), size = 1) +
-  scale_color_identity(guide = guide_legend(override.aes = list(size = 4), theme = theme(legend.key.spacing.y = unit(0, "line"))), name = "Language group", labels = lnggroup_loom$lng_group_name) +
+  geom_sf_text(data = country_lbs, aes(label = name_en, hjust = hjust),
+               family = base_font, 
+               size = base_font_size / .pt,
+               color = "grey40") +
+  annotation_scale(
+    location = "br",
+    height = unit(.25, "line"),
+    text_family = base_font,
+    text_cex = .7
+  ) +
+  annotation_north_arrow(
+    location = "br",
+    which_north = "true",
+    pad_x = unit(1.75, "line"),
+    pad_y = unit(1.25, "line"),
+    height = unit(1, "line"),
+    width = unit(1, "line"),
+    style = north_arrow_orienteering(text_family = base_font, text_size = base_font_size - 2)
+  ) +
   xlab(NULL) +
   ylab(NULL) +
-  coord_sf(crs = prj, clip = "on", expand = FALSE) +
+  coord_sf(crs = prj, expand = FALSE) +
   theme(
     legend.position = "right",
     legend.margin = margin(0, 0, 0, .5, unit = "line"),
@@ -402,28 +413,20 @@ asia |>
     panel.background = element_rect(fill = "grey85")
   )
 
-ggsave(here("output/figures/kd_lngs_map.pdf"), device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
+kd_lngs_map <- bg_map +
+  geom_sf(data = kd_lngs_pts, aes(color = lng_col), size = 1) +
+  scale_color_identity(guide = guide_legend(override.aes = list(size = 4)), name = "Language group", labels = lnggroup_loom$lng_group_name) +
+  coord_sf(crs = prj, expand = FALSE)
+
+kd_looms_map <- bg_map +
+  geom_sf(data = kd_looms_pts, aes(color = loom_type), size = 1) +
+  scale_color_manual(values = plt, name = "Loom type", guide = guide_legend(override.aes = list(size = 4))) +
+  coord_sf(crs = prj, clip = "on", expand = FALSE)
+
+kd_lngs_map <- set_dim(kd_lngs_map, get_dim(kd_looms_map))
+
+ggsave(here("output/figures/kd_lngs_map.pdf"), kd_lngs_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_lngs_map.pdf"))
 
-asia |>
-  ggplot() +
-  geom_sf(fill = "white", linetype = "dashed", linewidth = lwd) +
-  geom_sf(data = asia_u, fill = NA, linewidth = lwd) +
-  geom_sf_text(data = country_lbs, aes(label = name_en, hjust = hjust), family = base_font, size = base_font_size / .pt) +
-  geom_sf(data = kd_looms_pts, aes(color = loom_type), size = 1) +
-  scale_color_manual(values = plt, name = "Loom type", guide = guide_legend(override.aes = list(size = 4), theme = theme(legend.key.spacing.y = unit(0, "line")))) +
-  xlab(NULL) +
-  ylab(NULL) +
-  coord_sf(crs = prj, clip = "on", expand = FALSE) +
-  theme(
-    legend.position = "right",
-    legend.margin = margin(0, 0, 0, .5, unit = "line"),
-    legend.key = element_rect(fill = NA),
-    legend.text = element_text(size = base_font_size),
-    legend.key.height = unit(1.75, "line"),
-    axis.text = element_text(family = base_font, size = (base_font_size - 1)),
-    panel.background = element_rect(fill = "grey85")
-  )
-
-ggsave(here("output/figures/kd_looms_map.pdf"), device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
+ggsave(here("output/figures/kd_looms_map.pdf"), kd_looms_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_looms_map.pdf"))
