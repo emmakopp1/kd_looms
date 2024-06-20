@@ -266,6 +266,8 @@ kd_cophylo_plot <- kd_lng_loom_tree +
 ggsave(here("output/figures/kd_cophylo_plot.pdf"), device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
+kd_lgs_ages_summary <- read_csv(here("output/kd_lgs_ages_summary.csv"))
+
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
@@ -297,6 +299,7 @@ kd_looms_mu_summary |>
       format = "latex", booktabs = TRUE
       ) |> 
   write_lines(here("output/tables/kd_looms_mu_summary.tex"))
+
 
 # Maps --------------------------------------------------------------------
 
