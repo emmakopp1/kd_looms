@@ -61,6 +61,21 @@ kd_lgs_ages <- lgs_trees |>
 
 write_csv(kd_lgs_ages, here("output/kd_lgs_ages.csv"))
 
+kd_lgs_ages_summary <- kd_lgs_ages |>
+  group_by(group) |>
+  summarise(mean = mean(age), median = median(age), sd = sd(age), hdi_lower = hdi(age)["lower"], hdi_upper = hdi(age)["upper"]) |>
+  left_join(tribble(
+    ~group, ~n,
+    "Kam-Tai", length(str_subset(lgs_trees[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
+    "Tai-Yay", length(str_subset(lgs_trees[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
+    "Kra-Dai", length(lgs_trees[[1]]$tip.label)
+  )) |>
+  relocate(n, .after = group) |>
+  arrange(-n) |>
+  rename(n_lngs = n)
+
+write_csv(kd_lgs_ages_summary, here("output/kd_lgs_ages_summary.csv"))
+
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
@@ -74,11 +89,11 @@ mutationrate_bylevel_tb <- mutationrate_bylevel |>
   pivot_longer(-rowid, names_to = "level", values_to = "rate") |>
   mutate(level = str_remove_all(level, "[^0-9]"))
 
-kd_looms_mu_summary <- mutationrate_bylevel_tb |> 
-  group_by(level) |> 
-  summarise(mean = mean(rate), median = median(rate), sd = sd(rate), hdi_lower = hdi(rate)["lower"], hdi_upper = hdi(rate)["upper"]) |> 
-  left_join(count(kd_looms_chr_levels, level)) |> 
-  relocate(n, .after = level) |> 
+kd_looms_mu_summary <- mutationrate_bylevel_tb |>
+  group_by(level) |>
+  summarise(mean = mean(rate), median = median(rate), sd = sd(rate), hdi_lower = hdi(rate)["lower"], hdi_upper = hdi(rate)["upper"]) |>
+  left_join(count(kd_looms_chr_levels, level)) |>
+  relocate(n, .after = level) |>
   rename(n_chars = n)
 
 write_csv(kd_looms_mu_summary, here("output/kd_looms_mu_summary.csv"))
