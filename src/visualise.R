@@ -434,10 +434,13 @@ country_lbs <- asia |>
   filter(!(name_en %in% c("Hong Kong", "Macau", "Malaysia", "Bhutan", "Bangladesh"))) |>
   mutate(name_en = str_remove(name_en, ".+ ")) |>
   mutate(label_y = ifelse(name_en == "China", 28, label_y)) |>
-  mutate(label_y = ifelse(name_en == "India", 26, label_y)) |>
+  mutate(label_y = ifelse(name_en == "India", 26.5, label_y)) |>
   mutate(label_y = ifelse(name_en == "Cambodia", 13, label_y)) |>
   mutate(label_x = ifelse(name_en == "India", 92, label_x)) |>
   mutate(label_y = ifelse(name_en == "Philippines", 17, label_y)) |>
+  mutate(label_y = ifelse(name_en == "Laos", 19, label_y)) |>
+  mutate(label_y = ifelse(name_en == "Thailand", 16, label_y)) |>
+  mutate(label_y = ifelse(name_en == "Vietnam", 21.3, label_y)) |>
   mutate(hjust = ifelse(name_en == "India", 0, .5)) |>
   mutate(hjust = ifelse(name_en == "Cambodia", .4, hjust)) |>
   mutate(hjust = ifelse(name_en == "Bangladesh", 0, hjust)) |>
@@ -488,7 +491,7 @@ bg_map <- asia |>
 
 kd_lgs_map <- bg_map +
   geom_sf(data = kd_lgs_pts, aes(color = color), size = 1) +
-  scale_color_identity(name = "Language group", guide = guide_legend(override.aes = list(size = 4)), labels = levels(kd_lngs_pts$lng_group)) +
+  scale_color_identity(name = "Language group", guide = guide_legend(override.aes = list(size = 4)), labels = levels(kd_lgs_pts$lng_group)) +
   coord_sf(crs = prj, expand = FALSE)
 
 kd_looms_map <- bg_map +
@@ -496,10 +499,11 @@ kd_looms_map <- bg_map +
   scale_color_identity(name = "Loom type", guide = guide_legend(override.aes = list(size = 4)), labels = levels(kd_looms_pts$loom_type)) +
   coord_sf(crs = prj, clip = "on", expand = FALSE)
 
-kd_lngs_map <- set_dim(kd_lngs_map, get_dim(kd_looms_map))
+kd_lgs_map <- set_dim(kd_lgs_map, get_dim(kd_looms_map))
 
-ggsave(here("output/figures/kd_lngs_map.pdf"), kd_lngs_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/kd_lngs_map.pdf"))
+ggsave(here("output/figures/kd_lgs_map.pdf"), kd_lgs_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd_lgs_map.pdf"))
 
 ggsave(here("output/figures/kd_looms_map.pdf"), kd_looms_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_looms_map.pdf"))
+
