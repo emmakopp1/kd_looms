@@ -7,6 +7,7 @@ library(HDInterval)
 
 dir.create(here("output/trees"))
 ntrees <- 1000
+kd_looms_chr_levels <- read_csv(here("output/kd_looms_chr_levels.csv"))
 
 
 # Consensus trees for looms ---------------------------------------------------------------------------------------
@@ -48,8 +49,6 @@ getMRCA_age <- function(tree, tips) {
   root_age - node.depth.edgelength(tree)[mrca]
 }
 
-lgs_trees[[1]]$tip.label
-getMRCA_age(lgs_trees, lgs_trees[[1]]$tip.label)
 kd_lgs_ages <- lgs_trees |>
   seq_along() |>
   map_df(~ tibble(
@@ -63,7 +62,7 @@ write_csv(kd_lgs_ages, here("output/kd_lgs_ages.csv"))
 
 kd_lgs_ages_summary <- kd_lgs_ages |>
   group_by(group) |>
-  summarise(mean = mean(age), median = median(age), sd = sd(age), hdi_lower = hdi(age)["lower"], hdi_upper = hdi(age)["upper"]) |>
+  summarise(mean = mean(age), median = median(age), sd = sd(age), HPDI_lower = hdi(age)["lower"], HPDI_upper = hdi(age)["upper"]) |>
   left_join(tribble(
     ~group, ~n,
     "Kam-Tai", length(str_subset(lgs_trees[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
@@ -79,19 +78,19 @@ write_csv(kd_lgs_ages_summary, here("output/kd_lgs_ages_summary.csv"))
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
-mutationrate_bylevel <- parse_beast_tracelog_file(here("data/beast/loom_ctmc_variable_trait/loom_ctmc_variable_trait.log")) |>
+kd_looms_mu_bylevel <- parse_beast_tracelog_file(here("data/beast/loom_ctmc_variable_trait/loom_ctmc_variable_trait.log")) |>
   as_tibble() |>
   select(mutationRate.s.level1, mutationRate.s.level2, mutationRate.s.level3, mutationRate.s.level4) |>
   rowid_to_column()
 
-mutationrate_bylevel_tb <- mutationrate_bylevel |>
-  filter(!(rowid %in% 1:((nrow(mutationrate_bylevel) - 1) * .1))) |>
+kd_looms_mu_bylevel_tb <- kd_looms_mu_bylevel |>
+  filter(!(rowid %in% 1:((nrow(kd_looms_mu_bylevel) - 1) * .1))) |>
   pivot_longer(-rowid, names_to = "level", values_to = "rate") |>
-  mutate(level = str_remove_all(level, "[^0-9]"))
+  mutate(level = str_remove_all(level, "[^0-9]") |> as.numeric())
 
-kd_looms_mu_summary <- mutationrate_bylevel_tb |>
+kd_looms_mu_summary <- kd_looms_mu_bylevel_tb |>
   group_by(level) |>
-  summarise(mean = mean(rate), median = median(rate), sd = sd(rate), hdi_lower = hdi(rate)["lower"], hdi_upper = hdi(rate)["upper"]) |>
+  summarise(mean = mean(rate), median = median(rate), sd = sd(rate), HPDI_lower = hdi(rate)["lower"], HPDI_upper = hdi(rate)["upper"]) |>
   left_join(count(kd_looms_chr_levels, level)) |>
   relocate(n, .after = level) |>
   rename(n_chars = n)
