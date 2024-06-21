@@ -12,7 +12,6 @@ child.tbl_tree <- utils::getFromNamespace("child.tbl_tree", "tidytree")
 parent.tbl_tree <- utils::getFromNamespace("parent.tbl_tree", "tidytree")
 library(ggthemes)
 library(ggridges)
-library(ggcharts)
 library(knitr)
 library(kableExtra)
 
@@ -58,20 +57,13 @@ kd_looms_languages <- read_csv(here("data/kd_looms_languages.csv")) |>
 
 # Consensus trees for looms ---------------------------------------------------------------------------------------
 
-kd_loom1000_cs_tree <- read.tree(here("output/trees/kd_loom1000_consensus.tree"))
-# kd_loom1000_cs_tree_edges$root.edge <- 0
-kd_loom1000_cs_tree$node.label <- round(as.numeric(kd_loom1000_cs_tree$node.label), 2) * 100
-kd_loom1000_cs_tree$node.label[1] <- NA
-kd_loom1000_cs_tree$tip.label <- str_replace_all(kd_loom1000_cs_tree$tip.label, "_", " ")
-# kd_loom1000_cs_tree$edge.length <- kd_loom1000_cs_tree$edge.length[-length(kd_loom1000_cs_tree$edge.length)]
-
 cs_tree <- function(tr) {
   ggtree(tr, ladderize = TRUE, size = lwd) +
     geom_tiplab(aes(fill = loom_type),
-                geom = "label",
-                label.size = 0,
-                label.padding = unit(.15, "lines"),
-                family = base_font, size = base_font_size / .pt
+      geom = "label",
+      label.size = 0,
+      label.padding = unit(.15, "lines"),
+      family = base_font, size = base_font_size / .pt
     ) +
     geom_nodelab(
       family = base_font,
@@ -88,6 +80,13 @@ cs_tree <- function(tr) {
     )) +
     xtheme
 }
+
+kd_loom1000_cs_tree <- read.tree(here("output/trees/kd_loom1000_consensus.tree"))
+# kd_loom1000_cs_tree_edges$root.edge <- 0
+kd_loom1000_cs_tree$node.label <- round(as.numeric(kd_loom1000_cs_tree$node.label), 2) * 100
+kd_loom1000_cs_tree$node.label[1] <- NA
+kd_loom1000_cs_tree$tip.label <- str_replace_all(kd_loom1000_cs_tree$tip.label, "_", " ")
+# kd_loom1000_cs_tree$edge.length <- kd_loom1000_cs_tree$edge.length[-length(kd_loom1000_cs_tree$edge.length)]
 
 kd_loom1000_cs_tree_plot <- kd_loom1000_cs_tree |>
   fortify() |>
@@ -119,7 +118,7 @@ kd_loom8421_cs_tree$tip.label <- str_replace_all(kd_loom8421_cs_tree$tip.label, 
 kd_loom8421_cs_tree_plot <- kd_loom8421_cs_tree |>
   fortify() |>
   left_join(kd_looms_languages, by = join_by(label == group)) |>
-  cs_tree +
+  cs_tree() +
   theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line"))
 ggsave(here("output/figures/kd_loom8421_cs_tree.pdf"), kd_loom8421_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_loom8421_cs_tree.pdf"))
@@ -281,9 +280,9 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
-mutationrate_bylevel_tb <- read_csv(here("output/mutationrate_bylevel.csv"))
+kd_looms_mu_bylevel <- read_csv(here("output/kd_looms_mu_bylevel.csv"))
 
-kd_looms_mu_plot <- mutationrate_bylevel_tb |>
+kd_looms_mu_plot <- kd_looms_mu_bylevel |>
   ggplot(aes(y = factor(level), x = rate)) +
   stat_density_ridges(aes(fill = .5 - abs(.5 - after_stat(ecdf))), geom = "density_ridges_gradient", calc_ecdf = TRUE, scale = 1, panel_scaling = FALSE, color = "gray50", linewidth = lwd) +
   stat_summary(geom = "text", fun = "median", aes(label = round(..x.., 2)), family = base_font, size = base_font_size / .pt, vjust = 1.5) +
@@ -382,10 +381,12 @@ bg_map <- asia |>
   ggplot() +
   geom_sf(fill = "white", linetype = "dashed", linewidth = lwd) +
   geom_sf(data = asia_u, fill = NA, linewidth = lwd) +
-  geom_sf_text(data = country_lbs, aes(label = name_en, hjust = hjust),
-               family = base_font, 
-               size = base_font_size / .pt,
-               color = "grey40") +
+  geom_sf_text(
+    data = country_lbs, aes(label = name_en, hjust = hjust),
+    family = base_font,
+    size = base_font_size / .pt,
+    color = "grey40"
+  ) +
   annotation_scale(
     location = "br",
     height = unit(.25, "line"),
