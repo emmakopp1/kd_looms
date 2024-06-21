@@ -1,0 +1,101 @@
+lng_group_code,lng_group,lng,lon,lat
+Tn,Northern Tai,Saek,104.55603,17.49274
+Tn,Northern Tai,Luodian,106.75141,25.42484
+Tn,Northern Tai,Libo,107.84319,25.40135
+Tn,Northern Tai,Zhenfeng,105.65043,25.38557
+Tn,Northern Tai,Huishui,106.78068,26.16718
+Tn,Northern Tai,Qianxi,104.89546,25.09204
+Tn,Northern Tai,Zhenning,105.75941,26.02281
+Tn,Northern Tai,Panxian,104.47153,25.71
+Tn,Northern Tai,Shuicheng,104.95783,26.5479
+Tn,Northern Tai,Wuming,108.27883,23.14985
+Tn,Northern Tai,Hengxian,109.26147,22.67998
+Tn,Northern Tai,Pingguo,107.58988,23.32933
+Tn,Northern Tai,Lianshan,112.08065,24.56769
+Tn,Northern Tai,DuAn,108.10555,23.93121
+Tn,Northern Tai,Liujiang,109.2091,23.85207
+Tn,Northern Tai,Donglan,107.37421,24.51071
+Tn,Northern Tai,Qiubei,104.19582,24.04191
+Tn,Northern Tai,Fengshan,107.04221,24.54698
+Tn,Northern Tai,Tiandong,107.12608,23.59723
+Tc,Central Tai,Yongning,108.48737,22.75836
+Tc,Central Tai,LongAn,107.6961,23.16588
+Tc,Central Tai,Fusui,107.90411,22.63496
+Tc,Central Tai,Shangsi,107.98362,22.15369
+Tc,Central Tai,Qinzhou,108.65431,21.97969
+Tc,Central Tai,Daxin,107.20124,22.83039
+Tc,Central Tai,Longzhou,106.85455,22.34261
+Tc,Central Tai,Debao,106.62236,23.32339
+Tc,Central Tai,Wenma,104.21505,23.3985
+Tc,Central Tai,Yanshan,104.33709,23.60585
+Tc,Central Tai,CaoBanTai,106.26398,22.66663
+Tsw,Southwestern Tai,Mangshi,98.58214,24.44818
+Tsw,Southwestern Tai,Menglian,99.58441,22.3291
+Tsw,Southwestern Tai,Jinghong,100.77163,22.00007
+Tsw,Southwestern Tai,Jinping,103.22648,22.77965
+Tsw,Southwestern Tai,Yuanyang,102.83528,23.21998
+Tsw,Southwestern Tai,Wuding,102.40442,25.53037
+Tsw,Southwestern Tai,Yuanjiang,101.99809,23.59666
+Tsw,Southwestern Tai,Maguan,104.39387,23.01297
+Tsw,Southwestern Tai,Luchun,102.39293,22.99345
+Tsw,Southwestern Tai,Jinsha,101.84183,26.13345
+Tsw,Southwestern Tai,NgheAn,NA,NA
+Tsw,Southwestern Tai,Bangkok,100.50176,13.75633
+Tsw,Southwestern Tai,Korat,102.25479,14.88824
+Tsw,Southwestern Tai,Songkhla,100.52961,6.88999
+Tsw,Southwestern Tai,Chiangmai,98.66005,18.79646
+Tsw,Southwestern Tai,ThaiTrang,99.63413,7.59093
+Tsw,Southwestern Tai,Lao,102.13871,19.88328
+Tsw,Southwestern Tai,Taunggyi,97.03371,20.78875
+Tsw,Southwestern Tai,Hsipaw,97.30036,22.62363
+Tsw,Southwestern Tai,Khuen,99.56994,21.29775
+Tsw,Southwestern Tai,Aiton,93.91144,25.8639
+Be,Ong-Be,LinGaoLC,109.73202,19.91283
+Be,Ong-Be,LinGaoXY,109.54175,19.88621
+Be,Ong-Be,ChengmaiMY,110.04025,19.73505
+Be,Ong-Be,ChengmaiYL,110,19.58
+Be,Ong-Be,HaikouCL,110.20436,20.01594
+Be,Ong-Be,HaikouRS,110.2,19.9
+Be,Ong-Be,QiongshanLT,110.41923,19.88855
+Be,Ong-Be,QiongshanLQ,110.36499,19.85497
+Be,Ong-Be,Jizhao,110.86852,21.38796
+Ks,Kam-Sui,KamRJ,108.52251,25.93188
+Ks,Kam-Sui,KamLP,109.26149,26.32016
+Ks,Kam-Sui,KamJP,109.26794,26.47877
+Ks,Kam-Sui,KamTZ,109.41358,26.82609
+Ks,Kam-Sui,Jin,107.75854,25.44674
+Ks,Kam-Sui,Mak,107.4691,25.7915
+Ks,Kam-Sui,Mulam,108.82323,24.7284
+Ks,Kam-Sui,SuiSD,107.86971,25.98325
+Ks,Kam-Sui,SuiLB,107.88725,25.41143
+Ks,Kam-Sui,SuiDY,107.51867,26.25978
+Ks,Kam-Sui,SuiDS,107.54578,25.82278
+Ks,Kam-Sui,Maonan,108.13305,24.88298
+Ks,Kam-Sui,Then,107.41392,25.77762
+Ks,Kam-Sui,Chadong,109.96578,25.23538
+Ks,Kam-Sui,Biao,111.51196,23.42447
+Ks,Kam-Sui,Lakkia,110.18942,24.13038
+Hlai,Hlai,Baoding,109.18,18.75
+Hlai,Hlai,Zhongsha,108.93,18.97
+Hlai,Hlai,Heitu,109.32039,18.30993
+Hlai,Hlai,Xifang,108.9392,19.04646
+Hlai,Hlai,Changjiang,109.05559,19.29827
+Hlai,Hlai,Baisha,109.45167,19.22542
+Hlai,Hlai,Yuanmen,109.48645,19.15807
+Hlai,Hlai,Tongza,109.51721,18.78066
+Hlai,Hlai,Qiandui,110.04076,18.906860000000002
+Hlai,Hlai,Baoting,109.70259,18.63904
+Hlai,Hlai,Jiamao,109.70506,18.55455
+Hlai,Hlai,Cun,108.70196,19.21837
+Hlai,Hlai,Nadou,108.6785,19.01378
+Kra,Kra,GelaoMJ,106.19473,25.18164
+Kra,Kra,GelaoDF,105.613,27.1416
+Kra,Kra,GelaoAS,105.9462,26.25366
+Kra,Kra,GelaoZF,105.65043,25.38557
+Kra,Kra,BuyangLJ,104.96584,23.5171
+Kra,Kra,BuyangYR,105.98089,23.38014
+Kra,Kra,BuyangEC,106.03058,23.60396
+Kra,Kra,BuyangBH,104.9678,24.37008
+Kra,Kra,Laha,103.68258,22.08688
+Kra,Kra,Lachi,104.45486,22.73585
+Kra,Kra,Pubiao,105.16683,23.26119
