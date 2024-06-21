@@ -46,13 +46,13 @@ theme_set(xtheme)
 plt <- tableau_color_pal("Classic 10 Medium")(10)
 plt2 <- tableau_color_pal("Classic 10")(10)
 plt3 <- tableau_color_pal("Classic 10 Light")(10)
-xcol <- few_pal("Light")(2)[1]
 
-kd_looms_languages <- read_csv(here("data/kd_looms_languages.csv")) |>
-  mutate(loom_type = str_replace(loom_type, ", ", ",\n")) |>
+kd_looms <- read_csv(here("data/kd_looms.csv")) |>
   mutate(loom_type = fct_rev(loom_type)) |>
-  mutate(lng_group = str_extract(language, "^[A-Z][a-z]+(?=[A-Z])")) |>
   arrange(loom_type, lng_group)
+
+kd_lgs <- read_csv(here("data/kd_lgs.csv")) |> 
+  mutate(label = paste0(lng_group_code, lng))
 
 
 # Consensus trees for looms ---------------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ kd_loom1000_cs_tree$tip.label <- str_replace_all(kd_loom1000_cs_tree$tip.label, 
 
 kd_loom1000_cs_tree_plot <- kd_loom1000_cs_tree |>
   fortify() |>
-  left_join(kd_looms_languages, by = join_by(label == group)) |>
+  left_join(kd_looms, by = join_by(label == group)) |>
   cs_tree()
 ggsave(here("output/figures/kd_loom1000_cs_tree.pdf"), kd_loom1000_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_loom1000_cs_tree.pdf"))
@@ -102,7 +102,7 @@ kd_loom1111_cs_tree$tip.label <- str_replace_all(kd_loom1111_cs_tree$tip.label, 
 
 kd_loom1111_cs_tree_plot <- kd_loom1111_cs_tree |>
   fortify() |>
-  left_join(kd_looms_languages, by = join_by(label == group)) |>
+  left_join(kd_looms, by = join_by(label == group)) |>
   cs_tree() +
   theme(plot.margin = margin(0, 4.98, 0, 0, unit = "line"))
 # kd_loom1111_cs_tree_plot + geom_nodelab(aes(label = node))
@@ -117,7 +117,7 @@ kd_loom8421_cs_tree$tip.label <- str_replace_all(kd_loom8421_cs_tree$tip.label, 
 
 kd_loom8421_cs_tree_plot <- kd_loom8421_cs_tree |>
   fortify() |>
-  left_join(kd_looms_languages, by = join_by(label == group)) |>
+  left_join(kd_looms, by = join_by(label == group)) |>
   cs_tree() +
   theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line"))
 ggsave(here("output/figures/kd_loom8421_cs_tree.pdf"), kd_loom8421_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
@@ -161,26 +161,30 @@ kd_lgs_ages_summary |>
 
 # Cophylogeny -----------------------------------------------------------------------------------------------------
 
-kd_lgs_cs <- read.tree(here("output/trees/kd_lgs_consensus.tree"))
+kd_lgs_cs <- read.tree(here("output/trees/kd_lgs_consensus.tree")) |>
+  fortify() |>
+  left_join(kd_lgs) |>
+  mutate(label = lng) |>
+  as.phylo()
 kd_lgs_cs$root.edge <- 0
 
 kd_loom_pb <- c("Dai Huayao", "Dai Yuxi Yuanjiang", "Dai Jinghong", "Zhuang Napo", "Zhuang Longzhou", "Nung An", "Tai Phake")
 
 kd_looms_cs <- kd_loom1111_cs_tree |>
   fortify() |>
-  left_join(kd_looms_languages, by = join_by(label == group)) |>
-  mutate(label = ifelse(label %in% kd_loom_pb, label, language)) |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  mutate(label = ifelse(label %in% kd_loom_pb, label, lng)) |>
   as.phylo()
 
 kd_cophylo <- cophylo(kd_lgs_cs, kd_looms_cs, methods = c("pre", "post"), rotate.multi = TRUE)
 kd_cophylo$trees[[2]]$tip.label <- stringi::stri_replace_all_fixed(
-  str = kd_cophylo$trees[[2]]$tip.label, pattern = kd_looms_languages$group,
-  replacement = kd_looms_languages$language,
+  str = kd_cophylo$trees[[2]]$tip.label, pattern = kd_looms$group,
+  replacement = kd_looms$lng,
   vectorise_all = FALSE
 )
 kd_cophylo$trees[[2]] <- kd_cophylo$trees[[2]] |>
   fortify() |>
-  left_join(kd_looms_languages, by = join_by(label == language)) |>
+  left_join(kd_looms, by = join_by(label == lng)) |>
   mutate(label = group) |>
   as.phylo()
 
@@ -199,38 +203,61 @@ kd_loom_tree <- ggtree(kd_cophylo$trees[[2]], ladderize = FALSE, size = lwd)
 #   rotate(44) |>
 #   rotate(45) |>
 #   rotate(55)
-kd_lng_tree_data <- kd_lng_tree$data |>
-  mutate(language = label) |>
-  left_join(kd_looms_languages) |>
-  mutate(lng_group = str_extract(language, "^[A-Z][a-z]+(?=[A-Z])"))
-lnggroup_loom <- tribble(
-  ~lng_group, ~lng_group_name, ~loom_code,
-  "Be", "Ong-Be", NA,
-  "Kra", "Kra", NA,
-  "Hlai", "Hlai", "FBBS",
-  "Ks", "Kam-Sui", "BFYRH",
-  "Tn", "Northern Tai", NA,
-  "Tsw", "Southwestern Tai", "2LH",
-  "Tc", "Central Tai", "BFSRH"
-) |>
-  full_join(distinct(kd_lng_tree_data, lng_group)) |>
-  filter(!is.na(lng_group)) |>
-  full_join(distinct(kd_looms_languages, loom_code, loom_type)) |>
-  mutate(loom_type = str_replace_all(loom_type, "\n", " ")) |>
-  mutate(loom_type = str_wrap(loom_type, 20)) |>
-  mutate(loom_type = fct_rev(loom_type)) |>
-  arrange(loom_type, lng_group_name) |>
+kd_lgs_plt <- tribble(
+  ~lng_group_code, ~loom_type_code,
+  "Be", NA,
+  "Kra", NA,
+  "Hlai", "FBBS",
+  "Ks", "BFYRH",
+  "Tn", NA,
+  "Tsw", "2LH",
+  "Tc", "BFSRH"
+) |> 
+  full_join(distinct(kd_lgs, lng_group_code, lng_group)) |>
+  full_join(distinct(kd_looms, loom_type_code, loom_type)) |>
+  arrange(loom_type, lng_group) |>
   mutate(lng_col = plt2) |>
   filter(!is.na(lng_group)) |>
   mutate(lng_col = fct_inorder(lng_col), lng_group = fct_inorder(lng_group))
-kd_lng_tree_data <- left_join(kd_lng_tree_data, select(lnggroup_loom, lng_group, lng_col))
-kd_looms_languages <- kd_looms_languages |>
-  mutate(loom_type = str_replace_all(loom_type, "\n", " ")) |>
-  mutate(loom_type = str_wrap(loom_type, 20)) |>
-  mutate(loom_type = fct_rev(loom_type))
+
+kd_lng_tree_data <- kd_lng_tree$data |>
+  mutate(lng = label) |>
+  left_join(select(kd_lgs, -label)) |> 
+  left_join(select(kd_lgs_plt, lng_group, lng_col)) |> 
+  arrange(lng_col) |> 
+  mutate(lng_group_code = fct_inorder(lng_group_code), lng_group = fct_inorder(lng_group))
+
+# lnggroup_loom <- tribble(
+#   ~lng_group_code, ~loom_type_code,
+#   "Be", NA,
+#   "Kra", NA,
+#   "Hlai", "FBBS",
+#   "Ks", "BFYRH",
+#   "Tn", NA,
+#   "Tsw", "2LH",
+#   "Tc", "BFSRH"
+# ) |>
+#   full_join(distinct(kd_lng_tree_data, lng_group_code, lng_group)) |>
+#   filter(!is.na(lng_group)) |>
+#   full_join(distinct(kd_looms, loom_type_code, loom_type)) |>
+#   mutate(loom_type = str_replace_all(loom_type, "\n", " ")) |>
+#   mutate(loom_type = str_wrap(loom_type, 20)) |>
+#   mutate(loom_type = fct_rev(loom_type)) |>
+#   arrange(loom_type, lng_group_name) |>
+#   mutate(lng_col = plt2) |>
+#   filter(!is.na(lng_group)) |>
+#   mutate(lng_col = fct_inorder(lng_col), lng_group = fct_inorder(lng_group))
+
+# kd_lng_tree_data <- left_join(kd_lng_tree_data, select(kd_lgs_plt, lng_group, lng_col))
+
+# kd_looms_languages <- kd_looms_languages |>
+#   mutate(loom_type = str_replace_all(loom_type, "\n", " ")) |>
+#   mutate(loom_type = str_wrap(loom_type, 20)) |>
+#   mutate(loom_type = fct_rev(loom_type))
+
 kd_loom_tree_data <- kd_loom_tree$data |>
   mutate(group = label) |>
-  left_join(kd_looms_languages)
+  left_join(kd_looms)
 # ry <- filter(kd_lng_tree_data, !is.na(group) & !is.na(language))$y
 ry <- kd_lng_tree_data$y
 kd_loom_tree_data$x <- ((kd_loom_tree_data$x - min(kd_loom_tree_data$x)) / (max(kd_loom_tree_data$x) - min(kd_loom_tree_data$x))) * (max(kd_lng_tree_data$x) - min(kd_lng_tree_data$x)) + min(kd_lng_tree_data$x)
@@ -242,24 +269,18 @@ kd_lng_loom_tree <- kd_lng_tree +
   # flip(105, 147) +#|> flip(106,132) +
   geom_tree(data = kd_loom_tree_data, linewidth = lwd)
 kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) %>%
-  filter(!is.na(group) & !is.na(language)) |>
+  filter(!is.na(group) & !is.na(lng)) |>
   mutate(pb = group %in% kd_loom_pb)
-
-# kd_loom_hl <- c(
-#   getMRCA(kd_cophylo$trees[[2]], c("Dai Huayao", "Dai Yuxi Yuanjiang", "Dai Jinghong")),
-#   getMRCA(kd_cophylo$trees[[2]], c("Zhuang Napo", "Zhuang Longzhou", "Nung An")),
-#   which(kd_cophylo$trees[[2]]$tip.label == "Tai Phake")
-# )
 
 kd_cophylo_plot <- kd_lng_loom_tree +
   # geom_tree(data = kd_lng_tree_data, aes(color = lng_col)) +
   geom_rootedge(.25, linewidth = lwd) +
   geom_segment(data = filter(kd_loom_tree_data, parent == node), aes(x = x, xend = x + .25, y = y, yend = y), linewidth = lwd) +
-  geom_line(data = kd_lng_loom_tree_data, aes(x, y, group = language, linetype = pb), color = "grey") +
+  geom_line(data = kd_lng_loom_tree_data, aes(x, y, group = lng, linetype = pb), color = "grey") +
   # geom_nodelab(aes(label = node), size = 3) +
   # geom_tiplab(size = 3, family = base_font) +
-  geom_tippoint(data = kd_lng_tree_data, aes(color = lng_col, fill = lng_col, shape = !is.na(group), size = !is.na(group))) +
-  scale_color_identity(guide = guide_legend(order = 1, position = "inside", override.aes = list(size = 4), theme = theme(legend.key.spacing.y = unit(0, "line"))), name = "Language group", labels = lnggroup_loom$lng_group_name) +
+  geom_tippoint(data = kd_lng_tree_data, aes(color = lng_col, fill = lng_col)) + #, shape = !is.na(group), size = !is.na(group)
+  scale_color_identity(guide = guide_legend(order = 1, position = "inside", override.aes = list(size = 4), theme = theme(legend.key.spacing.y = unit(0, "line"))), name = "Language group", labels = levels(kd_lng_tree_data$lng_group)) +
   xtheme +
   scale_fill_identity(guide = "none") +
   ggnewscale::new_scale_colour() +
@@ -320,17 +341,14 @@ library(ggspatial)
 
 theme_set(theme_bw() + ytheme)
 
-kd_lngs_pts <- read_csv(here("data/kd_lngs_locs.csv")) |>
+kd_lngs_pts <- kd_lgs |>
   filter(!is.na(lon)) |>
-  mutate(lng_group = str_extract(language, "^[A-Z][a-z]+(?=[A-Z])")) |>
   mutate(lng_group = factor(lng_group, levels = levels(lnggroup_loom$lng_group))) |>
   left_join(lnggroup_loom) |>
   st_as_sf(coords = c("lon", "lat"), crs = 4326)
 
-kd_looms_pts <- read_csv(here("data/kd_looms_locs.csv")) |>
-  filter(!is.na(lon) & !is.na(loom)) |>
-  rename(language = loom) |>
-  left_join(kd_looms_languages) |>
+kd_looms_pts <- kd_looms |>
+  filter(!is.na(lon)) |> 
   arrange(loom_type) |>
   mutate(loom_type = str_replace_all(loom_type, "\\n", " ")) |>
   mutate(loom_type = str_replace_all(loom_type, ", ", ",\n")) |>
