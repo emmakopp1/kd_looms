@@ -1,6 +1,9 @@
 library(here)
 library(phangorn)
 library(phytools)
+library(sf)
+library(rnaturalearth)
+library(ggspatial)
 library(tidyverse)
 library(stringi)
 library(ggtree)
@@ -14,6 +17,7 @@ library(ggthemes)
 library(ggridges)
 library(knitr)
 library(kableExtra)
+library(patchwork)
 
 dir.create(here("output/figures"))
 dir.create(here("output/tables"))
@@ -385,37 +389,30 @@ kd_looms_mu_summary |>
 
 # Maps --------------------------------------------------------------------
 
-library(sf)
-library(rnaturalearth)
-library(patchwork)
-library(ggspatial)
-
 theme_set(theme_bw() + ytheme)
 
-kd_lngs_pts <- kd_lgs |>
+kd_lgs_pts <- kd_lgs |>
   filter(!is.na(lon)) |>
-  mutate(lng_group = factor(lng_group, levels = levels(lnggroup_loom$lng_group))) |>
-  left_join(lnggroup_loom) |>
   st_as_sf(coords = c("lon", "lat"), crs = 4326)
 
 kd_looms_pts <- kd_looms |>
   filter(!is.na(lon)) |>
   arrange(loom_type) |>
-  mutate(loom_type = str_replace_all(loom_type, "\\n", " ")) |>
+  # mutate(loom_type = str_replace_all(loom_type, "\\n", " ")) |>
   mutate(loom_type = str_replace_all(loom_type, ", ", ",\n")) |>
   mutate(loom_type = fct_inorder(loom_type)) |>
   st_as_sf(coords = c("lon", "lat"), crs = 4326)
 
-kd_bbx_lat <- bind_rows(kd_lngs_pts, kd_looms_pts) |>
+kd_bbx_lat <- bind_rows(kd_lgs_pts, kd_looms_pts) |>
   st_bbox() |>
   st_as_sfc() |>
-  st_buffer(80 * 10^3) |>
+  st_buffer(30 * 10^3) |>
   st_bbox()
 
-kd_bbx_lon <- bind_rows(kd_lngs_pts, kd_looms_pts) |>
+kd_bbx_lon <- bind_rows(kd_lgs_pts, kd_looms_pts) |>
   st_bbox() |>
   st_as_sfc() |>
-  st_buffer(400 * 10^3) |>
+  st_buffer(100 * 10^3) |>
   st_bbox()
 
 kd_bbx <- kd_bbx_lon
@@ -434,12 +431,18 @@ asia <- ne_countries(scale = "medium") |>
 
 country_lbs <- asia |>
   select(label_x, label_y, name_en) |>
-  filter(!(name_en %in% c("Hong Kong", "Macau", "Malaysia"))) |>
+  filter(!(name_en %in% c("Hong Kong", "Macau", "Malaysia", "Bhutan", "Bangladesh"))) |>
   mutate(name_en = str_remove(name_en, ".+ ")) |>
   mutate(label_y = ifelse(name_en == "China", 28, label_y)) |>
   mutate(label_y = ifelse(name_en == "India", 26, label_y)) |>
+  mutate(label_y = ifelse(name_en == "Cambodia", 13, label_y)) |>
   mutate(label_x = ifelse(name_en == "India", 92, label_x)) |>
-  mutate(hjust = ifelse(name_en == "Bangladesh", 0, .5)) |>
+  mutate(label_y = ifelse(name_en == "Philippines", 17, label_y)) |>
+  mutate(hjust = ifelse(name_en == "India", 0, .5)) |>
+  mutate(hjust = ifelse(name_en == "Cambodia", .4, hjust)) |>
+  mutate(hjust = ifelse(name_en == "Bangladesh", 0, hjust)) |>
+  mutate(hjust = ifelse(name_en == "Taiwan", .6, hjust)) |>
+  mutate(hjust = ifelse(name_en == "Philippines", 1.05, hjust)) |>
   st_drop_geometry() |>
   st_as_sf(coords = c("label_x", "label_y"), crs = 4326)
 
@@ -454,7 +457,7 @@ bg_map <- asia |>
     data = country_lbs, aes(label = name_en, hjust = hjust),
     family = base_font,
     size = base_font_size / .pt,
-    color = "grey40"
+    color = "grey35"
   ) +
   annotation_scale(
     location = "br",
@@ -465,7 +468,7 @@ bg_map <- asia |>
   annotation_north_arrow(
     location = "br",
     which_north = "true",
-    pad_x = unit(1.75, "line"),
+    pad_x = unit(3.25, "line"),
     pad_y = unit(1.25, "line"),
     height = unit(1, "line"),
     width = unit(1, "line"),
@@ -483,14 +486,14 @@ bg_map <- asia |>
     panel.background = element_rect(fill = "grey85")
   )
 
-kd_lngs_map <- bg_map +
-  geom_sf(data = kd_lngs_pts, aes(color = lng_col), size = 1) +
-  scale_color_identity(guide = guide_legend(override.aes = list(size = 4)), name = "Language group", labels = lnggroup_loom$lng_group_name) +
+kd_lgs_map <- bg_map +
+  geom_sf(data = kd_lgs_pts, aes(color = color), size = 1) +
+  scale_color_identity(name = "Language group", guide = guide_legend(override.aes = list(size = 4)), labels = levels(kd_lngs_pts$lng_group)) +
   coord_sf(crs = prj, expand = FALSE)
 
 kd_looms_map <- bg_map +
-  geom_sf(data = kd_looms_pts, aes(color = loom_type), size = 1) +
-  scale_color_manual(values = plt, name = "Loom type", guide = guide_legend(override.aes = list(size = 4))) +
+  geom_sf(data = kd_looms_pts, aes(color = color), size = 1) +
+  scale_color_identity(name = "Loom type", guide = guide_legend(override.aes = list(size = 4)), labels = levels(kd_looms_pts$loom_type)) +
   coord_sf(crs = prj, clip = "on", expand = FALSE)
 
 kd_lngs_map <- set_dim(kd_lngs_map, get_dim(kd_looms_map))
