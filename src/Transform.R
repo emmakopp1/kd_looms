@@ -88,8 +88,6 @@ kd_looms_mu_bylevel_tb <- kd_looms_mu_bylevel |>
   pivot_longer(-rowid, names_to = "level", values_to = "rate") |>
   mutate(level = str_remove_all(level, "[^0-9]") |> as.numeric())
 
-write_csv(kd_looms_mu_bylevel_tb, here("output/kd_looms_mu_bylevel.csv"))
-
 kd_looms_mu_summary <- kd_looms_mu_bylevel_tb |>
   group_by(level) |>
   summarise(mean = mean(rate), median = median(rate), sd = sd(rate), HPDI_lower = hdi(rate)["lower"], HPDI_upper = hdi(rate)["upper"]) |>
