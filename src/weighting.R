@@ -8,16 +8,16 @@ weights <- c(2,1,1,1)
 looms_m_levels <- read_csv(here("data/kd_looms_matrix_levels.csv")) |>
   mutate(across(everything(), as.character))
 
-chr_levels <- looms_m_levels |>
+kd_looms_chr_levels <- looms_m_levels |>
   filter(Taxon == "Level") |>
   pivot_longer(
     cols = -Taxon,
-    names_to = "Character",
-    values_to = "Level"
+    names_to = "character",
+    values_to = "level"
   ) |>
   select(-Taxon)
 
-write_csv(chr_levels, here("output/kd_looms_chr_levels.csv"))
+write_csv(kd_looms_chr_levels, here("output/kd_looms_chr_levels.csv"))
 
 looms_m_weighted <- looms_m_levels |>
   filter(Taxon != "Level") |>
