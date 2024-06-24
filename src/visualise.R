@@ -23,6 +23,7 @@ dir.create(here("output/figures"))
 dir.create(here("output/tables"))
 
 wd <- 14
+ht <- 25 # 27.6
 lwd <- 1 / .pt
 base_font <- "Noto Sans Condensed"
 base_font_size <- 9
@@ -57,14 +58,14 @@ plt_tb <- tribble(
   "BFSRH", "Tc", 3,
   "BFYRH", "Ks", 9,
   "2LHcant", NA, 4,
-  "2LH", "Tsw", 7,
+  "4LH", "Tsw", 7,
   "1H1S", NA, 2,
-  "4LH", NA, 5,
+  "BFcant", NA, 5,
   NA, "Tn", 6,
   NA, "Be", 8,
   NA, "Kra", 10
 ) |>
-  mutate(color_looms = plt3[order], color_lgs = plt[order])
+  mutate(color_looms = plt[order], color_lgs = plt2[order])
 
 plt_tb_lgs <- plt_tb |>
   filter(!is.na(lng_group_code)) |>
@@ -227,13 +228,11 @@ kd_cophylo$trees[[2]] <- kd_cophylo$trees[[2]] |>
   mutate(label = group) |>
   as.phylo()
 
-kd_lng_tree <- ggtree(kd_cophylo$trees[[1]], ladderize = FALSE, size = lwd)
+kd_lng_tree <- ggtree(kd_cophylo$trees[[1]], ladderize = FALSE, size = lwd, branch.length = "none")
 # flip(113, 128) |>
 # flip(103,172)
-kd_loom_tree <- ggtree(kd_cophylo$trees[[2]], ladderize = FALSE, size = lwd)
+kd_loom_tree <- ggtree(kd_cophylo$trees[[2]], ladderize = FALSE, size = lwd, branch.length = "none")
 # flip(1, 33)
-# kd_lng_tree <- ggtree(kd_cophylo$trees[[1]], ladderize = FALSE, size = lwd, branch.length = "none")
-# kd_loom_tree <- ggtree(kd_cophylo$trees[[2]], ladderize = FALSE, size = lwd, branch.length = "none")
 #   flip(32, 43) |>
 #   rotate(35) |>
 #   rotate(54) |>
@@ -267,7 +266,7 @@ kd_lng_tree_data <- kd_lng_tree$data |>
 kd_loom_tree_data <- kd_loom_tree$data |>
   mutate(group = label) |>
   left_join(kd_looms) |>
-  arrange(loom_type) |> 
+  arrange(loom_type) |>
   # mutate(loom_type = str_replace_all(loom_type, "\n", " ")) |>
   mutate(loom_type = str_wrap(loom_type, 20)) |>
   mutate(loom_type = fct_inorder(loom_type))
@@ -276,7 +275,7 @@ kd_loom_tree_data <- kd_loom_tree$data |>
 ry <- kd_lng_tree_data$y
 kd_loom_tree_data$x <- ((kd_loom_tree_data$x - min(kd_loom_tree_data$x)) / (max(kd_loom_tree_data$x) - min(kd_loom_tree_data$x))) * (max(kd_lng_tree_data$x) - min(kd_lng_tree_data$x)) + min(kd_lng_tree_data$x)
 kd_loom_tree_data$x <- max(kd_loom_tree_data$x) - kd_loom_tree_data$x + max(kd_lng_tree_data$x)
-kd_loom_tree_data$x <- kd_loom_tree_data$x + (max(c(kd_lng_tree_data$x, kd_loom_tree_data$x)) - min(c(kd_lng_tree_data$x, kd_loom_tree_data$x))) / 100 * 15
+kd_loom_tree_data$x <- kd_loom_tree_data$x + (max(c(kd_lng_tree_data$x, kd_loom_tree_data$x)) - min(c(kd_lng_tree_data$x, kd_loom_tree_data$x))) / 100 * 70
 kd_loom_tree_data$y <- ((kd_loom_tree_data$y - min(kd_loom_tree_data$y)) / (max(kd_loom_tree_data$y) - min(kd_loom_tree_data$y))) * (max(ry) - min(ry)) + min(ry)
 
 kd_lng_loom_tree <- kd_lng_tree +
@@ -286,30 +285,39 @@ kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) %>%
   filter(!is.na(group) & !is.na(lng)) |>
   mutate(pb = group %in% kd_loom_pb)
 
+kd_lgs_looms_links <- kd_lng_loom_tree_data |>
+  add_count(lng) |> 
+  filter(n == 2) |> 
+  group_by(lng) |> 
+  mutate(x = ifelse(x == min(x), x + diff(range(filter(kd_loom_tree_data, isTip == TRUE)$x, filter(kd_lng_tree_data, isTip == TRUE)$x))/2.7, x - diff(range(filter(kd_loom_tree_data, isTip == TRUE)$x, filter(kd_lng_tree_data, isTip == TRUE)$x))/3.05))
+
 kd_cophylo_plot <- kd_lng_loom_tree +
   geom_rootedge(.25, linewidth = lwd) +
   geom_segment(
     data = filter(kd_loom_tree_data, parent == node),
-    aes(x = x, xend = x + .25, y = y, yend = y), linewidth = lwd
-  ) +
+    aes(x = x, xend = x + .25, y = y, yend = y), linewidth = lwd) +
   geom_line(
-    data = kd_lng_loom_tree_data,
+    data = kd_lgs_looms_links,
     aes(x, y, group = lng, linetype = pb), color = "grey"
   ) +
   # geom_nodelab(aes(label = node), size = 3) +
-  # geom_tiplab(size = 3, family = base_font) +
-  geom_tippoint(data = kd_lng_tree_data, aes(
-    color = color,
-    fill = color,
-    shape = !is.na(group),
-    size = !is.na(group)
-  )) +
+  geom_tippoint(data = kd_lng_tree_data, aes(color = color, fill = color)) +
+  geom_tiplab(data = kd_lng_tree_data, aes(label = label, color = color, fill = color, x = x + diff(range(filter(kd_loom_tree_data, isTip == TRUE)$x, filter(kd_lng_tree_data, isTip == TRUE)$x))/2.75), size = (base_font_size - 3)/.pt, family = base_font, hjust = 1) +
+  # geom_tippoint(data = kd_lng_tree_data, aes(
+  #   color = color,
+  #   fill = color,
+  #   shape = !is.na(group),
+  #   size = !is.na(group)
+  # )) +
   scale_color_identity(
     guide = guide_legend(
       order = 1,
-      position = "inside",
+      position = "left",
       override.aes = list(size = 4),
-      theme = theme(legend.key.spacing.y = unit(0, "line"))
+      theme = theme(
+        legend.key.spacing.y = unit(0, "line"),
+        legend.margin = margin(2, -2, 0, 0, unit = "line")
+      )
     ),
     name = "Language group",
     labels = levels(kd_lng_tree_data$lng_group)
@@ -319,22 +327,26 @@ kd_cophylo_plot <- kd_lng_loom_tree +
   ggnewscale::new_scale_colour() +
   ggnewscale::new_scale_fill() +
   # geom_nodelab(data = kd_loom_tree_data, aes(label = node), size = 3) +
-  # geom_tiplab(data = kd_loom_tree_data, aes(label = node), size = 3, family = base_font) +
-  geom_tippoint(
-    data = kd_loom_tree_data,
-    aes(
-      color = color,
-      fill = color,
-      shape = group %in% kd_lng_tree_data$group,
-      size = group %in% kd_lng_tree_data$group
-    )
-  ) +
+  geom_tippoint(data = kd_loom_tree_data, aes(color = color, fill = color)) +
+  geom_tiplab(data = filter(kd_loom_tree_data, isTip == TRUE), aes(label = str_wrap(label, 10), color = color, x = x - diff(range(filter(kd_loom_tree_data, isTip == TRUE)$x, filter(kd_lng_tree_data, isTip == TRUE)$x))/3), hjust = 0, size = (base_font_size - 3)/.pt, family = base_font, lineheight = 1) +
+  # geom_tippoint(
+  #   data = kd_loom_tree_data,
+  #   aes(
+  #     color = color,
+  #     fill = color,
+  #     shape = group %in% kd_lng_tree_data$group,
+  #     size = group %in% kd_lng_tree_data$group
+  #   )
+  # ) +
   scale_color_identity(
     guide = guide_legend(
       order = 2,
-      position = "inside",
+      position = "right",
       override.aes = list(size = 4),
-      theme = theme(legend.key.spacing.y = unit(.25, "line"))
+      theme = theme(
+        legend.key.spacing.y = unit(.25, "line"),
+        legend.margin = margin(2, 0, 0, -1, unit = "line")
+      )
     ),
     name = "Loom type",
     labels = levels(kd_loom_tree_data$loom_type)
@@ -345,14 +357,17 @@ kd_cophylo_plot <- kd_lng_loom_tree +
   scale_linetype(guide = "none") +
   scale_y_reverse() +
   theme(
-    legend.spacing.x = unit(14, "line"),
-    aspect.ratio = 1.25,
-    legend.position.inside = c(.5, .96),
-    legend.justification.inside = c(.5, 1),
-    legend.box = "horizontal",
+    # legend.spacing.x = unit(14, "line"),
+    aspect.ratio = 2.85,
+    # legend.position.inside = c(.5, .96),
+    # legend.justification.inside = c(.5, 1),
+    # legend.box = "horizontal",
+    # legend.justification.inside = c(.5, 1),
+    legend.key = element_rect(),
+    legend.box.margin = margin(0, 0, 0, 0, unit = "line"),
     legend.background = element_blank()
   )
-ggsave(here("output/figures/kd_cophylo_plot.pdf"), device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+ggsave(here("output/figures/kd_cophylo_plot.pdf"), device = cairo_pdf, width = wd, height = ht * 2, units = "cm")
 plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates --------------------------------------------------------------------------------------------------
@@ -506,4 +521,3 @@ plot_crop(here("output/figures/kd_lgs_map.pdf"))
 
 ggsave(here("output/figures/kd_looms_map.pdf"), kd_looms_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_looms_map.pdf"))
-
