@@ -291,6 +291,17 @@ kd_lgs_looms_links <- kd_lng_loom_tree_data |>
   group_by(lng) |> 
   mutate(x = ifelse(x == min(x), x + diff(range(filter(kd_loom_tree_data, isTip == TRUE)$x, filter(kd_lng_tree_data, isTip == TRUE)$x))/2.7, x - diff(range(filter(kd_loom_tree_data, isTip == TRUE)$x, filter(kd_lng_tree_data, isTip == TRUE)$x))/3.05))
 
+# library(ggtext)
+# tribble(~x, ~y, ~img,
+#         0, 0, "<img src='1Hainan.png' height=125>",
+#         1,1, "<img src='2 SRH.png' height=125>") |> 
+#   ggplot(aes(x, y, color=img, alpha = y, fill = x)) +
+#   geom_point() +
+#   scale_alpha_continuous(guide = guide_legend(position = "right", order = 3)) +
+#   scale_fill_continuous(guide = guide_legend(position = "left")) +
+#   scale_color_discrete(guide = guide_legend(override.aes = list(size = 0, alpha=0), theme = theme(legend.key.height = unit(0, "line"), legend.key.width = unit(0, "line"))), name = NULL) +
+#   theme(legend.text = element_markdown(), legend.box = "horizontal")
+
 kd_cophylo_plot <- kd_lng_loom_tree +
   geom_rootedge(.25, linewidth = lwd) +
   geom_segment(
