@@ -1,30 +1,30 @@
 group,loom_type_code,loom_type,lng,lng_group_code,lng_group,lon,lat
+Run Li,FBBS,Foot-braced backstrap loom,Baisha,Hlai,Hlai,109.382,19.199
+Qi Li,FBBS,Foot-braced backstrap loom,Qiandui,Hlai,Hlai,109.66,18.86
+Meifu Li,FBBS,Foot-braced backstrap loom,Xifang,Hlai,Hlai,108.944,19.045
+Ha Li,FBBS,Foot-braced backstrap loom,Zhongsha,Hlai,Hlai,109.18,18.75
+Dong Tongdao,BFYRH,"Body-tensioned frame loom, Y rocker heddle",KamLP,Ks,Kam-Sui,109.5079,26.1876
 Miao Zhaoxing,1H1S,"Fixed cloth beam loom, unique type",KamRJ,Ks,Kam-Sui,109.153,25.924
-Tai Isan,2LH,"Fixed cloth beam frame loom, box frame",Korat,Tsw,Southwestern Tai,103.667,16.0458
-Tai Lu Nà Tăm,2LH,"Fixed cloth beam frame loom, box frame",TaiLuNaTam,Tsw,Southwestern Tai,103.6456778,22.2732135
-Tai Mai Chau,2LH,"Fixed cloth beam frame loom, box frame",MaiChau,Tsw,Southwestern Tai,105.0128,20.6739
-Tai Trang Ky Son,2LH,"Fixed cloth beam frame loom, box frame",KySon,Tsw,Southwestern Tai,104.25122,19.44029
-Tai Trang Quan Son,2LH,"Fixed cloth beam frame loom, box frame",QuanSon,Tsw,Southwestern Tai,104.86793,20.27185
-Tai Xam Nuea,2LH,"Fixed cloth beam frame loom, box frame",XamNuea,Tsw,Southwestern Tai,104.07,20.42
-Tai Yuan,2LH,"Fixed cloth beam frame loom, box frame",Chiangmai,Tsw,Southwestern Tai,98.986,18.789
-Buyi Xingyi,2LHcant,"Fixed cloth beam frame loom, cantilever frame",Qianxi,Tn,Northern Tai,104.9968,24.8872
-Tay Ban Rang,2LHcant,"Fixed cloth beam frame loom, cantilever frame",TayBanRang,Tc,Central Tai,104.47815,22.24457
-Tay Lung Noi,2LHcant,"Fixed cloth beam frame loom, cantilever frame",TayLungNoi,Tc,Central Tai,105.8154,22.89758
-Zhuang Jingxi,2LHcant,"Fixed cloth beam frame loom, cantilever frame",Debao,Tc,Central Tai,106.42,23.13
-Dai Tengchong,4LH,Fixed cloth beam loom,Tengchong,Tsw,Southwestern Tai,98.66732,24.85878
+Maonan Hechi,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Maonan,Ks,Kam-Sui,108.136,24.889
+Liangzhu,FBBS,Foot-braced backstrap loom,Liangzhu,NA,NA,120.2994,30.41904
 Nung An,BFSRH,"Body-tensioned frame loom, short rocker heddle",CaoBanTai,Tc,Central Tai,106.261,22.638
+Zhuang Jingxi,2LHcant,"Fixed cloth beam frame loom, cantilever frame",Debao,Tc,Central Tai,106.42,23.13
 Zhuang Longzhou,BFSRH,"Body-tensioned frame loom, short rocker heddle",Longzhou,Tc,Central Tai,106.85437,22.34277
 Zhuang Napo,BFSRH,"Body-tensioned frame loom, short rocker heddle",Napo,Tc,Central Tai,105.87211,23.4851
-Buyi Libo,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Libo,Tn,Northern Tai,108.2118,25.4646
-Dai Huayao,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Huayao,Tsw,Southwestern Tai,102.548,24.351
-Dai Jinghong,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Mangshi,Tsw,Southwestern Tai,100.89698,22.08653
-Dai Yuxi Yuanjiang,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Yuanjiang,Tsw,Southwestern Tai,101.99891,23.57681
-Dong Tongdao,BFYRH,"Body-tensioned frame loom, Y rocker heddle",KamLP,Ks,Kam-Sui,109.5079,26.1876
-Maonan Hechi,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Maonan,Ks,Kam-Sui,108.136,24.889
-Tai Phake,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Phake,Tsw,Southwestern Tai,94.9119621,27.4728327
+Tay Ban Rang,2LHcant,"Fixed cloth beam frame loom, cantilever frame",TayBanRang,Tc,Central Tai,104.47815,22.24457
+Tay Lung Noi,2LHcant,"Fixed cloth beam frame loom, cantilever frame",TayLungNoi,Tc,Central Tai,105.8154,22.89758
+Buyi Libo,BFcant,"Body-tensioned frame loom, cantilever frame",Libo,Tn,Northern Tai,108.2118,25.4646
+Buyi Xingyi,2LHcant,"Fixed cloth beam frame loom, cantilever frame",Qianxi,Tn,Northern Tai,104.9968,24.8872
 Zhuang Binyang,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Wuming,Tn,Northern Tai,108.81,23.21
-Ha Li,FBBS,Foot-braced backstrap loom,Zhongsha,Hlai,Hlai,109.18,18.75
-Liangzhu,FBBS,Foot-braced backstrap loom,Liangzhu,NA,NA,120.2994,30.41904
-Meifu Li,FBBS,Foot-braced backstrap loom,Xifang,Hlai,Hlai,108.944,19.045
-Qi Li,FBBS,Foot-braced backstrap loom,Qiandui,Hlai,Hlai,109.66,18.86
-Run Li,FBBS,Foot-braced backstrap loom,Baisha,Hlai,Hlai,109.382,19.199
+Tai Yuan,4LH,Fixed cloth beam frame loom,Chiangmai,Tsw,Southwestern Tai,98.986,18.789
+Dai Huayao,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Huayao,Tsw,Southwestern Tai,102.548,24.351
+Tai Isan,4LH,Fixed cloth beam frame loom,Korat,Tsw,Southwestern Tai,103.667,16.0458
+Tai Trang Ky Son,4LH,Fixed cloth beam frame loom,KySon,Tsw,Southwestern Tai,104.25122,19.44029
+Tai Mai Chau,4LH,Fixed cloth beam frame loom,MaiChau,Tsw,Southwestern Tai,105.0128,20.6739
+Dai Jinghong,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Mangshi,Tsw,Southwestern Tai,98.59059,24.42935
+Tai Phake,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Phake,Tsw,Southwestern Tai,94.9119621,27.4728327
+Tai Trang Quan Son,4LH,Fixed cloth beam frame loom,QuanSon,Tsw,Southwestern Tai,104.86793,20.27185
+Tai Lu Nà Tăm,4LH,Fixed cloth beam frame loom,TaiLuNaTam,Tsw,Southwestern Tai,103.6456778,22.2732135
+Dai Tengchong,4LH,Fixed cloth beam loom,Tengchong,Tsw,Southwestern Tai,98.66732,24.85878
+Tai Xam Nuea,4LH,Fixed cloth beam frame loom,XamNuea,Tsw,Southwestern Tai,104.07,20.42
+Dai Yuxi Yuanjiang,BFYRH,"Body-tensioned frame loom, Y rocker heddle",Yuanjiang,Tsw,Southwestern Tai,101.99891,23.57681
