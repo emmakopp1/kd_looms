@@ -2,24 +2,28 @@ library(here)
 library(ape)
 library(tidyverse)
 
+
+# Trim raw tree files -----------------------------------------------------
+
+k <- 5000
 kd_lgs_bcov <- read.nexus(here("data/raw_trees/kd-lgs_bcov.trees"))
-kd_lgs_bcov_trimmed <- kd_lgs_bcov[seq(from = 2, to = length(kd_lgs_bcov), by = (length(kd_lgs_bcov) - 1) / 5000)]
+kd_lgs_bcov_trimmed <- kd_lgs_bcov[seq(from = 2, to = length(kd_lgs_bcov), by = (length(kd_lgs_bcov) - 1) / k)]
 write.tree(kd_lgs_bcov_trimmed, here("data/kd-lgs_bcov/kd_lgs_bcov_trimmed.trees"))
 
 kd_looms_bcov1000 <- read.nexus(here("data/raw_trees/kd-looms_bcov1000.trees"))
-kd_looms_bcov1000_trimmed <- kd_looms_bcov1000[seq(from = 2, to = length(kd_looms_bcov1000), by = (length(kd_looms_bcov1000) - 1) / 5000)]
-write.tree(kd_looms_bcov1000_trimmed, here("data/kd_looms_bcov1000/kd_looms_bcov1000_trimmed.trees"))
+kd_looms_bcov1000_trimmed <- kd_looms_bcov1000[seq(from = 2, to = length(kd_looms_bcov1000), by = (length(kd_looms_bcov1000) - 1) / k)]
+write.tree(kd_looms_bcov1000_trimmed, here("data/kd-looms_bcov1000/kd-looms_bcov1000_trimmed.trees"))
 
 kd_looms_bcov1111 <- read.nexus(here("data/raw_trees/kd-looms_bcov1111.trees"))
-kd_looms_bcov1111_trimmed <- kd_looms_bcov1111[seq(from = 2, to = length(kd_looms_bcov1111), by = (length(kd_looms_bcov1111) - 1) / 5000)]
-write.tree(kd_looms_bcov1111_trimmed, here("data/kd_looms_bcov1111/kd_looms_bcov1111_trimmed.trees"))
+kd_looms_bcov1111_trimmed <- kd_looms_bcov1111[seq(from = 2, to = length(kd_looms_bcov1111), by = (length(kd_looms_bcov1111) - 1) / k)]
+write.tree(kd_looms_bcov1111_trimmed, here("data/kd-looms_bcov1111/kd_looms_bcov1111_trimmed.trees"))
 
 kd_looms_bcov8421 <- read.nexus(here("data/raw_trees/kd-looms_bcov8421.trees"))
-kd_looms_bcov8421_trimmed <- kd_looms_bcov8421[seq(from = 2, to = length(kd_looms_bcov8421), by = (length(kd_looms_bcov8421) - 1) / 5000)]
-write.tree(kd_looms_bcov8421_trimmed, here("data/kd_looms_bcov8421/kd_looms_bcov8421_trimmed.trees"))
+kd_looms_bcov8421_trimmed <- kd_looms_bcov8421[seq(from = 2, to = length(kd_looms_bcov8421), by = (length(kd_looms_bcov8421) - 1) / k)]
+write.tree(kd_looms_bcov8421_trimmed, here("data/kd-looms_bcov8421/kd_looms_bcov8421_trimmed.trees"))
 
 kd_looms_ctmc6 <- read.nexus(here("data/raw_trees/kd-looms_ctmc6.trees"))
-kd_looms_ctmc6_trimmed <- kd_looms_ctmc6[seq(from = 2, to = length(kd_looms_ctmc6), by = (length(kd_looms_ctmc6) - 1) / 5000)]
+kd_looms_ctmc6_trimmed <- kd_looms_ctmc6[seq(from = 2, to = length(kd_looms_ctmc6), by = (length(kd_looms_ctmc6) - 1) / k)]
 write.tree(kd_looms_ctmc6_trimmed, here("data/kd-looms_ctmc6/kd-looms_ctmc6_trimmed.trees"))
 
 
