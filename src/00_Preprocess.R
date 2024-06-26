@@ -12,7 +12,7 @@ write.tree(kd_lgs_bcov_trimmed, here("data/languages/kd_lgs_bcov_trimmed.trees")
 
 kd_looms_1000 <- read.nexus(here("data/raw_trees/kd-looms_1000.trees"))
 kd_looms_1000_trimmed <- kd_looms_1000[seq(from = 2, to = length(kd_looms_1000), by = (length(kd_looms_1000) - 1) / 5000)]
-write.tree(kd_looms_1000_trimmed, here("data/looms/kd_looms_1111_trimmed.trees"))
+write.tree(kd_looms_1000_trimmed, here("data/looms/kd_looms_1000_trimmed.trees"))
 
 kd_looms_1111 <- read.nexus(here("data/raw_trees/kd-looms_1111.trees"))
 kd_looms_1111_trimmed <- kd_looms_1111[seq(from = 2, to = length(kd_looms_1111), by = (length(kd_looms_1111) - 1) / 5000)]
