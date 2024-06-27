@@ -108,6 +108,7 @@ txt_mrbayes <- "begin mrbayes;
 	sumt relburnin=yes burninfrac=0.25;
 	sump;
 end;
+
 "
 write_file(txt_mrbayes, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"), append = TRUE)
 
