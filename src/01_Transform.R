@@ -8,7 +8,7 @@ library(tidyverse)
 
 # Consensus trees -------------------------------------------------------------------------------------------------
 
-kd_lgs_bcov <- read.tree(here("data/kd-lgs/kd-lgs_bcov/kd_lgs_bcov_trimmed.trees"))
+kd_lgs_bcov <- read.tree(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov_trimmed.trees"))
 kd_lgs_bcov_cs <- consensus(kd_lgs_bcov, p = .5, rooted = TRUE)
 kd_lgs_bcov_cs <- consensus.edges(kd_lgs_bcov, consensus.tree = kd_lgs_bcov_cs, rooted = TRUE)
 write.tree(kd_lgs_bcov_cs, here("output/trees/kd-lgs_bcov_consensus.tree"))
