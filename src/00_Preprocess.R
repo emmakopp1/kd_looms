@@ -10,9 +10,9 @@ library(tidyverse)
 # Function to force nexus files to be in binary format
 write_binary_nexus <- function(x, file) {
   write.phyDat(x, file, format = "nexus")
-  read_lines(file) |> 
-    str_replace('symbols="0123456789"', 'symbols="01"') |> 
-    str_subset('^(?!\\[Data written by)') |> 
+  read_lines(file) |>
+    str_replace('symbols="0123456789"', 'symbols="01"') |>
+    str_subset("^(?!\\[Data written by)") |>
     write_lines(file)
 }
 
@@ -20,25 +20,25 @@ write_binary_nexus <- function(x, file) {
 kd_lgs_lx <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   select(-concept) |>
   pivot_longer(-c(concept_id, cogid), names_to = "Taxon") |>
-  filter(!is.na(value)) |> 
-  distinct(concept_id, cogid, Taxon) |> 
-  rowid_to_column() |> 
+  filter(!is.na(value)) |>
+  distinct(concept_id, cogid, Taxon) |>
+  rowid_to_column() |>
   pivot_wider(
     names_from = Taxon,
     values_from = rowid,
     values_fill = 0,
     values_fn = length
-  ) |> 
-  pivot_longer(cols = !(concept_id | cogid), names_to = "Taxon", values_to = "value") |> 
-  mutate(value = as.character(value)) |> 
-  group_by(concept_id, Taxon) |> 
-  mutate(allzero = sum(value != "0") == 0) |> 
-  rowwise() |> 
-  mutate(value = ifelse(allzero, "?", value)) |> 
-  ungroup() |> 
-  mutate(id = paste0(concept_id, "_", cogid)) |> 
-  select(Taxon, id, value) |> 
-  pivot_wider(names_from = id, values_from = value) |> 
+  ) |>
+  pivot_longer(cols = !(concept_id | cogid), names_to = "Taxon", values_to = "value") |>
+  mutate(value = as.character(value)) |>
+  group_by(concept_id, Taxon) |>
+  mutate(allzero = sum(value != "0") == 0) |>
+  rowwise() |>
+  mutate(value = ifelse(allzero, "?", value)) |>
+  ungroup() |>
+  mutate(id = paste0(concept_id, "_", cogid)) |>
+  select(Taxon, id, value) |>
+  pivot_wider(names_from = id, values_from = value) |>
   arrange(Taxon)
 kd_lgs_matrix <- kd_lgs_lx |>
   column_to_rownames("Taxon") |>
@@ -49,7 +49,7 @@ write_binary_nexus(kd_lgs_matrix, here("data/kd-lgs/kd-lgs_bcov/kd-lgs.nex"))
 # Looms
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
   select(code, level)
-kd_looms_matrix <- read_csv(here("data/kd-looms/kd-looms_matrix.csv")) |> 
+kd_looms_matrix <- read_csv(here("data/kd-looms/kd-looms_matrix.csv")) |>
   mutate(Taxon = str_replace_all(Taxon, " ", "_"))
 
 # Looms, all levels, no weighting
@@ -68,7 +68,7 @@ write_binary_nexus(kd_looms_matrix1000, here("data/kd-looms/kd-looms_bcov1000/kd
 
 # Looms, weighted characters
 weights <- c(2, 1, 1, 1)
-             
+
 kd_looms_matrix_weighted <- kd_looms_matrix |>
   mutate(across(everything(), as.character)) |>
   pivot_longer(
@@ -101,7 +101,7 @@ write_binary_nexus(kd_looms_matrix1111, here("data/kd-looms/kd-looms_ctmc4/kd-lo
 write_binary_nexus(kd_looms_matrix1111, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"))
 txt_mrbayes <- "begin mrbayes;
 	set autoclose=yes nowarn=yes;
-	unlink statefreq=(all) revmat=(all) shape=(all) pinvar=(all); 
+	unlink statefreq=(all) revmat=(all) shape=(all) pinvar=(all);
 	prset applyto=(all) ratepr=variable;
 	lset rates=gamma ngammacat=6;
 	mcmcp ngen= 20000000 relburnin=yes burninfrac=0.25  printfreq=10000  samplefreq=1000 nchains=4 savebrlens=yes;
