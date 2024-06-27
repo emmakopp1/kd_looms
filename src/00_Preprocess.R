@@ -49,7 +49,8 @@ write_binary_nexus(kd_lgs_matrix, here("data/kd-lgs/kd-lgs_bcov/kd-lgs.nex"))
 # Looms
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
   select(code, level)
-kd_looms_matrix <- read_csv(here("data/kd-looms/kd-looms_matrix.csv"))
+kd_looms_matrix <- read_csv(here("data/kd-looms/kd-looms_matrix.csv")) |> 
+  mutate(Taxon = str_replace_all(Taxon, " ", "_"))
 
 # Looms, all levels, no weighting
 kd_looms_matrix1111 <- kd_looms_matrix |>
