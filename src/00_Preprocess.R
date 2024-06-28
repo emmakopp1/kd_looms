@@ -95,7 +95,36 @@ kd_looms_matrix_weighted |>
   MatrixToPhyDat()
 
 # Looms, 4 variable rates
-write_binary_nexus(kd_looms_matrix1111, here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"))
+kd_looms_matrix_bylevel <- kd_looms_matrix |>
+  mutate(across(everything(), as.character)) |>
+  pivot_longer(
+    cols = -Taxon,
+    names_to = "code",
+    values_to = "value"
+  ) |>
+  left_join(kd_looms_characters) |>
+  arrange(level) |>
+  select(-level) |>
+  pivot_wider(
+    names_from = c(code),
+    values_from = value
+  ) |>
+  column_to_rownames("Taxon") |>
+  as.matrix() |>
+  MatrixToPhyDat()
+
+kd_looms_partition <- kd_looms_characters |>
+  arrange(level) |>
+  rowid_to_column() |>
+  group_by(level) |>
+  summarise(charset = paste0("    charset level", unique(level), " = ", min(rowid), "-", max(rowid), ";")) |>
+  pull(charset) |>
+  paste0(collapse = "\n")
+
+
+write_binary_nexus(kd_looms_matrix_bylevel, here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"))
+write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"), here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"), append = TRUE)
+
 
 # Looms, 6 variable rates, with instructions for MrBayes
 write_binary_nexus(kd_looms_matrix1111, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"))
