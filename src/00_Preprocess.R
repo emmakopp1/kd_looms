@@ -7,7 +7,7 @@ library(tidyverse)
 
 # Prepare the nexus files -------------------------------------------------
 
-# Function to force nexus files to be in binary format
+# Function to force nexus files to specify the symbols to be 0 and 1
 write_binary_nexus <- function(x, file) {
   write.phyDat(x, file, format = "nexus")
   read_lines(file) |>
@@ -143,20 +143,27 @@ end;
 write_file(txt_mrbayes, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"), append = TRUE)
 
 
-# Trim raw tree files -----------------------------------------------------
 
-k <- 5000
+# Remove some burn-in and trim the raw tree files ------------------------------------------------------------------
+
+burnin <- .2
+k <- 16
 
 kd_lgs_bcov <- read.nexus(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"))
-kd_lgs_bcov_trimmed <- kd_lgs_bcov[seq(from = 2, to = length(kd_lgs_bcov), by = (length(kd_lgs_bcov) - 1) / k)]
+kd_lgs_bcov_trimmed <- kd_lgs_bcov[round(length(kd_lgs_bcov) * burnin):length(kd_lgs_bcov)]
+kd_lgs_bcov_trimmed <- kd_lgs_bcov_trimmed[seq(from = 2, to = length(kd_lgs_bcov_trimmed), by = k)]
 write.tree(kd_lgs_bcov_trimmed, here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov_trimmed.trees"))
 
+round(length(kd_lgs_bcov_trimmed)/100)
+
 kd_looms_bcov1000 <- read.nexus(here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"))
+kd_looms_bcov1000_trimmed <- kd_looms_bcov1000[round(length(kd_looms_bcov1000) * burnin + 2):length(kd_looms_bcov1000)]
 kd_looms_bcov1000_trimmed <- kd_looms_bcov1000[seq(from = 2, to = length(kd_looms_bcov1000), by = (length(kd_looms_bcov1000) - 1) / k)]
 write.tree(kd_looms_bcov1000_trimmed, here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000_trimmed.trees"))
 
 kd_looms_bcov1111 <- read.nexus(here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees"))
-kd_looms_bcov1111_trimmed <- kd_looms_bcov1111[seq(from = 2, to = length(kd_looms_bcov1111), by = (length(kd_looms_bcov1111) - 1) / k)]
+kd_looms_bcov1111_trimmed <- kd_looms_bcov1111[round(length(kd_looms_bcov1111) * burnin + 2):length(kd_looms_bcov1111)]
+kd_looms_bcov1111_trimmed <- kd_looms_bcov1111_trimmed[seq(from = 1, to = length(kd_looms_bcov1111_trimmed), by = k)]
 write.tree(kd_looms_bcov1111_trimmed, here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111_trimmed.trees"))
 
 kd_looms_bcov8421 <- read.nexus(here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees"))
