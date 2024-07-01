@@ -222,7 +222,7 @@ plot_crop(here("output/figures/kd-looms_ctmc6_cs_tree.pdf"))
 
 # Age density distribution for languages --------------------------------------------------------------------------
 
-kd_lgs_ages <- read_csv(here("output/kd_lgs_ages.csv"))
+kd_lgs_ages <- read_csv(here("output/data/kd-lgs_ages.csv"))
 
 kd_lgs_ages_plot <- kd_lgs_ages |>
   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
@@ -459,7 +459,7 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
-kd_looms_mu_bylevel <- read_csv(here("output/kd_looms_mu_bylevel.csv"))
+kd_looms_mu_bylevel <- read_csv(here("output/kd-looms_mu_bylevel.csv"))
 
 kd_looms_mu_plot <- kd_looms_mu_bylevel |>
   ggplot(aes(y = factor(level), x = rate)) +
