@@ -120,14 +120,38 @@ cs_tree <- function(tr) {
       vjust = -.5
     ) +
     geom_rootedge(.25, linewidth = lwd) +
+    scale_y_reverse() +
     coord_cartesian(clip = "off", expand = FALSE) +
     scale_fill_identity(guide = guide_legend(), labels = levels(kd_looms$loom_type)) +
     guides(fill = guide_legend(
       title = "Loom type",
       override.aes = aes(label = "     ")
     )) +
-    xtheme
+    xtheme +
+    theme(legend.position = c(0, 0),
+          legend.justification = c(0, 0))
 }
+
+kd_lgs_bcov_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_consensus.tree"))
+kd_lgs_bcov_cs_tree$node.label <- round(as.numeric(kd_lgs_bcov_cs_tree$node.label), 2) * 100
+kd_lgs_bcov_cs_tree$root.edge.length <- 0
+kd_lgs_bcov_cs_tree$node.label[1] <- NA
+kd_lgs_bcov_cs_tree$tip.label <- str_replace_all(kd_lgs_bcov_cs_tree$tip.label, "_", " ")
+
+kd_lgs_bcov_cs_tree_plot <- kd_lgs_bcov_cs_tree |>
+  fortify() |>
+  left_join(kd_lgs, by = join_by(label == label)) |>
+  cs_tree() +
+  scale_fill_identity(guide = guide_legend(), labels = levels(kd_lgs$lng_group)) +
+  guides(fill = guide_legend(
+    title = "Language group",
+    override.aes = aes(label = "     ")
+  )) +
+  theme(aspect.ratio = 2,
+        plot.margin = margin(0, 3.5, 0, 0, unit = "line")
+        )
+ggsave(here("output/figures/kd-lgs_bcov_cs_tree.pdf"), kd_lgs_bcov_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-lgs_bcov_cs_tree.pdf"))
 
 kd_looms_bcov1000_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1000_consensus.tree"))
 kd_looms_bcov1000_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1000_cs_tree$node.label), 2) * 100
@@ -137,37 +161,63 @@ kd_looms_bcov1000_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1000_cs_tree
 kd_looms_bcov1000_cs_tree_plot <- kd_looms_bcov1000_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
-  cs_tree()
+  cs_tree() +
+  theme(plot.margin = margin(0, 2.5, 0, 0, unit = "line"))
 ggsave(here("output/figures/kd-looms_bcov1000_cs_tree.pdf"), kd_looms_bcov1000_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd-looms_bcov1000_cs_tree.pdf"))
 
-kd_loom1111_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_consensus.tree"))
-kd_loom1111_cs_tree$node.label <- round(as.numeric(kd_loom1111_cs_tree$node.label), 2) * 100
-kd_loom1111_cs_tree$node.label[1] <- NA
-kd_loom1111_cs_tree$tip.label <- str_replace_all(kd_loom1111_cs_tree$tip.label, "_", " ")
+kd_looms_bcov1111_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_consensus.tree"))
+kd_looms_bcov1111_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1111_cs_tree$node.label), 2) * 100
+kd_looms_bcov1111_cs_tree$node.label[1] <- NA
+kd_looms_bcov1111_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1111_cs_tree$tip.label, "_", " ")
 
-kd_loom1111_cs_tree_plot <- kd_loom1111_cs_tree |>
+kd_looms_bcov1111_cs_tree_plot <- kd_looms_bcov1111_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
   cs_tree() +
   theme(plot.margin = margin(0, 4.98, 0, 0, unit = "line"))
-# kd_loom1111_cs_tree_plot + geom_nodelab(aes(label = node))
-kd_loom1111_cs_tree_plot <- flip(kd_loom1111_cs_tree_plot, 32, 43)
-ggsave(here("output/figures/kd_loom1111_cs_tree.pdf"), kd_loom1111_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/kd_loom1111_cs_tree.pdf"))
+ggsave(here("output/figures/kd-looms_bcov1111_cs_tree.pdf"), kd_looms_bcov1111_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-looms_bcov1111_cs_tree.pdf"))
 
-kd_loom8421_cs_tree <- read.tree(here("output/trees/kd_loom8421_consensus.tree"))
-kd_loom8421_cs_tree$node.label <- round(as.numeric(kd_loom8421_cs_tree$node.label), 2) * 100
-kd_loom8421_cs_tree$node.label[1] <- NA
-kd_loom8421_cs_tree$tip.label <- str_replace_all(kd_loom8421_cs_tree$tip.label, "_", " ")
+kd_looms_bcov8421_cs_tree <- read.tree(here("output/trees/kd-looms_bcov8421_consensus.tree"))
+kd_looms_bcov8421_cs_tree$node.label <- round(as.numeric(kd_looms_bcov8421_cs_tree$node.label), 2) * 100
+kd_looms_bcov8421_cs_tree$node.label[1] <- NA
+kd_looms_bcov8421_cs_tree$tip.label <- str_replace_all(kd_looms_bcov8421_cs_tree$tip.label, "_", " ")
 
-kd_loom8421_cs_tree_plot <- kd_loom8421_cs_tree |>
+kd_looms_bcov8421_cs_tree_plot <- kd_looms_bcov8421_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
   cs_tree() +
   theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line"))
-ggsave(here("output/figures/kd_loom8421_cs_tree.pdf"), kd_loom8421_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/kd_loom8421_cs_tree.pdf"))
+ggsave(here("output/figures/kd-looms_bcov8421_cs_tree.pdf"), kd_looms_bcov8421_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-looms_bcov8421_cs_tree.pdf"))
+
+kd_looms_ctmc4_cs_tree <- read.tree(here("output/trees/kd-looms_ctmc4_consensus.tree"))
+kd_looms_ctmc4_cs_tree$node.label <- round(as.numeric(kd_looms_ctmc4_cs_tree$node.label), 2) * 100
+kd_looms_ctmc4_cs_tree$node.label[1] <- NA
+kd_looms_ctmc4_cs_tree$tip.label <- str_replace_all(kd_looms_ctmc4_cs_tree$tip.label, "_", " ")
+
+kd_looms_ctmc4_cs_tree_plot <- kd_looms_ctmc4_cs_tree |>
+  fortify() |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  cs_tree() +
+  theme(plot.margin = margin(0, 4.25, 0, 0, unit = "line"))
+ggsave(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"), kd_looms_ctmc4_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"))
+
+kd_looms_ctmc6_cs_tree <- read.tree(here("output/trees/kd-looms_ctmc6_consensus.tree"))
+kd_looms_ctmc6_cs_tree$node.label <- round(as.numeric(kd_looms_ctmc6_cs_tree$node.label), 2) * 100
+kd_looms_ctmc6_cs_tree$root.edge.length <- 0
+kd_looms_ctmc6_cs_tree$node.label[1] <- NA
+kd_looms_ctmc6_cs_tree$tip.label <- str_replace_all(kd_looms_ctmc6_cs_tree$tip.label, "_", " ")
+
+kd_looms_ctmc6_cs_tree_plot <- kd_looms_ctmc6_cs_tree |>
+  fortify() |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  cs_tree() +
+  theme(plot.margin = margin(0, 4.25, 0, 0, unit = "line"))
+ggsave(here("output/figures/kd-looms_ctmc6_cs_tree.pdf"), kd_looms_ctmc6_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-looms_ctmc6_cs_tree.pdf"))
 
 
 # Age density distribution for languages --------------------------------------------------------------------------
