@@ -40,6 +40,7 @@ kd_lgs_lx <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   select(Taxon, id, value) |>
   pivot_wider(names_from = id, values_from = value) |>
   arrange(Taxon)
+
 kd_lgs_matrix <- kd_lgs_lx |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
@@ -67,7 +68,7 @@ kd_looms_matrix1000 <- select(kd_looms_matrix, Taxon, filter(kd_looms_characters
 write_binary_nexus(kd_looms_matrix1000, here("data/kd-looms/kd-looms_bcov1000/kd-looms_1000.nex"))
 
 # Looms, weighted characters
-weights <- c(2, 1, 1, 1)
+weights <- c(8, 4, 2, 1)
 
 kd_looms_matrix_weighted <- kd_looms_matrix |>
   mutate(across(everything(), as.character)) |>
@@ -89,10 +90,11 @@ kd_looms_matrix_weighted <- kd_looms_matrix |>
     values_from = value
   )
 
-kd_looms_matrix_weighted |>
+kd_looms_matrix8421 <- kd_looms_matrix_weighted |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
+write_binary_nexus(kd_looms_matrix8421, here("data/kd-looms/kd-looms_bcov8421/kd-looms_8421.nex"))
 
 # Looms, 4 variable rates
 kd_looms_matrix_bylevel <- kd_looms_matrix |>
@@ -121,10 +123,8 @@ kd_looms_partition <- kd_looms_characters |>
   pull(charset) |>
   paste0(collapse = "\n")
 
-
 write_binary_nexus(kd_looms_matrix_bylevel, here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"))
 write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"), here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"), append = TRUE)
-
 
 # Looms, 6 variable rates, with instructions for MrBayes
 write_binary_nexus(kd_looms_matrix1111, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"))
@@ -143,7 +143,6 @@ end;
 write_file(txt_mrbayes, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"), append = TRUE)
 
 
-
 # Remove some burn-in and trim the raw tree files ------------------------------------------------------------------
 
 burnin <- .2
@@ -154,7 +153,7 @@ kd_lgs_bcov_trimmed <- kd_lgs_bcov[round(length(kd_lgs_bcov) * burnin):length(kd
 kd_lgs_bcov_trimmed <- kd_lgs_bcov_trimmed[seq(from = 2, to = length(kd_lgs_bcov_trimmed), by = k)]
 write.tree(kd_lgs_bcov_trimmed, here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov_trimmed.trees"))
 
-round(length(kd_lgs_bcov_trimmed)/100)
+round(length(kd_lgs_bcov_trimmed) / 100)
 
 kd_looms_bcov1000 <- read.nexus(here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"))
 kd_looms_bcov1000_trimmed <- kd_looms_bcov1000[round(length(kd_looms_bcov1000) * burnin + 2):length(kd_looms_bcov1000)]
