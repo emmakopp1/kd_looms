@@ -90,8 +90,8 @@ kd_looms_mu_bylevel <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_ct
 
 kd_looms_mu_bylevel_tb <- kd_looms_mu_bylevel |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
-  filter(burnin == FALSE) |> 
-  select(-burnin) |> 
+  filter(burnin == FALSE) |>
+  select(-burnin) |>
   pivot_longer(-rowid, names_to = "level", values_to = "rate") |>
   mutate(level = str_remove_all(level, "[^0-9]") |> as.numeric())
 
