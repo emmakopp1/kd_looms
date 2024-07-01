@@ -25,8 +25,9 @@ dir.create(here("output/tables"))
 
 wd <- 14
 ht <- 25 # 27.6
-lwd <- 1 / .pt
+lwd <- .5 / .pt
 base_font <- "Noto Sans Condensed"
+base_font1 <- "Noto Sans SemiCondensed"
 base_font2 <- "Noto Sans ExtraCondensed"
 base_font_size <- 9
 ytheme <- theme(
@@ -88,13 +89,13 @@ plt_tb_looms <- plt_tb |>
   mutate(color = fct_inorder(color)) |>
   select(loom_type_code, color)
 
-kd_looms <- read_csv(here("data/kd_looms.csv")) |>
+kd_looms <- read_csv(here("data/kd-looms/kd-looms_datapoints.csv")) |>
   mutate(loom_type_code = factor(loom_type_code, levels = levels(plt_tb_looms$loom_type_code))) |>
   left_join(plt_tb_looms) |>
   arrange(loom_type_code, lng_group) |>
   mutate(loom_type = fct_inorder(loom_type))
 
-kd_lgs <- read_csv(here("data/kd_lgs.csv")) |>
+kd_lgs <- read_csv(here("data/kd-lgs/kd-lgs_datapoints.csv")) |>
   mutate(label = paste0(lng_group_code, lng)) |>
   mutate(lng_group_code = factor(lng_group_code, levels = levels(plt_tb_lgs$lng_group_code))) |>
   left_join(plt_tb_lgs) |>
@@ -128,19 +129,17 @@ cs_tree <- function(tr) {
     xtheme
 }
 
-kd_loom1000_cs_tree <- read.tree(here("output/trees/kd_loom1000_consensus.tree"))
-# kd_loom1000_cs_tree_edges$root.edge <- 0
-kd_loom1000_cs_tree$node.label <- round(as.numeric(kd_loom1000_cs_tree$node.label), 2) * 100
-kd_loom1000_cs_tree$node.label[1] <- NA
-kd_loom1000_cs_tree$tip.label <- str_replace_all(kd_loom1000_cs_tree$tip.label, "_", " ")
-# kd_loom1000_cs_tree$edge.length <- kd_loom1000_cs_tree$edge.length[-length(kd_loom1000_cs_tree$edge.length)]
+kd_looms_bcov1000_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1000_consensus.tree"))
+kd_looms_bcov1000_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1000_cs_tree$node.label), 2) * 100
+kd_looms_bcov1000_cs_tree$node.label[1] <- NA
+kd_looms_bcov1000_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1000_cs_tree$tip.label, "_", " ")
 
-kd_loom1000_cs_tree_plot <- kd_loom1000_cs_tree |>
+kd_looms_bcov1000_cs_tree_plot <- kd_looms_bcov1000_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
   cs_tree()
-ggsave(here("output/figures/kd_loom1000_cs_tree.pdf"), kd_loom1000_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/kd_loom1000_cs_tree.pdf"))
+ggsave(here("output/figures/kd-looms_bcov1000_cs_tree.pdf"), kd_looms_bcov1000_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-looms_bcov1000_cs_tree.pdf"))
 
 kd_loom1111_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_consensus.tree"))
 kd_loom1111_cs_tree$node.label <- round(as.numeric(kd_loom1111_cs_tree$node.label), 2) * 100
