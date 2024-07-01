@@ -76,7 +76,7 @@ plt_tb_lgs <- plt_tb |>
   filter(!is.na(lng_group_code)) |>
   rename(color = color_lgs) |>
   mutate(lng_group_code = factor(lng_group_code, levels = lgs_order)) |>
-  arrange(lng_group_code) |> 
+  arrange(lng_group_code) |>
   mutate(color = fct_inorder(color)) |>
   select(lng_group_code, color)
 
@@ -84,7 +84,7 @@ plt_tb_looms <- plt_tb |>
   filter(!is.na(loom_type_code)) |>
   rename(color = color_looms) |>
   mutate(loom_type_code = factor(loom_type_code, levels = looms_order)) |>
-  arrange(loom_type_code) |> 
+  arrange(loom_type_code) |>
   mutate(color = fct_inorder(color)) |>
   select(loom_type_code, color)
 
