@@ -75,3 +75,31 @@ kd_lgs_ages_summary <- kd_lgs_ages |>
   rename(n_lgs = n)
 
 write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary.csv"))
+
+
+# Mutation rates --------------------------------------------------------------------------------------------------
+
+kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
+  select(code, level)
+burnin <- .2
+
+kd_looms_mu_bylevel <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.log")) |>
+  as_tibble() |>
+  select(mutationRate.s.level1, mutationRate.s.level2, mutationRate.s.level3, mutationRate.s.level4) |>
+  rowid_to_column()
+
+kd_looms_mu_bylevel_tb <- kd_looms_mu_bylevel |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  filter(burnin == FALSE) |> 
+  select(-burnin) |> 
+  pivot_longer(-rowid, names_to = "level", values_to = "rate") |>
+  mutate(level = str_remove_all(level, "[^0-9]") |> as.numeric())
+
+kd_looms_mu_summary <- kd_looms_mu_bylevel_tb |>
+  group_by(level) |>
+  summarise(mean = mean(rate), median = median(rate), sd = sd(rate), HPDI_lower = hdi(rate)["lower"], HPDI_upper = hdi(rate)["upper"]) |>
+  left_join(count(kd_looms_characters, level)) |>
+  relocate(n, .after = level) |>
+  rename(n_chars = n)
+
+write_csv(kd_looms_mu_summary, here("output/data/kd-looms_mu_summary.csv"))
