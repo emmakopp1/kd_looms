@@ -97,7 +97,7 @@ END;
 
 begin mrbayes;
 	set autoclose=yes nowarn=yes;
-	unlink statefreq=(all) revmat=(all) shape=(all) pinvar=(all); 
+	unlink statefreq=(all) revmat=(all) shape=(all) pinvar=(all);
 	prset applyto=(all) ratepr=variable;
 	lset rates=gamma ngammacat=6;
 	mcmcp ngen= 20000000 relburnin=yes burninfrac=0.25  printfreq=10000  samplefreq=1000 nchains=4 savebrlens=yes;
