@@ -5,6 +5,8 @@ library(tracerer)
 library(HDInterval)
 library(tidyverse)
 
+dir.create(here("output/trees"))
+dir.create(here("output/data"))
 
 # Consensus trees -------------------------------------------------------------------------------------------------
 
@@ -37,3 +39,39 @@ kd_looms_ctmc6 <- read.tree(here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6_tr
 kd_looms_ctmc6_cs <- consensus(kd_looms_ctmc6, p = .5, rooted = TRUE)
 kd_looms_ctmc6_cs <- consensus.edges(kd_looms_ctmc6, consensus.tree = kd_looms_ctmc6_cs, rooted = TRUE)
 write.tree(kd_looms_ctmc6_cs, here("output/trees/kd-looms_ctmc6_consensus.tree"))
+
+
+# Ages in language trees --------------------------------------------------
+
+getMRCA_age <- function(tree, tips) {
+  tips <- if (is.character(tips)) which(tree$tip.label %in% tips) else tips
+  mrca <- ifelse(length(tips) > 1, getMRCA(tree, tips), tips)
+  root_age <- max(node.depth.edgelength(tree))
+  root_age - node.depth.edgelength(tree)[mrca]
+}
+
+kd_lgs_ages <- kd_lgs_bcov |>
+  seq_along() |>
+  map_df(~ tibble(
+    `Kra-Dai` = getMRCA_age(kd_lgs_bcov[[.x]], kd_lgs_bcov[[1]]$tip.label),
+    `Kam-Tai` = getMRCA_age(kd_lgs_bcov[[.x]], str_subset(kd_lgs_bcov[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
+    `Tai-Yay` = getMRCA_age(kd_lgs_bcov[[.x]], str_subset(kd_lgs_bcov[[1]]$tip.label, "^(Tc|Tn|Tsw)"))
+  )) |>
+  pivot_longer(everything(), names_to = "group", values_to = "age")
+
+write_csv(kd_lgs_ages, here("output/data/kd-lgs_ages.csv"))
+
+kd_lgs_ages_summary <- kd_lgs_ages |>
+  group_by(group) |>
+  summarise(mean = mean(age), median = median(age), sd = sd(age), HPDI_lower = hdi(age)["lower"], HPDI_upper = hdi(age)["upper"]) |>
+  left_join(tribble(
+    ~group, ~n,
+    "Kam-Tai", length(str_subset(kd_lgs_bcov[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
+    "Tai-Yay", length(str_subset(kd_lgs_bcov[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
+    "Kra-Dai", length(kd_lgs_bcov[[1]]$tip.label)
+  )) |>
+  relocate(n, .after = group) |>
+  arrange(-n) |>
+  rename(n_lgs = n)
+
+write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary.csv"))
