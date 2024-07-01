@@ -128,8 +128,10 @@ cs_tree <- function(tr) {
       override.aes = aes(label = "     ")
     )) +
     xtheme +
-    theme(legend.position = c(0, 0),
-          legend.justification = c(0, 0))
+    theme(
+      legend.position = c(0, 0),
+      legend.justification = c(0, 0)
+    )
 }
 
 kd_lgs_bcov_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_consensus.tree"))
@@ -147,9 +149,10 @@ kd_lgs_bcov_cs_tree_plot <- kd_lgs_bcov_cs_tree |>
     title = "Language group",
     override.aes = aes(label = "     ")
   )) +
-  theme(aspect.ratio = 2,
-        plot.margin = margin(0, 3.5, 0, 0, unit = "line")
-        )
+  theme(
+    aspect.ratio = 2,
+    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
+  )
 ggsave(here("output/figures/kd-lgs_bcov_cs_tree.pdf"), kd_lgs_bcov_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd-lgs_bcov_cs_tree.pdf"))
 
@@ -239,10 +242,10 @@ kd_lgs_ages_plot <- kd_lgs_ages |>
   theme_minimal(base_size = base_font_size, base_family = base_font) +
   xtheme +
   theme(plot.margin = margin(0, 0, 0, 0, unit = "line"), aspect.ratio = 0.618, legend.position = "right")
-ggsave(here("output/figures/kd_lgs_ages_plot.pdf"), kd_lgs_ages_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/kd_lgs_ages_plot.pdf"))
+ggsave(here("output/figures/kd-lgs_ages_plot.pdf"), kd_lgs_ages_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-lgs_ages_plot.pdf"))
 
-kd_lgs_ages_summary <- read_csv(here("output/kd_lgs_ages_summary.csv"))
+kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_ages_summary.csv"))
 
 kd_lgs_ages_summary |>
   mutate(across(where(is.numeric), ~ round(.x, 2))) |>
@@ -253,7 +256,7 @@ kd_lgs_ages_summary |>
     digits = 2,
     format = "latex", booktabs = TRUE
   ) |>
-  write_lines(here("output/tables/kd_lngs_ages_summary.tex"))
+  write_lines(here("output/tables/kd-lgs_ages_summary.tex"))
 
 
 # Cophylogeny -----------------------------------------------------------------------------------------------------
@@ -459,7 +462,7 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates --------------------------------------------------------------------------------------------------
 
-kd_looms_mu_bylevel <- read_csv(here("output/kd-looms_mu_bylevel.csv"))
+kd_looms_mu_bylevel <- read_csv(here("output/data/kd-looms_mu_bylevel.csv"))
 
 kd_looms_mu_plot <- kd_looms_mu_bylevel |>
   ggplot(aes(y = factor(level), x = rate)) +
@@ -475,7 +478,7 @@ kd_looms_mu_plot <- kd_looms_mu_bylevel |>
 ggsave(here("output/figures/kd_looms_mu_plot.pdf"), kd_looms_mu_plot, device = cairo_pdf, width = wd / 1, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd_looms_mu_plot.pdf"))
 
-kd_looms_mu_summary <- read_csv(here("output/kd_looms_mu_summary.csv"))
+kd_looms_mu_summary <- read_csv(here("output/data/kd-looms_mu_summary.csv"))
 
 kd_looms_mu_summary |>
   mutate(across(everything(), ~ round(.x, 2))) |>
@@ -486,7 +489,7 @@ kd_looms_mu_summary |>
     digits = 2,
     format = "latex", booktabs = TRUE
   ) |>
-  write_lines(here("output/tables/kd_looms_mu_summary.tex"))
+  write_lines(here("output/tables/kd-looms_mu_summary.tex"))
 
 
 # Maps --------------------------------------------------------------------
@@ -603,8 +606,8 @@ kd_looms_map <- bg_map +
 
 kd_lgs_map <- set_dim(kd_lgs_map, get_dim(kd_looms_map))
 
-ggsave(here("output/figures/kd_lgs_map.pdf"), kd_lgs_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/kd_lgs_map.pdf"))
+ggsave(here("output/figures/kd-lgs_map.pdf"), kd_lgs_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-lgs_map.pdf"))
 
-ggsave(here("output/figures/kd_looms_map.pdf"), kd_looms_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/kd_looms_map.pdf"))
+ggsave(here("output/figures/kd-looms_map.pdf"), kd_looms_map, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
+plot_crop(here("output/figures/kd-looms_map.pdf"))
