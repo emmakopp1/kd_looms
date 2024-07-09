@@ -208,20 +208,6 @@ kd_looms_ctmc4_cs_tree_plot <- kd_looms_ctmc4_cs_tree |>
 ggsave(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"), kd_looms_ctmc4_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
 plot_crop(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"))
 
-kd_looms_ctmc6_cs_tree <- read.tree(here("output/trees/kd-looms_ctmc6_consensus.tree"))
-kd_looms_ctmc6_cs_tree$node.label <- round(as.numeric(kd_looms_ctmc6_cs_tree$node.label), 2) * 100
-kd_looms_ctmc6_cs_tree$root.edge.length <- 0
-kd_looms_ctmc6_cs_tree$node.label[1] <- NA
-kd_looms_ctmc6_cs_tree$tip.label <- str_replace_all(kd_looms_ctmc6_cs_tree$tip.label, "_", " ")
-
-kd_looms_ctmc6_cs_tree_plot <- kd_looms_ctmc6_cs_tree |>
-  fortify() |>
-  left_join(kd_looms, by = join_by(label == group)) |>
-  cs_tree() +
-  theme(plot.margin = margin(0, 4.25, 0, 0, unit = "line"))
-ggsave(here("output/figures/kd-looms_ctmc6_cs_tree.pdf"), kd_looms_ctmc6_cs_tree_plot, device = cairo_pdf, width = wd, height = wd * 2, units = "cm")
-plot_crop(here("output/figures/kd-looms_ctmc6_cs_tree.pdf"))
-
 
 # Age density distribution for languages --------------------------------------------------------------------------
 
@@ -270,7 +256,7 @@ kd_lgs_cs$root.edge <- 0
 
 kd_loom_pb <- c("Dai Huayao", "Dai Yuxi Yuanjiang", "Dai Jinghong", "Zhuang Napo", "Zhuang Longzhou", "Nung An", "Tai Phake")
 
-kd_looms_cs <- kd_loom1111_cs_tree |>
+kd_looms_cs <- kd_looms_bcov1111_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
   mutate(label = ifelse(label %in% kd_loom_pb, label, lng)) |>
