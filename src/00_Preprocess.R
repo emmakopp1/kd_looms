@@ -127,29 +127,13 @@ kd_looms_partition <- kd_looms_characters |>
 write_binary_nexus(kd_looms_matrix_bylevel, here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"))
 write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"), here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"), append = TRUE)
 
-# Looms, 6 variable rates, with instructions for MrBayes
-write_binary_nexus(kd_looms_matrix1111, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"))
-txt_mrbayes <- "begin mrbayes;
-	set autoclose=yes nowarn=yes;
-	unlink statefreq=(all) revmat=(all) shape=(all) pinvar=(all);
-	prset applyto=(all) ratepr=variable;
-	lset rates=gamma ngammacat=6;
-	mcmcp ngen= 20000000 relburnin=yes burninfrac=0.25  printfreq=10000  samplefreq=1000 nchains=4 savebrlens=yes;
-	mcmc;
-	sumt relburnin=yes burninfrac=0.25;
-	sump;
-end;
-
-"
-write_file(txt_mrbayes, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"), append = TRUE)
-
 
 # Add the missing "End;" line at the end of the beast tree files --------------------------------------------------
 
 write_file("End;", here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"), append = TRUE)
 write_file("End;", here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees"), append = TRUE)
-write_file("End;", here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees"), append = TRUE)
-
+write_file("End;", here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"), append = TRUE)
+zip(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"), here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"))
 
 # Check the ESS values --------------------------------------------------------------------------------------------
 
@@ -224,13 +208,6 @@ kd_looms_ctmc4_ess <- kd_looms_ctmc4_log |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_ctmc4_ess, ESS < 200)
-
-# Looms CTMC 6
-
-# kd_looms_ctmc6 <- read.nexus(here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.trees"))
-# kd_looms_ctmc6_trimmed <- kd_looms_ctmc6[ceiling(length(kd_looms_ctmc6) * burnin):length(kd_looms_ctmc6)]
-# kd_looms_ctmc6_trimmed <- kd_looms_ctmc6_trimmed[seq(from = 1, to = length(kd_looms_ctmc6_trimmed), by = length(kd_looms_ctmc6_trimmed) / k)]
-# write.tree(kd_looms_ctmc6_trimmed, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6_trimmed.trees"))
 
 
 # Check the traces ------------------------------------------------------------------------------------------------
