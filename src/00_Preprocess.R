@@ -144,11 +144,16 @@ end;
 write_file(txt_mrbayes, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.nex"), append = TRUE)
 
 
+# Add the missing "End;" line at the end of the beast tree files --------------------------------------------------
 
-# Remove some burn-in, check the ESS values, and trim the raw tree files ------------------------------------------
+write_file("End;", here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"), append = TRUE)
+write_file("End;", here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees"), append = TRUE)
+write_file("End;", here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees"), append = TRUE)
+
+
+# Check the ESS values --------------------------------------------------------------------------------------------
 
 burnin <- .2
-k <- 5000
 
 # Languages
 
@@ -164,11 +169,6 @@ kd_lgs_bcov_ess <- kd_lgs_bcov_log |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_lgs_bcov_ess, ESS < 200)
 
-kd_lgs_bcov <- read.nexus(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"))
-kd_lgs_bcov_trimmed <- kd_lgs_bcov[ceiling(length(kd_lgs_bcov) * burnin):length(kd_lgs_bcov)]
-kd_lgs_bcov_trimmed <- kd_lgs_bcov_trimmed[seq(from = 2, to = length(kd_lgs_bcov_trimmed), by = round(length(kd_lgs_bcov_trimmed) / k))]
-write.tree(kd_lgs_bcov_trimmed, here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov_trimmed.trees"))
-
 # Looms 1000
 
 kd_looms_bcov1000_log <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.log")) |>
@@ -182,11 +182,6 @@ kd_looms_bcov1000_ess <- kd_looms_bcov1000_log |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_bcov1000_ess, ESS < 200)
-
-kd_looms_bcov1000 <- read.nexus(here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"))
-kd_looms_bcov1000_trimmed <- kd_looms_bcov1000[ceiling(length(kd_looms_bcov1000) * burnin):length(kd_looms_bcov1000)]
-kd_looms_bcov1000_trimmed <- kd_looms_bcov1000_trimmed[seq(from = 1, to = length(kd_looms_bcov1000_trimmed), by = length(kd_looms_bcov1000_trimmed) / k)]
-write.tree(kd_looms_bcov1000_trimmed, here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000_trimmed.trees"))
 
 # Looms 1111
 
@@ -202,11 +197,6 @@ kd_looms_bcov1111_ess <- kd_looms_bcov1111_log |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_bcov1111_ess, ESS < 200)
 
-kd_looms_bcov1111 <- read.nexus(here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees"))
-kd_looms_bcov1111_trimmed <- kd_looms_bcov1111[ceiling(length(kd_looms_bcov1111) * burnin):length(kd_looms_bcov1111)]
-kd_looms_bcov1111_trimmed <- kd_looms_bcov1111_trimmed[seq(from = 1, to = length(kd_looms_bcov1111_trimmed), by = length(kd_looms_bcov1111_trimmed) / k)]
-write.tree(kd_looms_bcov1111_trimmed, here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111_trimmed.trees"))
-
 # Looms 8421
 
 kd_looms_bcov8421_log <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.log")) |>
@@ -220,11 +210,6 @@ kd_looms_bcov84211_ess <- kd_looms_bcov8421_log |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_bcov84211_ess, ESS < 200)
-
-kd_looms_bcov8421 <- read.nexus(here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees"))
-kd_looms_bcov8421_trimmed <- kd_looms_bcov8421[ceiling(length(kd_looms_bcov8421) * burnin):length(kd_looms_bcov8421)]
-kd_looms_bcov8421_trimmed <- kd_looms_bcov8421_trimmed[seq(from = 1, to = length(kd_looms_bcov8421_trimmed), by = length(kd_looms_bcov8421_trimmed) / k)]
-write.tree(kd_looms_bcov8421_trimmed, here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421_trimmed.trees"))
 
 # Looms CTMC 4
 
@@ -240,17 +225,12 @@ kd_looms_ctmc4_ess <- kd_looms_ctmc4_log |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_ctmc4_ess, ESS < 200)
 
-kd_looms_ctmc4 <- read.nexus(here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.trees"))
-kd_looms_ctmc4_trimmed <- kd_looms_ctmc4[ceiling(length(kd_looms_ctmc4) * burnin):length(kd_looms_ctmc4)]
-kd_looms_ctmc4_trimmed <- kd_looms_ctmc4_trimmed[seq(from = 1, to = length(kd_looms_ctmc4_trimmed), by = length(kd_looms_ctmc4_trimmed) / k)]
-write.tree(kd_looms_ctmc4_trimmed, here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4_trimmed.trees"))
-
 # Looms CTMC 6
 
-kd_looms_ctmc6 <- read.nexus(here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.trees"))
-kd_looms_ctmc6_trimmed <- kd_looms_ctmc6[ceiling(length(kd_looms_ctmc6) * burnin):length(kd_looms_ctmc6)]
-kd_looms_ctmc6_trimmed <- kd_looms_ctmc6_trimmed[seq(from = 1, to = length(kd_looms_ctmc6_trimmed), by = length(kd_looms_ctmc6_trimmed) / k)]
-write.tree(kd_looms_ctmc6_trimmed, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6_trimmed.trees"))
+# kd_looms_ctmc6 <- read.nexus(here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6.trees"))
+# kd_looms_ctmc6_trimmed <- kd_looms_ctmc6[ceiling(length(kd_looms_ctmc6) * burnin):length(kd_looms_ctmc6)]
+# kd_looms_ctmc6_trimmed <- kd_looms_ctmc6_trimmed[seq(from = 1, to = length(kd_looms_ctmc6_trimmed), by = length(kd_looms_ctmc6_trimmed) / k)]
+# write.tree(kd_looms_ctmc6_trimmed, here("data/kd-looms/kd-looms_ctmc6/kd-looms_ctmc6_trimmed.trees"))
 
 
 # Check the traces ------------------------------------------------------------------------------------------------
