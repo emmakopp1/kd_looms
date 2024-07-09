@@ -88,7 +88,7 @@ write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary.csv"))
 
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
   select(code, level)
-burnin <- .2
+burnin <- .1
 
 kd_looms_mu_bylevel <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.log")) |>
   as_tibble() |>
