@@ -132,6 +132,8 @@ write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"), here("d
 
 write_file("End;", here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"), append = TRUE)
 write_file("End;", here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees"), append = TRUE)
+write_file("End;", here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees"), append = TRUE)
+write_file("End;", here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.trees"), append = TRUE)
 write_file("End;", here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"), append = TRUE)
 zip(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"), here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"))
 
