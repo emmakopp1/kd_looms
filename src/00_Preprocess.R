@@ -6,7 +6,7 @@ library(tracerer)
 library(tidyverse)
 
 
-# Prepare the nexus files -------------------------------------------------
+# Prepare the nexus files ------------------------------------------------------
 
 # Function to force nexus files to specify the symbols to be 0 and 1
 write_binary_nexus <- function(x, file) {
@@ -30,7 +30,11 @@ kd_lgs_lx <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
     values_fill = 0,
     values_fn = length
   ) |>
-  pivot_longer(cols = !(concept_id | cogid), names_to = "Taxon", values_to = "value") |>
+  pivot_longer(
+    cols = !(concept_id | cogid),
+    names_to = "Taxon",
+    values_to = "value"
+  ) |>
   mutate(value = as.character(value)) |>
   group_by(concept_id, Taxon) |>
   mutate(allzero = sum(value != "0") == 0) |>
@@ -59,14 +63,24 @@ kd_looms_matrix1111 <- kd_looms_matrix |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
-write_binary_nexus(kd_looms_matrix1111, here("data/kd-looms/kd-looms_bcov1111/kd-looms_1111.nex"))
+write_binary_nexus(
+  kd_looms_matrix1111,
+  here("data/kd-looms/kd-looms_bcov1111/kd-looms_1111.nex")
+)
 
 # Looms, level 1 characters only
-kd_looms_matrix1000 <- select(kd_looms_matrix, Taxon, filter(kd_looms_characters, level == 1)$code) |>
+kd_looms_matrix1000 <- select(
+  kd_looms_matrix,
+  Taxon,
+  filter(kd_looms_characters, level == 1)$code
+) |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
-write_binary_nexus(kd_looms_matrix1000, here("data/kd-looms/kd-looms_bcov1000/kd-looms_1000.nex"))
+write_binary_nexus(
+  kd_looms_matrix1000,
+  here("data/kd-looms/kd-looms_bcov1000/kd-looms_1000.nex")
+)
 
 # Looms, weighted characters
 weights <- c(8, 4, 2, 1)
@@ -95,7 +109,10 @@ kd_looms_matrix8421 <- kd_looms_matrix_weighted |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
-write_binary_nexus(kd_looms_matrix8421, here("data/kd-looms/kd-looms_bcov8421/kd-looms_8421.nex"))
+write_binary_nexus(
+  kd_looms_matrix8421,
+  here("data/kd-looms/kd-looms_bcov8421/kd-looms_8421.nex")
+)
 
 # Looms, 4 variable rates
 kd_looms_matrix_bylevel <- kd_looms_matrix |>
@@ -120,30 +137,58 @@ kd_looms_partition <- kd_looms_characters |>
   arrange(level) |>
   rowid_to_column() |>
   group_by(level) |>
-  summarise(charset = paste0("    charset level", unique(level), " = ", min(rowid), "-", max(rowid), ";")) |>
+  summarise(charset = paste0(
+    "    charset level",
+    unique(level),
+    " = ",
+    min(rowid),
+    "-",
+    max(rowid), ";"
+  )) |>
   pull(charset) |>
   paste0(collapse = "\n")
 
-write_binary_nexus(kd_looms_matrix_bylevel, here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"))
-write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"), here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"), append = TRUE)
+write_binary_nexus(
+  kd_looms_matrix_bylevel,
+  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex")
+)
+write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
+  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"),
+  append = TRUE
+)
 
 
-# Add the missing "End;" line at the end of the beast tree files --------------------------------------------------
+# Add the missing "End;" line at the end of the beast tree files ---------------
 
-write_file("End;", here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"), append = TRUE)
-write_file("End;", here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees"), append = TRUE)
-write_file("End;", here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees"), append = TRUE)
-write_file("End;", here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.trees"), append = TRUE)
-write_file("End;", here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"), append = TRUE)
-zip(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"), here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"))
+write_file("End;", here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"),
+  append = TRUE
+)
+write_file("End;", here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees"),
+  append = TRUE
+)
+write_file("End;", here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees"),
+  append = TRUE
+)
+write_file("End;", here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.trees"),
+  append = TRUE
+)
+write_file("End;", here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"),
+  append = TRUE
+)
+zip(
+  here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"),
+  here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees")
+)
 
-# Check the ESS values --------------------------------------------------------------------------------------------
+# Check the ESS values ---------------------------------------------------------
 
 burnin <- .2
 
 # Languages
 
-kd_lgs_bcov_log <- parse_beast_tracelog_file(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.log")) |>
+kd_lgs_bcov_log <- parse_beast_tracelog_file(
+  here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.log")
+) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd-lgs_bcov")
@@ -157,7 +202,9 @@ filter(kd_lgs_bcov_ess, ESS < 200)
 
 # Looms 1000
 
-kd_looms_bcov1000_log <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.log")) |>
+kd_looms_bcov1000_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.log")
+) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd-looms_bcov1000")
@@ -171,7 +218,9 @@ filter(kd_looms_bcov1000_ess, ESS < 200)
 
 # Looms 1111
 
-kd_looms_bcov1111_log <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.log")) |>
+kd_looms_bcov1111_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.log")
+) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd-looms_bcov1111")
@@ -185,7 +234,9 @@ filter(kd_looms_bcov1111_ess, ESS < 200)
 
 # Looms 8421
 
-kd_looms_bcov8421_log <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.log")) |>
+kd_looms_bcov8421_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.log")
+) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd-looms_bcov8421")
@@ -199,7 +250,9 @@ filter(kd_looms_bcov84211_ess, ESS < 200)
 
 # Looms CTMC 4
 
-kd_looms_ctmc4_log <- parse_beast_tracelog_file(here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.log")) |>
+kd_looms_ctmc4_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.log")
+) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd_looms_ctmc4")
@@ -212,7 +265,7 @@ kd_looms_ctmc4_ess <- kd_looms_ctmc4_log |>
 filter(kd_looms_ctmc4_ess, ESS < 200)
 
 
-# Check the traces ------------------------------------------------------------------------------------------------
+# Check the traces -------------------------------------------------------------
 
 bind_rows(
   kd_lgs_bcov_log,
