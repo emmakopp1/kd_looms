@@ -88,6 +88,20 @@ write.tree(
   here("output/trees/kd-looms_ctmc4_consensus.tree")
 )
 
+kd_looms_bcov_basic <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov_basic/kd-looms_bcov_basic.trees")
+)
+kd_looms_bcov_basic <- kd_looms_bcov_basic[ceiling(length(kd_looms_bcov_basic) * burnin):length(kd_looms_bcov_basic)]
+kd_looms_bcov_basic_cs <- consensus(kd_looms_bcov_basic, p = .5, rooted = TRUE)
+kd_looms_bcov_basic_cs <- consensus.edges(kd_looms_bcov_basic,
+                                        consensus.tree = kd_looms_bcov_basic_cs,
+                                        rooted = TRUE
+)
+write.tree(
+  kd_looms_bcov_basic_cs,
+  here("output/trees/kd-looms_bcov_basic_consensus.tree")
+)
+
 
 # Ages in language trees -------------------------------------------------------
 
