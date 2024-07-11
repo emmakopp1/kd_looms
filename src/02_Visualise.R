@@ -838,14 +838,17 @@ ggsave(here("output/figures/kd-looms_map.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_map.pdf"))
 
-imgs <- paste0(
+Tsw_imgs <- paste0(
   "<img src='", here("data/images/"),
-  levels(kd_looms_pts$loom_type_code),
+  unique(filter(kd_looms_pts, lng_group_code == "Tsw")$loom_type_code),
   ".png' height=60>"
 )
-
 Tsw_colors <- unique(filter(kd_looms_pts, lng_group_code == "Tsw")$color)
 Tsw_shapes <- starshape_pal()(length(levels(kd_looms_pts$color)))[as.numeric(unique(filter(kd_looms_pts, lng_group_code == "Tsw")$color))]
+Tsw_labels <- unique(filter(kd_looms_pts, lng_group_code == "Tsw")$loom_type) |>
+  str_wrap(20) |> 
+  paste0("\n", Tsw_imgs) |> 
+  str_replace_all("\\n", "<br/>")
 
 kd_looms_Tsw_map <- bg_map +
   geom_mark_ellipse(
@@ -868,12 +871,7 @@ kd_looms_Tsw_map <- bg_map +
   scale_starshape_manual(
     values = Tsw_shapes,
     name = "Loom type",
-    labels = paste0(
-      str_wrap(levels(kd_looms_pts$loom_type), 20),
-      "\n",
-      imgs
-    ) |>
-      str_replace_all("\\n", "<br/>"),
+    labels = Tsw_labels,
     guide = guide_legend(
       override.aes = list(
         size = 4,
