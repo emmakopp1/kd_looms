@@ -13,6 +13,7 @@ dir.create(here("output/data"))
 
 burnin <- .1
 
+# Languages
 tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"),
   junkpaths = TRUE,
@@ -32,6 +33,7 @@ write.tree(
 )
 unlink(tmp, recursive = TRUE)
 
+# Looms, level 1 characters only
 kd_looms_bcov1000 <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees")
 )
@@ -46,6 +48,7 @@ write.tree(
   here("output/trees/kd-looms_bcov1000_consensus.tree")
 )
 
+# Looms, all levels, no weighting
 kd_looms_bcov1111 <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees")
 )
@@ -60,6 +63,7 @@ write.tree(
   here("output/trees/kd-looms_bcov1111_consensus.tree")
 )
 
+# Looms, weighted characters
 kd_looms_bcov8421 <- read.nexus(
   here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees")
 )
@@ -74,6 +78,7 @@ write.tree(
   here("output/trees/kd-looms_bcov8421_consensus.tree")
 )
 
+# Looms, 4 variable rates
 kd_looms_ctmc4 <- read.nexus(
   here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.trees")
 )
@@ -88,6 +93,7 @@ write.tree(
   here("output/trees/kd-looms_ctmc4_consensus.tree")
 )
 
+# Looms, basic features only
 kd_looms_bcov_basic <- read.nexus(
   here("data/kd-looms/kd-looms_bcov_basic/kd-looms_bcov_basic.trees")
 )
@@ -102,6 +108,7 @@ write.tree(
   here("output/trees/kd-looms_bcov_basic_consensus.tree")
 )
 
+# Looms, pattern features only
 kd_looms_bcov_patterns <- read.nexus(
   here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_bcov_patterns.trees")
 )
