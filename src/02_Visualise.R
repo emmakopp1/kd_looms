@@ -284,6 +284,46 @@ ggsave(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"))
 
+kd_looms_bcov_basic_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_basic_consensus.tree"))
+kd_looms_bcov_basic_cs_tree$node.label <- round(as.numeric(kd_looms_bcov_basic_cs_tree$node.label), 2) * 100
+kd_looms_bcov_basic_cs_tree$node.label[1] <- NA
+kd_looms_bcov_basic_cs_tree$tip.label <- str_replace_all(kd_looms_bcov_basic_cs_tree$tip.label, "_", " ")
+
+kd_looms_bcov_basic_cs_tree_plot <- kd_looms_bcov_basic_cs_tree |>
+  fortify() |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  cs_tree() +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_looms_bcov_basic_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line"))
+ggsave(here("output/figures/kd_looms_bcov_basic_cs_tree.pdf"),
+  kd_looms_bcov_basic_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd_looms_bcov_basic_cs_tree.pdf"))
+
+kd_looms_bcov_patterns_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_patterns_consensus.tree"))
+kd_looms_bcov_patterns_cs_tree$node.label <- round(as.numeric(kd_looms_bcov_patterns_cs_tree$node.label), 2) * 100
+kd_looms_bcov_patterns_cs_tree$node.label[1] <- NA
+kd_looms_bcov_patterns_cs_tree$tip.label <- str_replace_all(kd_looms_bcov_patterns_cs_tree$tip.label, "_", " ")
+
+kd_looms_bcov_patterns_cs_tree_plot <- kd_looms_bcov_patterns_cs_tree |>
+  fortify() |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  cs_tree() +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_looms_bcov_patterns_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line"))
+ggsave(here("output/figures/kd_looms_bcov_patterns_cs_tree.pdf"),
+  kd_looms_bcov_patterns_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd_looms_bcov_patterns_cs_tree.pdf"))
+
 
 # Age density distribution for languages ---------------------------------------
 
@@ -753,3 +793,60 @@ ggsave(here("output/figures/kd-looms_map.pdf"),
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_map.pdf"))
+
+
+library(ggstar)
+imgs <- paste0(
+  "<img src='", here("data/images/"),
+  levels(kd_looms_pts$loom_type_code),
+  ".png' height=60>"
+)
+
+bg_map +
+  geom_sf(data = filter(kd_looms_pts, lng_group_code == "Tsw" & loom_type_code == "BFYRH"), aes(color = color), size = 2, shape = 18) +
+  scale_color_identity(
+    guide = guide_legend(
+      order = 2,
+      position = "right",
+      label.vjust = 0,
+      override.aes = list(size = 4),
+      theme = theme(
+        legend.key.spacing.y = unit(1, "line"),
+        legend.text = element_markdown(),
+        # legend.margin = margin(0, 0, 0, 0, unit = "line")
+      )
+    ),
+    name = "Loom type",
+    labels = paste0(
+      str_wrap(levels(kd_looms_pts$loom_type), 20),
+      "\n",
+      imgs
+    ) |>
+      str_replace_all("\\n", "<br/>")
+  ) +
+  coord_sf(crs = prj, expand = FALSE)
+
+
+bg_map +
+  geom_sf(data = filter(kd_looms_pts, lng_group_code == "Tsw"), aes(color = color), size = 2) +
+  scale_color_identity(
+    guide = guide_legend(
+      order = 2,
+      position = "right",
+      label.vjust = 0,
+      override.aes = list(size = 4),
+      theme = theme(
+        legend.key.spacing.y = unit(1, "line"),
+        legend.text = element_markdown(),
+        # legend.margin = margin(0, 0, 0, 0, unit = "line")
+      )
+    ),
+    name = "Loom type",
+    labels = paste0(
+      str_wrap(levels(kd_looms_pts$loom_type), 20),
+      "\n",
+      imgs
+    ) |>
+      str_replace_all("\\n", "<br/>")
+  ) +
+  coord_sf(crs = prj, expand = FALSE)
