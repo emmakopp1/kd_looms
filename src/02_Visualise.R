@@ -311,11 +311,11 @@ kd_looms_bcov_basic_cs_tree_plot <- kd_looms_bcov_basic_cs_tree |>
   theme(plot.margin = margin(0, 4.9, 0, 0, unit = "line"))
 kd_looms_bcov_basic_cs_tree_plot <- flip(kd_looms_bcov_basic_cs_tree_plot, 32, 41)
 
-ggsave(here("output/figures/kd_looms_bcov_basic_cs_tree.pdf"),
+ggsave(here("output/figures/kd-looms_bcov_basic_cs_tree.pdf"),
   kd_looms_bcov_basic_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
-plot_crop(here("output/figures/kd_looms_bcov_basic_cs_tree.pdf"))
+plot_crop(here("output/figures/kd-looms_bcov_basic_cs_tree.pdf"))
 
 # Looms, pattern features only
 kd_looms_bcov_patterns_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_patterns_consensus.tree"))
@@ -340,11 +340,11 @@ kd_looms_bcov_patterns_cs_tree_plot <- kd_looms_bcov_patterns_cs_tree |>
   )
 kd_looms_bcov_patterns_cs_tree_plot <- rotate(kd_looms_bcov_patterns_cs_tree_plot, 30)
 kd_looms_bcov_patterns_cs_tree_plot <- rotate(kd_looms_bcov_patterns_cs_tree_plot, 31)
-ggsave(here("output/figures/kd_looms_bcov_patterns_cs_tree.pdf"),
+ggsave(here("output/figures/kd-looms_bcov_patterns_cs_tree.pdf"),
   kd_looms_bcov_patterns_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
-plot_crop(here("output/figures/kd_looms_bcov_patterns_cs_tree.pdf"))
+plot_crop(here("output/figures/kd-looms_bcov_patterns_cs_tree.pdf"))
 
 
 # Age density distribution for languages ---------------------------------------
