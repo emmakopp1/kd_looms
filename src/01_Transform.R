@@ -94,8 +94,8 @@ kd_looms_bcov_basic <- read.nexus(
 kd_looms_bcov_basic <- kd_looms_bcov_basic[ceiling(length(kd_looms_bcov_basic) * burnin):length(kd_looms_bcov_basic)]
 kd_looms_bcov_basic_cs <- consensus(kd_looms_bcov_basic, p = .5, rooted = TRUE)
 kd_looms_bcov_basic_cs <- consensus.edges(kd_looms_bcov_basic,
-                                        consensus.tree = kd_looms_bcov_basic_cs,
-                                        rooted = TRUE
+  consensus.tree = kd_looms_bcov_basic_cs,
+  rooted = TRUE
 )
 write.tree(
   kd_looms_bcov_basic_cs,
@@ -108,8 +108,8 @@ kd_looms_bcov_patterns <- read.nexus(
 kd_looms_bcov_patterns <- kd_looms_bcov_patterns[ceiling(length(kd_looms_bcov_patterns) * burnin):length(kd_looms_bcov_patterns)]
 kd_looms_bcov_patterns_cs <- consensus(kd_looms_bcov_patterns, p = .5, rooted = TRUE)
 kd_looms_bcov_patterns_cs <- consensus.edges(kd_looms_bcov_patterns,
-                                          consensus.tree = kd_looms_bcov_patterns_cs,
-                                          rooted = TRUE
+  consensus.tree = kd_looms_bcov_patterns_cs,
+  rooted = TRUE
 )
 write.tree(
   kd_looms_bcov_patterns_cs,
