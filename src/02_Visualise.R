@@ -433,7 +433,7 @@ kd_looms_cs <- kd_looms_bcov1111_cs_tree |>
 kd_cophylo <- cophylo(kd_lgs_cs, kd_looms_cs,
   methods = c("pre", "post"), rotate.multi = FALSE
 )
-kd_cophylo$trees[[2]]$tip.label <- stringi::stri_replace_all_fixed(
+kd_cophylo$trees[[2]]$tip.label <- stri_replace_all_fixed(
   str = kd_cophylo$trees[[2]]$tip.label, pattern = kd_looms$group,
   replacement = kd_looms$lng,
   vectorise_all = FALSE
