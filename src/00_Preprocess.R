@@ -19,12 +19,11 @@ write_binary_nexus <- function(x, file) {
     write_lines(file)
 }
 
-# Languages
+# Languages, no partitioning
 kd_lgs_lx <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
-  select(-concept) |>
-  pivot_longer(-c(concept_id, cogid), names_to = "Taxon") |>
+  pivot_longer(-c(concept, concept_id, cogid), names_to = "Taxon") |>
   filter(!is.na(value)) |>
-  distinct(concept_id, cogid, Taxon) |>
+  distinct(concept, concept_id, cogid, Taxon) |>
   rowid_to_column() |>
   pivot_wider(
     names_from = Taxon,
@@ -33,26 +32,60 @@ kd_lgs_lx <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
     values_fn = length
   ) |>
   pivot_longer(
-    cols = !(concept_id | cogid),
+    cols = !(concept | concept_id | cogid),
     names_to = "Taxon",
     values_to = "value"
   ) |>
   mutate(value = as.character(value)) |>
-  group_by(concept_id, Taxon) |>
+  group_by(concept, concept_id, Taxon) |>
   mutate(allzero = sum(value != "0") == 0) |>
   rowwise() |>
   mutate(value = ifelse(allzero, "?", value)) |>
   ungroup() |>
   mutate(id = paste0(concept_id, "_", cogid)) |>
-  select(Taxon, id, value) |>
-  pivot_wider(names_from = id, values_from = value) |>
-  arrange(Taxon)
+  select(Taxon, concept, concept_id, id, value) |>
+  arrange(concept_id)
 
 kd_lgs_matrix <- kd_lgs_lx |>
+  select(Taxon, id, value) |>
+  pivot_wider(names_from = id, values_from = value) |>
+  arrange(Taxon) |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
-write_binary_nexus(kd_lgs_matrix, here("data/kd-lgs/kd-lgs_bcov/kd-lgs.nex"))
+write_binary_nexus(
+  kd_lgs_matrix,
+  here("data/kd-lgs/kd-lgs_bcov/kd-lgs.nex")
+)
+
+# Languages, partitioned by concept
+kd_lgs_partition <- kd_lgs_lx |>
+  distinct(concept, concept_id, id) |>
+  mutate(concept = str_replace_all(concept, " +", "-")) |>
+  rowid_to_column() |>
+  select(concept, concept_id, rowid) |>
+  group_by(concept_id, concept) |>
+  summarise(charset = paste0(
+    "    charset concept_",
+    unique(concept_id),
+    "_",
+    unique(concept),
+    " = ",
+    min(rowid),
+    "-",
+    max(rowid), ";"
+  )) |>
+  pull(charset) |>
+  paste0(collapse = "\n")
+
+write_binary_nexus(
+  kd_lgs_matrix,
+  here("data/kd-lgs/kd-lgs_byconcept.nex")
+)
+write_file(str_glue("begin assumptions;\n{kd_lgs_partition}\nend;\n"),
+  here("data/kd-lgs/kd-lgs_byconcept.nex"),
+  append = TRUE
+)
 
 # Looms
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
