@@ -10,7 +10,6 @@ dir.create(here("output/data"))
 
 
 # Consensus trees --------------------------------------------------------------
-
 burnin <- .1
 
 # Languages
@@ -19,6 +18,8 @@ unzip(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"),
   junkpaths = TRUE,
   exdir = tmp
 )
+
+# Language trees
 kd_lgs_bcov <- read.nexus(paste0(tmp, "/kd-lgs_bcov.trees"))
 kd_lgs_bcov <- kd_lgs_bcov[ceiling(length(kd_lgs_bcov) * burnin):length(kd_lgs_bcov)]
 kd_lgs_bcov_cs <- consensus(kd_lgs_bcov, p = .5, rooted = TRUE)
@@ -30,6 +31,29 @@ kd_lgs_bcov_cs$root.edge.length <- 0
 write.tree(
   kd_lgs_bcov_cs,
   here("output/trees/kd-lgs_bcov_consensus.tree")
+)
+
+unlink(tmp, recursive = TRUE)
+
+# Language trees with multiple rates
+tmp <- "data/kd-lgs/kd-lgs_bcov_byconcept_temp/"
+
+unzip(here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.trees.zip"),
+      junkpaths = TRUE,
+      exdir = tmp
+)
+
+kd_lgs_byconcept <- read.nexus(paste0(tmp, "kd-lgs_bcov_byconcept.trees"))
+kd_lgs_byconcept <- kd_lgs_byconcept[ceiling(length(kd_lgs_byconcept) * burnin):length(kd_lgs_byconcept)]
+kd_lgs_byconcept_cs <- consensus(kd_lgs_byconcept, p = .5, rooted = TRUE)
+kd_lgs_byconcept_cs <- consensus.edges(kd_lgs_byconcept,
+                                  consensus.tree = kd_lgs_byconcept_cs,
+                                  rooted = TRUE
+)
+kd_lgs_byconcept_cs$root.edge.length <- 0
+write.tree(
+  kd_lgs_byconcept_cs,
+  here("output/trees/kd-lgs_bcov_byconcept_consensus.tree")
 )
 unlink(tmp, recursive = TRUE)
 

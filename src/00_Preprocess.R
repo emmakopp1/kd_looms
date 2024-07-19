@@ -259,17 +259,21 @@ write_file("End;",
 write_file("End;", here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"),
   append = TRUE
 )
+write_file("End;", here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.trees"),
+           append = TRUE
+)
 zip(
   here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"),
   here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees")
 )
+
 
 # Check the ESS values ---------------------------------------------------------
 
 burnin <- .1
 
 # Languages
-
+# One rate
 kd_lgs_bcov_log <- parse_beast_tracelog_file(
   here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.log")
 ) |>
@@ -283,6 +287,21 @@ kd_lgs_bcov_ess <- kd_lgs_bcov_log |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_lgs_bcov_ess, ESS < 200)
+
+# Multiple rates
+kd_lgs_byconcept_log <- parse_beast_tracelog_file(
+  here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.log")
+) |>
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  mutate(data = "kd-lgs_bcov")
+kd_lgs_bcov_byconcept_ess <- kd_lgs_byconcept_log |>
+  filter(burnin == FALSE) |>
+  select(-rowid, -burnin, -data) |>
+  calc_esses(sample_interval = max(kd_lgs_byconcept_log$Sample) / (nrow(kd_lgs_byconcept_log) - 1)) |>
+  as_tibble() |>
+  pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
+filter(kd_lgs_bcov_byconcept_ess, ESS < 200)
 
 # Looms 1000
 
@@ -385,6 +404,7 @@ filter(kd_looms_bcov_patterns_ess, ESS < 200)
 
 bind_rows(
   kd_lgs_bcov_log,
+  kd_lgs_bcov_byconceptlog,
   kd_looms_bcov1000_log,
   kd_looms_bcov1111_log,
   kd_looms_bcov8421_log,
