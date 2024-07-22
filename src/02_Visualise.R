@@ -125,7 +125,7 @@ kd_lgs <- read_csv(here("data/kd-lgs/kd-lgs_datapoints.csv")) |>
   mutate(lng_group = fct_inorder(lng_group))
 
 
-# Consensus trees for looms ----------------------------------------------------
+# Consensus trees --------------------------------------------------------------
 
 # Function to draw all trees with the same style
 cs_tree <- function(tr, fontsize = base_font_size) {
