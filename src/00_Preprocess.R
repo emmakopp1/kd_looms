@@ -273,7 +273,7 @@ zip(
 burnin <- .1
 
 # Languages
-# One rate
+## Single rate
 kd_lgs_bcov_log <- parse_beast_tracelog_file(
   here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.log")
 ) |>
@@ -288,7 +288,7 @@ kd_lgs_bcov_ess <- kd_lgs_bcov_log |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_lgs_bcov_ess, ESS < 200)
 
-# Multiple rates
+## Multiple rates
 kd_lgs_byconcept_log <- parse_beast_tracelog_file(
   here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.log")
 ) |>

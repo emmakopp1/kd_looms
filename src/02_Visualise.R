@@ -159,7 +159,7 @@ cs_tree <- function(tr, fontsize = base_font_size) {
     )
 }
 
-# Languages
+# Languages, single rate
 kd_lgs_bcov_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_consensus.tree"))
 kd_lgs_bcov_cs_tree$node.label <- round(
   as.numeric(kd_lgs_bcov_cs_tree$node.label),
@@ -198,6 +198,46 @@ ggsave(here("output/figures/kd-lgs_bcov_cs_tree.pdf"),
   device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
 )
 plot_crop(here("output/figures/kd-lgs_bcov_cs_tree.pdf"))
+
+# Languages, varying rates by concept
+kd_lgs_bcov_byconcept_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_byconcept_consensus.tree"))
+kd_lgs_bcov_byconcept_cs_tree$node.label <- round(
+  as.numeric(kd_lgs_bcov_byconcept_cs_tree$node.label),
+  2
+) * 100
+kd_lgs_bcov_byconcept_cs_tree$root.edge.length <- 0
+kd_lgs_bcov_byconcept_cs_tree$node.label[1] <- NA
+kd_lgs_bcov_byconcept_cs_tree$tip.label <- str_replace_all(
+  kd_lgs_bcov_byconcept_cs_tree$tip.label,
+  "_",
+  " "
+)
+
+kd_lgs_bcov_byconcept_cs_tree_plot <- kd_lgs_bcov_byconcept_cs_tree |>
+  fortify() |>
+  left_join(kd_lgs, by = join_by(label == label)) |>
+  cs_tree(base_font_size - 1) +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_lgs_bcov_byconcept_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  scale_fill_identity(
+    guide = guide_legend(),
+    labels = levels(kd_lgs$lng_group)
+  ) +
+  guides(fill = guide_legend(
+    title = "Language group",
+    override.aes = aes(label = "     ")
+  )) +
+  theme(
+    aspect.ratio = 2.25,
+    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
+  )
+ggsave(here("output/figures/kd-lgs_bcov_byconcept_cs_tree.pdf"),
+       kd_lgs_bcov_byconcept_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
+)
+plot_crop(here("output/figures/kd-lgs_bcov_byconcept_cs_tree.pdf"))
 
 # Looms, level 1 characters only
 kd_looms_bcov1000_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1000_consensus.tree"))
@@ -616,6 +656,52 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates ---------------------------------------------------------------
 
+# Languages
+kd_lgs_mu_byconcept <- read_csv(here("output/data/kd-lgs_mu_byconcept.csv"))
+
+kd_lgs_mu_plot <- kd_lgs_mu_byconcept |>
+  ggplot(aes(y = concept, x = rate)) +
+  stat_density_ridges(
+    aes(fill = .5 - abs(.5 - after_stat(ecdf))),
+    geom = "density_ridges_gradient",
+    calc_ecdf = TRUE,
+    # scale = 1,
+    panel_scaling = FALSE,
+    color = "gray50",
+    linewidth = lwd
+  ) +
+  # stat_summary(
+  #   geom = "text",
+  #   fun = "median",
+  #   aes(label = round(..x.., 2)),
+  #   family = base_font,
+  #   size = base_font_size / .pt,
+  #   vjust = 1.5
+  # ) +
+  ylab("Concept") +
+  xlab("Mutation rate") +
+  xlim(0, 3.5) +
+  scale_fill_distiller(
+    palette = "PuBu",
+    direction = 1,
+    limits = c(0, .5),
+    name = "Tail\nprobability"
+  ) +
+  theme_minimal(base_size = base_font_size, base_family = base_font) +
+  xtheme +
+  theme(
+    plot.margin = margin(0, 0, 0, 0, unit = "line"),
+    aspect.ratio = 1.618,
+    legend.position = "right"
+  )
+
+ggsave(here("output/figures/kd-lgs_mu_plot.pdf"),
+       kd_lgs_mu_plot,
+       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd-lgs_mu_plot.pdf"))
+
+# Looms
 kd_looms_mu_bylevel <- read_csv(here("output/data/kd-looms_mu_bylevel.csv"))
 
 kd_looms_mu_plot <- kd_looms_mu_bylevel |>

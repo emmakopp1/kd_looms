@@ -12,14 +12,12 @@ dir.create(here("output/data"))
 # Consensus trees --------------------------------------------------------------
 burnin <- .1
 
-# Languages
+# Languages, single rate
 tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"),
   junkpaths = TRUE,
   exdir = tmp
 )
-
-# Language trees
 kd_lgs_bcov <- read.nexus(paste0(tmp, "/kd-lgs_bcov.trees"))
 kd_lgs_bcov <- kd_lgs_bcov[ceiling(length(kd_lgs_bcov) * burnin):length(kd_lgs_bcov)]
 kd_lgs_bcov_cs <- consensus(kd_lgs_bcov, p = .5, rooted = TRUE)
@@ -32,27 +30,24 @@ write.tree(
   kd_lgs_bcov_cs,
   here("output/trees/kd-lgs_bcov_consensus.tree")
 )
-
 unlink(tmp, recursive = TRUE)
 
-# Language trees with multiple rates
-tmp <- "data/kd-lgs/kd-lgs_bcov_byconcept_temp/"
-
+# Languages, varying rates by concept
+tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.trees.zip"),
       junkpaths = TRUE,
       exdir = tmp
 )
-
-kd_lgs_byconcept <- read.nexus(paste0(tmp, "kd-lgs_bcov_byconcept.trees"))
-kd_lgs_byconcept <- kd_lgs_byconcept[ceiling(length(kd_lgs_byconcept) * burnin):length(kd_lgs_byconcept)]
-kd_lgs_byconcept_cs <- consensus(kd_lgs_byconcept, p = .5, rooted = TRUE)
-kd_lgs_byconcept_cs <- consensus.edges(kd_lgs_byconcept,
-                                  consensus.tree = kd_lgs_byconcept_cs,
-                                  rooted = TRUE
+kd_lgs_bcov_byconcept <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.trees"))
+kd_lgs_bcov_byconcept <- kd_lgs_bcov_byconcept[ceiling(length(kd_lgs_bcov_byconcept) * burnin):length(kd_lgs_bcov_byconcept)]
+kd_lgs_bcov_byconcept_cs <- consensus(kd_lgs_bcov_byconcept, p = .5, rooted = TRUE)
+kd_lgs_bcov_byconcept_cs <- consensus.edges(kd_lgs_bcov_byconcept,
+  consensus.tree = kd_lgs_bcov_byconcept_cs,
+  rooted = TRUE
 )
-kd_lgs_byconcept_cs$root.edge.length <- 0
+kd_lgs_bcov_byconcept_cs$root.edge.length <- 0
 write.tree(
-  kd_lgs_byconcept_cs,
+  kd_lgs_bcov_byconcept_cs,
   here("output/trees/kd-lgs_bcov_byconcept_consensus.tree")
 )
 unlink(tmp, recursive = TRUE)
@@ -197,10 +192,48 @@ write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary.csv"))
 
 
 # Mutation rates ---------------------------------------------------------------
+burnin <- .1
 
+# Languages
+kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |> 
+  count(concept_id)
+
+kd_lgs_mu_byconcept <- parse_beast_tracelog_file(
+  here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.log")
+) |>
+  as_tibble() |> 
+  select(c(Sample,starts_with("mutationRate")))
+
+kd_lgs_mu_byconcept_tb <- kd_lgs_mu_byconcept |>
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  filter(burnin == FALSE) |>
+  select(-burnin, -rowid) |>
+  pivot_longer(-Sample, names_to = "concept", values_to = "rate") |>
+  mutate(concept = str_remove_all(concept, "^mutat.+concept_"))
+
+write_csv(kd_lgs_mu_byconcept_tb, here("output/data/kd-lgs_mu_byconcept.csv"))
+
+kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
+  group_by(concept) |>
+  summarise(
+    mean = mean(rate),
+    median = median(rate),
+    sd = sd(rate),
+    HPDI_lower = hdi(rate)["lower"],
+    HPDI_upper = hdi(rate)["upper"]
+  ) |>
+  mutate(concept_id = str_remove(concept, "_.+$")) |> 
+  left_join(kd_lgs_concepts) |>
+  relocate(n, .after = concept) |>
+  rename(n_cogsets = n) |> 
+  select(-concept_id)
+
+write_csv(kd_lgs_mu_summary, here("output/data/kd-lgs_mu_summary.csv"))
+
+# Looms
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
   select(code, level)
-burnin <- .1
 
 kd_looms_mu_bylevel <- parse_beast_tracelog_file(
   here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.log")
