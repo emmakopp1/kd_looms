@@ -69,7 +69,27 @@ here
 You can install these packages using the following command in R:
 
 ```R
-install.packages(c("phangorn","phytools","TreeTools","tracerer","tidyverse","HDInterval","sf","rnaturalearth","ggspatial","stringi","ggtree","ggthemes","ggridges","ggtext","ggstar","ggforce","knitr","kableExtra","patchwork"))
+install.packages(c(
+    "phangorn",
+    "phytools",
+    "TreeTools",
+    "tracerer",
+    "tidyverse",
+    "HDInterval",
+    "sf",
+    "rnaturalearth",
+    "ggspatial",
+    "stringi",
+    "ggtree",
+    "ggthemes",
+    "ggridges",
+    "ggtext",
+    "ggstar",
+    "ggforce",
+    "knitr",
+    "kableExtra",
+    "patchwork"))
+```
 
 
 
