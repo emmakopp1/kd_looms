@@ -3,27 +3,27 @@
 This repository contains the following files:
 
 `
-└── code.Rproj
+code.Rproj
+data/
+├── images/
+├── kd-lgs/
+│   ├── kd-lgs_bcov/
+│   ├── kd-lgs_bcov_byconcept/
+│   ├── kd-lgs_datapoints.csv
+│   └── kd-lgs_lx.csv
+├── kd-looms/
+├── Kra-DaiLooms28master-2.xlsx
+└── kd_looms_matrix_levels.csv
+output/
 ├── data/
-│ ├── images/
-│ ├── kd-lgs/
-│ │ ├── kd-lgs_bcov/
-│ │ ├── kd-lgs_bcov_byconcept/
-│ │ ├── kd-lgs_datapoints.csv
-│ │ └── kd-lgs_lx.csv
-│ ├── kd-looms/
-│ └── Kra-DaiLooms28master-2.xlsx
-│ └── kd_looms_matrix_levels.csv
-├── output/
-│ ├── data/
-│ ├── figures/
-│ ├── tables/
-│ └── trees/
-├── src/
-│ ├── 00_Preprocess.R
-│ ├── 01_Transform.R
-│ └── 02_Visualise.R
-└── README.md
+├── figures/
+├── tables/
+└── trees/
+src/
+├── 00_Preprocess.R
+├── 01_Transform.R
+└── 02_Visualise.R
+README.md
 `
 
 The repository `data`include `images` where we stock all the images found in the article.`kd-lgs` contains the data used to infer the language phylogeny with BEAST.  We used `kd-lgs-datapoints.csv`and `kd-lgs_lx.csv` to create `kd-lgs_bcov`and `kd-lgs_bcov_byconcept`.  The two last repository contains nexus, the xml, the trees and the log files. `kd-looms`contains all the model tested to infer looms phylogeny and the input data. The four numbers at the end of each repository represent the weighted attributed to level of looms. 
