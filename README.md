@@ -32,12 +32,44 @@ The repository `src` contains three files. `00_Preprocess.R` have to objective. 
 
 # Run the project 
 
-To run the project, you must run in this order `00_Preprocess.R`,   `01_Transform.R` and `02_Visualize.R`.
+1. **Preprocess Data**
+   - Run `00_Preprocess.R` to create the nexus files for languages and looms data and check BEAST outputs parameters are valids.
+
+2. **Transform Data**
+   - Execute `01_Transform.R` to generate consensus trees, compute internal nodes depth and mutation rates when needed. 
+
+3. **Visualise Data**
+   - Run `02_Visualise.R` to generate visualizations from the transformed data.
+
 
 # Dependencies
+Ensure you have the following R packages installed:
 
-We used the following packages : here, phangorn, phytools, TreeTools, tracerer, tidyverse, HDInterval, sf, rnaturalearth, ggspatial, stringi, ggtree, ggthemes, ggridges, ggtext, ggstar, ggforce, knitr, kableExtra, patchwork
+here
+- `phangorn`
+- `phytools`
+- `TreeTools`
+- `tracerer`
+- `tidyverse`
+- `HDInterval`
+- `sf`
+- `rnaturalearth`
+- `ggspatial`
+- `stringi`
+- `ggtree`
+- `ggthemes`
+- `ggridges`
+- `ggtext`
+- `ggstar`
+- `ggforce`
+- `knitr`
+- `kableExtra`
+- `patchwork`
 
+You can install these packages using the following command in R:
+
+```R
+install.packages(c("phangorn","phytools","TreeTools","tracerer","tidyverse","HDInterval","sf","rnaturalearth","ggspatial","stringi","ggtree","ggthemes","ggridges","ggtext","ggstar","ggforce","knitr","kableExtra","patchwork"))
 
 
 
