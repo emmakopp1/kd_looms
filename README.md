@@ -5,24 +5,24 @@ This repository contains the following files:
 `
 └── code.Rproj
 ├── data/
-│   ├── images/
-│   ├── kd-lgs/
-│   │   ├── kd-lgs_bcov/
-│   │   ├── kd-lgs_bcov_byconcept/
-│   │   ├── kd-lgs_datapoints.csv
-│   │   └── kd-lgs_lx.csv
-│   ├── kd-looms/
-│   └── Kra-DaiLooms28master-2.xlsx
-│   └── kd_looms_matrix_levels.csv
+│ ├── images/
+│ ├── kd-lgs/
+│ │ ├── kd-lgs_bcov/
+│ │ ├── kd-lgs_bcov_byconcept/
+│ │ ├── kd-lgs_datapoints.csv
+│ │ └── kd-lgs_lx.csv
+│ ├── kd-looms/
+│ └── Kra-DaiLooms28master-2.xlsx
+│ └── kd_looms_matrix_levels.csv
 ├── output/
-│   ├── data/
-│   ├── figures/
-│   ├── tables/
-│   └── trees/
+│ ├── data/
+│ ├── figures/
+│ ├── tables/
+│ └── trees/
 ├── src/
-│   ├── 00_Preprocess.R
-│   ├── 01_Transform.R
-│   └── 02_Visualise.R
+│ ├── 00_Preprocess.R
+│ ├── 01_Transform.R
+│ └── 02_Visualise.R
 └── README.md
 `
 
