@@ -2,7 +2,7 @@
 
 This repository contains the following files:
 
-
+`
 └── code.Rproj
 ├── data/
 │   ├── images/
@@ -24,7 +24,7 @@ This repository contains the following files:
 │   ├── 01_Transform.R
 │   └── 02_Visualise.R
 └── README.md
-
+`
 
 The repository `data`include `images` where we stock all the images found in the article.`kd-lgs` contains the data used to infer the language phylogeny with BEAST.  We used `kd-lgs-datapoints.csv`and `kd-lgs_lx.csv` to create `kd-lgs_bcov`and `kd-lgs_bcov_byconcept`.  The two last repository contains nexus, the xml, the trees and the log files. `kd-looms`contains all the model tested to infer looms phylogeny and the input data. The four numbers at the end of each repository represent the weighted attributed to level of looms. 
 
