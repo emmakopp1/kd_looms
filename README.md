@@ -45,7 +45,7 @@ The repository `src` contains three files. `00_Preprocess.R` have to objective. 
 # Dependencies
 Ensure you have the following R packages installed:
 
-here
+- `here`
 - `phangorn`
 - `phytools`
 - `TreeTools`
