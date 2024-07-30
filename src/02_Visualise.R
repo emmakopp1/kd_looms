@@ -159,7 +159,8 @@ cs_tree <- function(tr, fontsize = base_font_size) {
     )
 }
 
-# Languages, single rate
+# Languages
+
 kd_lgs_bcov_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_consensus.tree"))
 kd_lgs_bcov_cs_tree$node.label <- round(
   as.numeric(kd_lgs_bcov_cs_tree$node.label),
@@ -199,47 +200,9 @@ ggsave(here("output/figures/kd-lgs_bcov_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-lgs_bcov_cs_tree.pdf"))
 
-# Languages, varying rates by concept
-kd_lgs_bcov_byconcept_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_byconcept_consensus.tree"))
-kd_lgs_bcov_byconcept_cs_tree$node.label <- round(
-  as.numeric(kd_lgs_bcov_byconcept_cs_tree$node.label),
-  2
-) * 100
-kd_lgs_bcov_byconcept_cs_tree$root.edge.length <- 0
-kd_lgs_bcov_byconcept_cs_tree$node.label[1] <- NA
-kd_lgs_bcov_byconcept_cs_tree$tip.label <- str_replace_all(
-  kd_lgs_bcov_byconcept_cs_tree$tip.label,
-  "_",
-  " "
-)
+# Looms
 
-kd_lgs_bcov_byconcept_cs_tree_plot <- kd_lgs_bcov_byconcept_cs_tree |>
-  fortify() |>
-  left_join(kd_lgs, by = join_by(label == label)) |>
-  cs_tree(base_font_size - 1) +
-  geom_rootedge(
-    max(node.depth.edgelength(kd_lgs_bcov_byconcept_cs_tree)) * .025,
-    linewidth = lwd
-  ) +
-  scale_fill_identity(
-    guide = guide_legend(),
-    labels = levels(kd_lgs$lng_group)
-  ) +
-  guides(fill = guide_legend(
-    title = "Language group",
-    override.aes = aes(label = "     ")
-  )) +
-  theme(
-    aspect.ratio = 2.25,
-    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
-  )
-ggsave(here("output/figures/kd-lgs_bcov_byconcept_cs_tree.pdf"),
-       kd_lgs_bcov_byconcept_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
-)
-plot_crop(here("output/figures/kd-lgs_bcov_byconcept_cs_tree.pdf"))
-
-# Looms, level 1 characters only
+## Looms, level 1 characters only
 kd_looms_bcov1000_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1000_consensus.tree"))
 kd_looms_bcov1000_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1000_cs_tree$node.label), 2) * 100
 kd_looms_bcov1000_cs_tree$node.label[1] <- NA
@@ -261,7 +224,7 @@ ggsave(here("output/figures/kd-looms_bcov1000_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_bcov1000_cs_tree.pdf"))
 
-# Looms, all levels, no weighting
+## Looms, all levels, no weighting
 kd_looms_bcov1111_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_consensus.tree"))
 kd_looms_bcov1111_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1111_cs_tree$node.label), 2) * 100
 kd_looms_bcov1111_cs_tree$node.label[1] <- NA
@@ -285,7 +248,7 @@ ggsave(here("output/figures/kd-looms_bcov1111_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_bcov1111_cs_tree.pdf"))
 
-# Looms, weighted characters
+## Looms, weighted characters
 kd_looms_bcov8421_cs_tree <- read.tree(here("output/trees/kd-looms_bcov8421_consensus.tree"))
 kd_looms_bcov8421_cs_tree$node.label <- round(as.numeric(kd_looms_bcov8421_cs_tree$node.label), 2) * 100
 kd_looms_bcov8421_cs_tree$node.label[1] <- NA
@@ -306,7 +269,7 @@ ggsave(here("output/figures/kd-looms_bcov8421_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_bcov8421_cs_tree.pdf"))
 
-# Looms, 4 variable rates
+## Looms, 4 variable rates
 kd_looms_ctmc4_cs_tree <- read.tree(here("output/trees/kd-looms_ctmc4_consensus.tree"))
 kd_looms_ctmc4_cs_tree$node.label <- round(
   as.numeric(kd_looms_ctmc4_cs_tree$node.label),
@@ -334,7 +297,7 @@ ggsave(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"))
 
-# Looms, basic features only
+## Looms, basic features only
 kd_looms_bcov_basic_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_basic_consensus.tree"))
 kd_looms_bcov_basic_cs_tree$node.label <- round(as.numeric(kd_looms_bcov_basic_cs_tree$node.label), 2) * 100
 kd_looms_bcov_basic_cs_tree$node.label[1] <- NA
@@ -357,7 +320,7 @@ ggsave(here("output/figures/kd-looms_bcov_basic_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_bcov_basic_cs_tree.pdf"))
 
-# Looms, pattern features only
+## Looms, pattern features only
 kd_looms_bcov_patterns_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_patterns_consensus.tree"))
 kd_looms_bcov_patterns_cs_tree$node.label <- round(as.numeric(kd_looms_bcov_patterns_cs_tree$node.label), 2) * 100
 kd_looms_bcov_patterns_cs_tree$node.label[1] <- NA
@@ -496,15 +459,6 @@ kd_loom_tree <- ggtree(kd_cophylo$trees[[2]],
   size = lwd,
   branch.length = "none"
 )
-# flip(1, 33)
-#   flip(32, 43) |>
-#   rotate(35) |>
-#   rotate(54) |>
-#   flip(50, 44) |>
-#   rotate(50) |>
-#   rotate(44) |>
-#   rotate(45) |>
-#   rotate(55)
 
 kd_lng_tree_data <- kd_lng_tree$data |>
   mutate(lng = label) |>
@@ -523,7 +477,6 @@ kd_loom_tree_data$x <- kd_loom_tree_data$x + (max(c(kd_lng_tree_data$x, kd_loom_
 kd_loom_tree_data$y <- ((kd_loom_tree_data$y - min(kd_loom_tree_data$y)) / (max(kd_loom_tree_data$y) - min(kd_loom_tree_data$y))) * (max(ry) - min(ry)) + min(ry)
 
 kd_lng_loom_tree <- kd_lng_tree +
-  # flip(105, 147) +#|> flip(106,132) +
   geom_tree(data = kd_loom_tree_data, linewidth = lwd)
 kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) %>%
   filter(!is.na(group) & !is.na(lng)) |>
@@ -570,12 +523,6 @@ kd_cophylo_plot <- kd_lng_loom_tree +
     size = (base_font_size - 2) / .pt,
     family = base_font2, hjust = 1
   ) +
-  # geom_tippoint(data = kd_lng_tree_data, aes(
-  #   color = color,
-  #   fill = color,
-  #   shape = !is.na(group),
-  #   size = !is.na(group)
-  # )) +
   scale_color_identity(
     guide = guide_legend(
       order = 1,
@@ -606,15 +553,6 @@ kd_cophylo_plot <- kd_lng_loom_tree +
     family = base_font2,
     lineheight = 1
   ) +
-  # geom_tippoint(
-  #   data = kd_loom_tree_data,
-  #   aes(
-  #     color = color,
-  #     fill = color,
-  #     shape = group %in% kd_lng_tree_data$group,
-  #     size = group %in% kd_lng_tree_data$group
-  #   )
-  # ) +
   scale_color_identity(
     guide = guide_legend(
       order = 2,
@@ -656,52 +594,6 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates ---------------------------------------------------------------
 
-# Languages
-kd_lgs_mu_byconcept <- read_csv(here("output/data/kd-lgs_mu_byconcept.csv"))
-
-kd_lgs_mu_plot <- kd_lgs_mu_byconcept |>
-  ggplot(aes(y = concept, x = rate)) +
-  stat_density_ridges(
-    aes(fill = .5 - abs(.5 - after_stat(ecdf))),
-    geom = "density_ridges_gradient",
-    calc_ecdf = TRUE,
-    # scale = 1,
-    panel_scaling = FALSE,
-    color = "gray50",
-    linewidth = lwd
-  ) +
-  # stat_summary(
-  #   geom = "text",
-  #   fun = "median",
-  #   aes(label = round(..x.., 2)),
-  #   family = base_font,
-  #   size = base_font_size / .pt,
-  #   vjust = 1.5
-  # ) +
-  ylab("Concept") +
-  xlab("Mutation rate") +
-  xlim(0, 3.5) +
-  scale_fill_distiller(
-    palette = "PuBu",
-    direction = 1,
-    limits = c(0, .5),
-    name = "Tail\nprobability"
-  ) +
-  theme_minimal(base_size = base_font_size, base_family = base_font) +
-  xtheme +
-  theme(
-    plot.margin = margin(0, 0, 0, 0, unit = "line"),
-    aspect.ratio = 1.618,
-    legend.position = "right"
-  )
-
-ggsave(here("output/figures/kd-lgs_mu_plot.pdf"),
-       kd_lgs_mu_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
-)
-plot_crop(here("output/figures/kd-lgs_mu_plot.pdf"))
-
-# Looms
 kd_looms_mu_bylevel <- read_csv(here("output/data/kd-looms_mu_bylevel.csv"))
 
 kd_looms_mu_plot <- kd_looms_mu_bylevel |>
@@ -930,15 +822,21 @@ Tsw_imgs <- paste0(
   ".png' height=60>"
 )
 Tsw_colors <- unique(filter(kd_looms_pts, lng_group_code == "Tsw")$color)
-Tsw_shapes <- starshape_pal()(length(levels(kd_looms_pts$color)))[as.numeric(unique(filter(kd_looms_pts, lng_group_code == "Tsw")$color))]
+Tsw_shapes <- starshape_pal()(
+  length(levels(kd_looms_pts$color))
+)[as.numeric(unique(filter(kd_looms_pts, lng_group_code == "Tsw")$color))]
 Tsw_labels <- unique(filter(kd_looms_pts, lng_group_code == "Tsw")$loom_type) |>
-  str_wrap(20) |> 
-  paste0("\n", Tsw_imgs) |> 
+  str_wrap(20) |>
+  paste0("\n", Tsw_imgs) |>
   str_replace_all("\\n", "<br/>")
 
 kd_looms_Tsw_map <- bg_map +
   geom_mark_ellipse(
-    data = filter(kd_looms_pts, lng_group_code == "Tsw" & loom_type_code == "BFYRH") |> df_spatial(),
+    data = filter(
+      kd_looms_pts,
+      lng_group_code == "Tsw" & loom_type_code == "BFYRH"
+    ) |>
+      df_spatial(),
     aes(x = x, y = y, color = color, fill = color),
     alpha = .2,
     expand = .02,
