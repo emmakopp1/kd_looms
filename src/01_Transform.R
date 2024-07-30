@@ -179,7 +179,7 @@ burnin <- .1
 
 # Languages
 
-kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |> 
+kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   count(concept_id)
 
 kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
@@ -191,15 +191,16 @@ kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
     HPDI_lower = hdi(rate)["lower"],
     HPDI_upper = hdi(rate)["upper"]
   ) |>
-  mutate(concept_id = str_remove(concept, "_.+$")) |> 
+  mutate(concept_id = str_remove(concept, "_.+$")) |>
   left_join(kd_lgs_concepts) |>
   relocate(n, .after = concept) |>
-  rename(n_cogsets = n) |> 
+  rename(n_cogsets = n) |>
   select(-concept_id)
 
 write_csv(kd_lgs_mu_summary, here("output/data/kd-lgs_mu_summary.csv"))
 
 # Looms
+
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
   select(code, level)
 
