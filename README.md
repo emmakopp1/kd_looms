@@ -11,7 +11,6 @@ The repository has the following structure:
 ├── kd-looms.Rproj                                 # RStudio project file
 ├── README.md
 ├── data                                          # Primary data
-│   ├── Kra-DaiLooms28master-2.xlsx
 │   ├── images                                     # Illusrative drawing of the looms
 │   │   ├── BFcant.png
 │   │   ├── BFcant.svg
@@ -36,6 +35,7 @@ The repository has the following structure:
 │   │       ├── kd-lgs_bcov.xml
 │   │       └── kd-lgs.nex
 │   └── kd-looms                                   # Looms data
+│       ├── kd-looms_data.ods                      # Raw data and sources for the looms
 │       ├── kd-looms_datapoints.csv                # Geographical coordinates of the looms
 │       ├── kd-looms_characters.csv                # Information about the looms characters
 │       ├── kd-looms_matrix.csv                    # Raw character-state matrix for the looms
