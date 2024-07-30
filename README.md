@@ -1,4 +1,6 @@
-## Structure of the repository
+# Read me
+
+## Description
 
 This is the repository containing the data and code for the article Contrasting modes of cultural evolution: Kra-Dai languages and weaving technologies, by Christopher D. Buckley, Emma Kopp, Thomas Pellard, Robin J. Ryder, and Guillaume Jacques.
 
@@ -108,42 +110,51 @@ The repository has the following structure:
     └── 02_Visualise.R
 ```
 
-The repository `src` contains three files. `00_Preprocess.R` have to objective. It creates the nexus files from the csv files for language and looms data. In particular, for looms data, it weights the according to the differents choosen levels. It also check that traces and ESS outputs after the beast analysis are valids. `01_Transform.R` generates the consensus trees, ages of internal nodes (MRCA's) and mutation rates for analysis where we allow multiples evolution rates. The file `02_Visualize.R` generates the figures in `output`.
-
-## Run the project
+## Running the project
 
 1.  **Preprocess data**
     -   Run `00_Preprocess.R` to create the NEXUS files for languages and looms data, and to adjust and check the BEAST outputs.
 2.  **Transform data**
     -   Run `01_Transform.R` to generate consensus trees, compute internal nodes depth and mutation rates when needed.
 3.  **Visualise data**
-    -   Run `02_Visualise.R` to generate the figures and tables.
+    -   Run `02_Visualise.R` to generate the figures and tables used in the article.
 
-## Dependencies
+## Requirements
 
-The R packages listed below are needed to run the analysis, and they can be installed with the following command in R:
+The R packages listed below are needed to run the analysis, and they can be installed with the following command in R (<https://www.r-project.org/>):
 
 ``` r
 install.packages(c(
-    "phangorn",
-    "phytools",
-    "TreeTools",
-    "tracerer",
-    "tidyverse",
-    "HDInterval",
-    "sf",
-    "rnaturalearth",
-    "ggspatial",
-    "stringi",
-    "ggtree",
-    "ggthemes",
-    "ggridges",
-    "ggtext",
-    "ggstar",
-    "ggforce",
-    "knitr",
-    "kableExtra",
-    "patchwork"))
+  "HDInterval",
+  "TreeTools",
+  "ggforce",
+  "ggnewscale",
+  "ggridges",
+  "ggspatial",
+  "ggstar",
+  "ggtext",
+  "ggthemes",
+  "ggtree",
+  "here",
+  "kableExtra",
+  "knitr",
+  "patchwork",
+  "phangorn",
+  "phytools",
+  "rnaturalearth",
+  "sf",
+  "stringi",
+  "tidyverse",
+  "tracerer",
+  "utils"
+))
 ```
 
 The Noto Sans Condensed, Noto Sans SemiCondensed, and Noto Sans ExtraCondensed free fonts are also needed to produce the figures. They are available at <https://notofonts.github.io/latin-greek-cyrillic/>.
+
+Phylogenetic analyses require the BEAST software v2.6.7 (<https://www.beast2.org/>).
+The additional packages Babel, CoupledMCMC, and SA for BEAST are also needed.
+
+## License
+
+This dataset and code is licensed under a CC-BY-4.0 license (<https://creativecommons.org/licenses/by/4.0/>).
