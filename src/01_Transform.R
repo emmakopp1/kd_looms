@@ -12,7 +12,8 @@ dir.create(here("output/data"))
 # Consensus trees --------------------------------------------------------------
 burnin <- .1
 
-# Languages, single rate
+# Languages
+
 tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"),
   junkpaths = TRUE,
@@ -32,27 +33,9 @@ write.tree(
 )
 unlink(tmp, recursive = TRUE)
 
-# Languages, varying rates by concept
-tmp <- tempdir()
-unzip(here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.trees.zip"),
-      junkpaths = TRUE,
-      exdir = tmp
-)
-kd_lgs_bcov_byconcept <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.trees"))
-kd_lgs_bcov_byconcept <- kd_lgs_bcov_byconcept[ceiling(length(kd_lgs_bcov_byconcept) * burnin):length(kd_lgs_bcov_byconcept)]
-kd_lgs_bcov_byconcept_cs <- consensus(kd_lgs_bcov_byconcept, p = .5, rooted = TRUE)
-kd_lgs_bcov_byconcept_cs <- consensus.edges(kd_lgs_bcov_byconcept,
-  consensus.tree = kd_lgs_bcov_byconcept_cs,
-  rooted = TRUE
-)
-kd_lgs_bcov_byconcept_cs$root.edge.length <- 0
-write.tree(
-  kd_lgs_bcov_byconcept_cs,
-  here("output/trees/kd-lgs_bcov_byconcept_consensus.tree")
-)
-unlink(tmp, recursive = TRUE)
+# Looms
 
-# Looms, level 1 characters only
+## Looms, level 1 characters only
 kd_looms_bcov1000 <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees")
 )
@@ -67,7 +50,7 @@ write.tree(
   here("output/trees/kd-looms_bcov1000_consensus.tree")
 )
 
-# Looms, all levels, no weighting
+## Looms, all levels, no weighting
 kd_looms_bcov1111 <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees")
 )
@@ -82,7 +65,7 @@ write.tree(
   here("output/trees/kd-looms_bcov1111_consensus.tree")
 )
 
-# Looms, weighted characters
+## Looms, weighted characters
 kd_looms_bcov8421 <- read.nexus(
   here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees")
 )
@@ -97,7 +80,7 @@ write.tree(
   here("output/trees/kd-looms_bcov8421_consensus.tree")
 )
 
-# Looms, 4 variable rates
+## Looms, 4 variable rates
 kd_looms_ctmc4 <- read.nexus(
   here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.trees")
 )
@@ -112,7 +95,7 @@ write.tree(
   here("output/trees/kd-looms_ctmc4_consensus.tree")
 )
 
-# Looms, basic features only
+## Looms, basic features only
 kd_looms_bcov_basic <- read.nexus(
   here("data/kd-looms/kd-looms_bcov_basic/kd-looms_bcov_basic.trees")
 )
@@ -127,7 +110,7 @@ write.tree(
   here("output/trees/kd-looms_bcov_basic_consensus.tree")
 )
 
-# Looms, pattern features only
+## Looms, pattern features only
 kd_looms_bcov_patterns <- read.nexus(
   here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_bcov_patterns.trees")
 )
@@ -195,24 +178,9 @@ write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary.csv"))
 burnin <- .1
 
 # Languages
+
 kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |> 
   count(concept_id)
-
-kd_lgs_mu_byconcept <- parse_beast_tracelog_file(
-  here("data/kd-lgs/kd-lgs_bcov_byconcept/kd-lgs_bcov_byconcept.log")
-) |>
-  as_tibble() |> 
-  select(c(Sample,starts_with("mutationRate")))
-
-kd_lgs_mu_byconcept_tb <- kd_lgs_mu_byconcept |>
-  rowid_to_column() |>
-  mutate(burnin = rowid <= max(rowid) * burnin) |>
-  filter(burnin == FALSE) |>
-  select(-burnin, -rowid) |>
-  pivot_longer(-Sample, names_to = "concept", values_to = "rate") |>
-  mutate(concept = str_remove_all(concept, "^mutat.+concept_"))
-
-write_csv(kd_lgs_mu_byconcept_tb, here("output/data/kd-lgs_mu_byconcept.csv"))
 
 kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
   group_by(concept) |>
