@@ -319,7 +319,7 @@ kd_looms_ctmc4_ess <- kd_looms_ctmc4_log |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_ctmc4_ess, ESS < 200)
 
-## Looms basic
+## Looms, basic features only
 kd_looms_bcov_basic_log <- parse_beast_tracelog_file(
   here("data/kd-looms/kd-looms_bcov_basic/kd-looms_bcov_basic.log")
 ) |>
@@ -334,7 +334,7 @@ kd_looms_bcov_basic_ess <- kd_looms_bcov_basic_log |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_bcov_basic_ess, ESS < 200)
 
-## Looms patterns
+## Looms, pattern features only
 kd_looms_bcov_patterns_log <- parse_beast_tracelog_file(
   here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_bcov_patterns.log")
 ) |>
