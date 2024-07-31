@@ -134,7 +134,6 @@ install.packages(c(
   "ggstar",
   "ggtext",
   "ggthemes",
-  "ggtree",
   "here",
   "kableExtra",
   "knitr",
@@ -148,6 +147,11 @@ install.packages(c(
   "tracerer",
   "utils"
 ))
+
+if (!require("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install("ggtree")
 ```
 
 The Noto Sans Condensed, Noto Sans SemiCondensed, and Noto Sans ExtraCondensed free fonts are also needed to produce the figures. They are available at <https://notofonts.github.io/latin-greek-cyrillic/>.
