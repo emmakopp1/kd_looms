@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='BinaryCTMC' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+    <data
+id="kd-looms_ctmc4"
+spec="Alignment"
+dataType="standard">
+        <sequence id="seq_Liangzhu" spec="Sequence" taxon="Liangzhu" totalcount="2" value="11011011001100011?00000110?0000100000100000000000000000000000000110011010000000??000000000000?00000100000000?00000000000000000000000000000000000000000000100000000000000000100000000000000000000000000000000000000000000"/>
+        <sequence id="seq_Meifu_Li" spec="Sequence" taxon="Meifu_Li" totalcount="2" value="110110110011000111001001101010010101010000000000000000000000000101101001000000010101000000000100000100000000100001110000000000000000000000000000000000000011000000000000000010001011101000100000000000000000000000000010"/>
+        <sequence id="seq_Qi_Li" spec="Sequence" taxon="Qi_Li" totalcount="2" value="110110110011000111001001101011010?01010000000000000000010000000101101001000000010101000000000100000100000000010001110000000000000000000000000000000000000011000000000000000010000111101000100000000000000000000000000010"/>
+        <sequence id="seq_Ha_Li" spec="Sequence" taxon="Ha_Li" totalcount="2" value="110110110011000111001001101011010?01010000000000000000010000000101101001000000010101000000000100000100000000010000100010000000000000000000000000000000000011000000000000000010000011101100100000000000000000000000000000"/>
+        <sequence id="seq_Run_Li" spec="Sequence" taxon="Run_Li" totalcount="2" value="110110110011000111000001101010010101010000000000000000010000000101101001000000010000000000000100000100000000110001110000000000000000000000000000000000000011000000000000000010001111001100100000000000000000000000000010"/>
+        <sequence id="seq_Tai_Yuan" spec="Sequence" taxon="Tai_Yuan" totalcount="2" value="101111101101111001001100010101010001100111010100000111011000011100010000110111110010000001010000000011001110101001000000000000000000000000000010110110110000001000010000000000000100000000000000000000000000010000000000"/>
+        <sequence id="seq_Tai_Xam_Nuea" spec="Sequence" taxon="Tai_Xam_Nuea" totalcount="2" value="101111101101111001001100010101010001100111010100000110010000011100010000110111110010000001010000000011010110101001101001010111001000100010000010110110110000001010000000000000100100101100100100010010000000010000000001"/>
+        <sequence id="seq_Tai_Isan" spec="Sequence" taxon="Tai_Isan" totalcount="2" value="10111010110111100100110001010101001?100111010100000110001000011100010000110111110010000001010000000011001110101000100001010101001000100010000010111110001000001010000000000000100011100100110000100010000000010100000000"/>
+        <sequence id="seq_Tai_Mai_Chau" spec="Sequence" taxon="Tai_Mai_Chau" totalcount="2" value="101110101101111001001100010101010010100110110100000110111011111110010000111111110010000001010000000011001110101000000001110011000110101011000010110111001000001001100000000000110000000000100000100000000000000100010001"/>
+        <sequence id="seq_Tai_Lu_Nà_Tăm" spec="Sequence" taxon="Tai_Lu_Nà_Tăm" totalcount="2" value="1011111011011110010011000?01000100101001110101000001100100000101100100001011111100100000010100000000??001110101000001000000000000000000000000010111110110000001000001000000000?00000000000000110000000000000010000000001"/>
+        <sequence id="seq_Tai_Trang_Quan_Son" spec="Sequence" taxon="Tai_Trang_Quan_Son" totalcount="2" value="101111101101111001001100010101011001100111010100000110010000011100010000111111110010000001010000000011001100101001001001010011000100100010000010100110110000001010000000000000100100000000000111100010000000010000000001"/>
+        <sequence id="seq_Tai_Trang_Ky_Son" spec="Sequence" taxon="Tai_Trang_Ky_Son" totalcount="2" value="101111101101111001001100010101010000100111010100000110001000011100010000111111110010000001010000000011001100101000100101110011000110101010000010100110110000001010000000000000100011101100100001100010000000010000000000"/>
+        <sequence id="seq_Buyi_Xingyi" spec="Sequence" taxon="Buyi_Xingyi" totalcount="2" value="10111010110111100100110000010001100110011101110000101011001011101001000010111111001000000101000000000000111010?010000000000000000000000000001001110101001000010101000000000000010100000011000000000000000000100010011000"/>
+        <sequence id="seq_Zhuang_Jingxi" spec="Sequence" taxon="Zhuang_Jingxi" totalcount="2" value="101110101101111001001100000101010000100111011100001010110010111010010000101111110010000001010000000000001110101000100010000000000000000000001001110101001000010101100000000000010011100100000000000000000000100010101000"/>
+        <sequence id="seq_Dai_Huayao" spec="Sequence" taxon="Dai_Huayao" totalcount="2" value="1011101111010101010101001001000100000001110101010010001100101010100110001001000??000001011000000001000010000100100000000000000000000000000000100000001000001001000000000010001000011110000000000000000000000000000000000"/>
+        <sequence id="seq_Dai_Yuxi_Yuanjiang" spec="Sequence" taxon="Dai_Yuxi_Yuanjiang" totalcount="2" value="1011101111010001010101011001000100000001110101010010001100101010100110001001000??000001011000100001000010000101100000001110000000100111100000100000001000001001000000100010001000000000000000000000001000000000000000000"/>
+        <sequence id="seq_Dai_Jinghong" spec="Sequence" taxon="Dai_Jinghong" totalcount="2" value="101110111101000101011101100100010000000111010101001000101010101010011000100100010010001011000010001000010000101100000001100110100000110000000100000001000001001000000100010001000000000000000000011011000000000000000000"/>
+        <sequence id="seq_Tai_Phake" spec="Sequence" taxon="Tai_Phake" totalcount="2" value="101110111101000101001101110100010000000110110101001000100100100111001000100100010010011011000010001011010000101100000000000000000000000000001000000000000011101000000010010001000000000000000000000000000000000000000100"/>
+        <sequence id="seq_Dai_Tengchong" spec="Sequence" taxon="Dai_Tengchong" totalcount="2" value="101110101101111001000100110100010000100110110101001000110010101010010000101111010000001011000000000011010000101100000001100110100000110000000100000101000000001000000000000001100000010011000000010011000000000000000000"/>
+        <sequence id="seq_Zhuang_Napo" spec="Sequence" taxon="Zhuang_Napo" totalcount="2" value="101110111101000101001111110100010000000110110101001000110010101101000010100100010010000000101000101010001111101100000000000000000000000000010000000001000000000000000000000000100000000000000000000000000001000000000000"/>
+        <sequence id="seq_Zhuang_Longzhou" spec="Sequence" taxon="Zhuang_Longzhou" totalcount="2" value="101110111101000101001111110100010000000110110101001000101010101101000010100100010010000000101100101011001000101000000001110001000110001100010000000001000000000000000000000000?00000000000000000100000001001000000000000"/>
+        <sequence id="seq_Nung_An" spec="Sequence" taxon="Nung_An" totalcount="2" value="101110111101000101001111?1010001000000011011010100100011001010010?0000101001000?001000000010100010101000111110??0000000000000000000000000001000000000100000000000000000000000?100000000000000000000000000001000000000000"/>
+        <sequence id="seq_Dong_Tongdao" spec="Sequence" taxon="Dong_Tongdao" totalcount="2" value="101110111101000101001101110100110001000110100101111000100100101010011000100100010010001110000010001011010000100101000001010010010110011100101000000000000001000000000001001001100000000000000000100000100000000000000000"/>
+        <sequence id="seq_Miao_Zhaoxing" spec="Sequence" taxon="Miao_Zhaoxing" totalcount="2" value="101110101101000101001101110101100001100110110101001000110010101010010000101100010010001001000000011011100000000101000000000000000000000000011000000101000000001000000000101001100000000000000000000000000000100000000000"/>
+        <sequence id="seq_Maonan_Hechi" spec="Sequence" taxon="Maonan_Hechi" totalcount="2" value="101110111101000100101101100101010000000110110101001000100100101010011000100100000000101011000011100000010000101100000001101000010111011100001000000000000001001000000000000001000000000000000000100101010010000000000000"/>
+        <sequence id="seq_Zhuang_Binyang" spec="Sequence" taxon="Zhuang_Binyang" totalcount="2" value="101110111101000101001101010101010000000110110101001000100100101010010010100100010010001011000110001010001100101000000001101000010110011100001000000000000000001000000000010000000000000000000000100001010010000000000000"/>
+        <sequence id="seq_Buyi_Libo" spec="Sequence" taxon="Buyi_Libo" totalcount="2" value="101110111101111001001100100100010000000111000110001010101010101010011000100111110010000100010000000000010000100100000001101001010110001000001001000001000001000001000000000001000000000000000000100000000000000001000000"/>
+        <sequence id="seq_Tay_Ban_Rang" spec="Sequence" taxon="Tay_Ban_Rang" totalcount="2" value="101110101101111001001100110101010000101111011100001010110010111010010000101111110010000001000000000011100000101100000001100000000110111000000001100111001000000101000000000000100000000000000000100001000100001010010000"/>
+        <sequence id="seq_Tay_Lung_Noi" spec="Sequence" taxon="Tay_Lung_Noi" totalcount="2" value="101110101101111001001100100101010000101111011100001010110010111010010000101111110010000001000000000000010000101100000001110000000110111100000001100111001000000101000000000000000000000000000000100001000000001010010000"/>
+        <userDataType id="StandardData.0" spec="beast.evolution.datatype.StandardData" ambiguities="" nrOfStates="2"/>
+    </data>
+
+    
+
+
+    <map name="Uniform" >beast.math.distributions.Uniform</map>
+    <map name="Exponential" >beast.math.distributions.Exponential</map>
+    <map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
+    <map name="Normal" >beast.math.distributions.Normal</map>
+    <map name="Beta" >beast.math.distributions.Beta</map>
+    <map name="Gamma" >beast.math.distributions.Gamma</map>
+    <map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
+    <map name="prior" >beast.math.distributions.Prior</map>
+    <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
+    <map name="OneOnX" >beast.math.distributions.OneOnX</map>
+    <run id="mcmc" spec="beast.coupledMCMC.CoupledMCMC" chainLength="100000000" storeEvery="10000" chains="4" resampleEvery="1000" logHeatedChains="false" optimise="true" >
+        <state id="state" spec="State" storeEvery="5000">
+            <tree id="Tree.t:tree" spec="beast.evolution.tree.Tree" name="stateNode">
+                <trait id="dateTrait.t:tree" spec="beast.evolution.tree.TraitSet" traitname="date-backward">
+                                    Liangzhu=5.3,
+Meifu_Li=0,
+Qi_Li=0,
+Ha_Li=0,
+Run_Li=0,
+Tai_Yuan=0,
+Tai_Xam_Nuea=0,
+Tai_Isan=0,
+Tai_Mai_Chau=0,
+Tai_Lu_Nà_Tăm=0,
+Tai_Trang_Quan_Son=0,
+Tai_Trang_Ky_Son=0,
+Buyi_Xingyi=0,
+Zhuang_Jingxi=0,
+Dai_Huayao=0,
+Dai_Yuxi_Yuanjiang=0,
+Dai_Jinghong=0,
+Tai_Phake=0,
+Dai_Tengchong=0,
+Zhuang_Napo=0,
+Zhuang_Longzhou=0,
+Nung_An=0,
+Dong_Tongdao=0,
+Miao_Zhaoxing=0,
+Maonan_Hechi=0,
+Zhuang_Binyang=0,
+Buyi_Libo=0,
+Tay_Ban_Rang=0,
+Tay_Lung_Noi=0                
+                    <taxa id="TaxonSet.level1" spec="TaxonSet">
+                        <alignment id="level1" spec="FilteredAlignment" filter="1-36">
+                            <data idref="kd-looms_ctmc4"/>
+                        </alignment>
+                    </taxa>
+                </trait>
+                <taxonset idref="TaxonSet.level1"/>
+            </tree>
+            <parameter id="mutationRate.s:level4" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
+            <parameter id="freqParameter.s:level4" spec="parameter.RealParameter" dimension="2" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+            <parameter id="mutationRate.s:level1" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
+            <parameter id="freqParameter.s:level1" spec="parameter.RealParameter" dimension="2" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+            <parameter id="mutationRate.s:level2" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
+            <parameter id="freqParameter.s:level2" spec="parameter.RealParameter" dimension="2" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+            <parameter id="mutationRate.s:level3" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
+            <parameter id="freqParameter.s:level3" spec="parameter.RealParameter" dimension="2" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+            <parameter id="clockRate.c:clock" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
+            <parameter id="diversificationRateFBD.t:tree" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+            <parameter id="turnoverFBD.t:tree" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+            <parameter id="samplingProportionFBD.t:tree" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+            <parameter id="originFBD.t:tree" spec="parameter.RealParameter" lower="0.0" name="stateNode">100.0</parameter>
+        </state>
+        <init id="RandomTree.t:tree" spec="beast.evolution.tree.SimpleRandomTree" estimate="false" initial="@Tree.t:tree" taxa="@level1"/>
+        <distribution id="posterior" spec="util.CompoundDistribution">
+            <distribution id="prior" spec="util.CompoundDistribution">
+                <distribution id="FBD.t:tree" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" diversificationRate="@diversificationRateFBD.t:tree" origin="@originFBD.t:tree" samplingProportion="@samplingProportionFBD.t:tree" tree="@Tree.t:tree" turnover="@turnoverFBD.t:tree">
+                    <parameter id="rFBD.t:tree" spec="parameter.RealParameter" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+                    <parameter id="rhoFBD.t:tree" spec="parameter.RealParameter" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
+                </distribution>
+                <prior id="ClockPrior.c:clock" name="distribution" x="@clockRate.c:clock">
+                    <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
+                </prior>
+                <prior id="diversificationRatePriorFBD.t:tree" name="distribution" x="@diversificationRateFBD.t:tree">
+                    <Uniform id="Uniform.4" name="distr" upper="Infinity"/>
+                </prior>
+                <prior id="originPriorFBD.t:tree" name="distribution" x="@originFBD.t:tree">
+                    <Uniform id="Uniform.3" name="distr" upper="Infinity"/>
+                </prior>
+                <prior id="samplingProportionPriorFBD.t:tree" name="distribution" x="@samplingProportionFBD.t:tree">
+                    <Uniform id="Uniform.6" name="distr"/>
+                </prior>
+                <prior id="turnoverPriorFBD.t:tree" name="distribution" x="@turnoverFBD.t:tree">
+                    <Uniform id="Uniform.5" name="distr"/>
+                </prior>
+                <distribution id="LZ.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@Tree.t:tree">
+                    <taxonset id="LZ" spec="TaxonSet">
+                        <taxon id="Liangzhu" spec="Taxon"/>
+                    </taxonset>
+                    <Uniform id="Uniform.8" lower="4.3" name="distr" upper="5.3"/>
+                </distribution>
+            </distribution>
+            <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+                <distribution id="treeLikelihood.level1" spec="TreeLikelihood" tree="@Tree.t:tree">
+                    <data
+id="bin.level1"
+spec="FilteredAlignment"
+ascertained="true"
+data="@level1"
+excludeto="1"
+filter="::">
+                        <userDataType id="Binary.0" spec="beast.evolution.datatype.Binary"/>
+                    </data>
+                    <siteModel id="SiteModel.s:level1" spec="SiteModel" gammaCategoryCount="1" mutationRate="@mutationRate.s:level1">
+                        <parameter id="gammaShape.s:level1" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
+                        <parameter id="proportionInvariant.s:level1" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="CTMC.s:level1" spec="GeneralSubstitutionModel">
+                            <parameter id="rates.s:level1" spec="parameter.RealParameter" dimension="2" estimate="false" lower="0.0" name="rates">1.0 1.0</parameter>
+                            <frequencies id="estimatedFreqs.s:level1" spec="Frequencies" frequencies="@freqParameter.s:level1"/>
+                        </substModel>
+                    </siteModel>
+                    <branchRateModel id="StrictClock.c:clock" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="@clockRate.c:clock"/>
+                </distribution>
+                <distribution id="treeLikelihood.level2" spec="TreeLikelihood" branchRateModel="@StrictClock.c:clock" tree="@Tree.t:tree">
+                    <data
+id="bin.level2"
+spec="FilteredAlignment"
+ascertained="true"
+excludeto="1"
+filter="::">
+                        <data
+id="level2"
+spec="FilteredAlignment"
+data="@kd-looms_ctmc4"
+filter="37-138"/>
+                        <userDataType id="Binary.1" spec="beast.evolution.datatype.Binary"/>
+                    </data>
+                    <siteModel id="SiteModel.s:level2" spec="SiteModel" gammaCategoryCount="1" mutationRate="@mutationRate.s:level2">
+                        <parameter id="gammaShape.s:level2" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
+                        <parameter id="proportionInvariant.s:level2" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="CTMC.s:level2" spec="GeneralSubstitutionModel">
+                            <parameter id="rates.s:level2" spec="parameter.RealParameter" dimension="2" estimate="false" lower="0.0" name="rates">1.0 1.0</parameter>
+                            <frequencies id="estimatedFreqs.s:level2" spec="Frequencies" frequencies="@freqParameter.s:level2"/>
+                        </substModel>
+                    </siteModel>
+                </distribution>
+                <distribution id="treeLikelihood.level3" spec="TreeLikelihood" branchRateModel="@StrictClock.c:clock" tree="@Tree.t:tree">
+                    <data
+id="bin.level3"
+spec="FilteredAlignment"
+ascertained="true"
+excludeto="1"
+filter="::">
+                        <data
+id="level3"
+spec="FilteredAlignment"
+data="@kd-looms_ctmc4"
+filter="139-203"/>
+                        <userDataType id="Binary.2" spec="beast.evolution.datatype.Binary"/>
+                    </data>
+                    <siteModel id="SiteModel.s:level3" spec="SiteModel" gammaCategoryCount="1" mutationRate="@mutationRate.s:level3">
+                        <parameter id="gammaShape.s:level3" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
+                        <parameter id="proportionInvariant.s:level3" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="CTMC.s:level3" spec="GeneralSubstitutionModel">
+                            <parameter id="rates.s:level3" spec="parameter.RealParameter" dimension="2" estimate="false" lower="0.0" name="rates">1.0 1.0</parameter>
+                            <frequencies id="estimatedFreqs.s:level3" spec="Frequencies" frequencies="@freqParameter.s:level3"/>
+                        </substModel>
+                    </siteModel>
+                </distribution>
+                <distribution id="treeLikelihood.level4" spec="TreeLikelihood" branchRateModel="@StrictClock.c:clock" tree="@Tree.t:tree">
+                    <data
+id="bin.level4"
+spec="FilteredAlignment"
+ascertained="true"
+excludeto="1"
+filter="::">
+                        <data
+id="level4"
+spec="FilteredAlignment"
+data="@kd-looms_ctmc4"
+filter="204-216"/>
+                        <userDataType id="Binary.3" spec="beast.evolution.datatype.Binary"/>
+                    </data>
+                    <siteModel id="SiteModel.s:level4" spec="SiteModel" gammaCategoryCount="1" mutationRate="@mutationRate.s:level4">
+                        <parameter id="gammaShape.s:level4" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
+                        <parameter id="proportionInvariant.s:level4" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="CTMC.s:level4" spec="GeneralSubstitutionModel">
+                            <parameter id="rates.s:level4" spec="parameter.RealParameter" dimension="2" estimate="false" lower="0.0" name="rates">1.0 1.0</parameter>
+                            <frequencies id="estimatedFreqs.s:level4" spec="Frequencies" frequencies="@freqParameter.s:level4"/>
+                        </substModel>
+                    </siteModel>
+                </distribution>
+            </distribution>
+            <distribution id="fossilCalibrations" spec="util.CompoundDistribution"/>
+        </distribution>
+        <operator id="FrequenciesExchanger.s:level4" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
+            <parameter idref="freqParameter.s:level4"/>
+        </operator>
+        <operator id="FrequenciesExchanger.s:level1" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
+            <parameter idref="freqParameter.s:level1"/>
+        </operator>
+        <operator id="FrequenciesExchanger.s:level2" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
+            <parameter idref="freqParameter.s:level2"/>
+        </operator>
+        <operator id="FrequenciesExchanger.s:level3" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
+            <parameter idref="freqParameter.s:level3"/>
+        </operator>
+        <operator id="FixMeanMutationRatesOperator" spec="DeltaExchangeOperator" delta="0.75" weight="2.0">
+            <parameter idref="mutationRate.s:level1"/>
+            <parameter idref="mutationRate.s:level2"/>
+            <parameter idref="mutationRate.s:level3"/>
+            <parameter idref="mutationRate.s:level4"/>
+            <weightvector id="weightparameter" spec="parameter.IntegerParameter" dimension="4" estimate="false" lower="0" upper="0">35 101 64 12</weightvector>
+        </operator>
+        <operator id="StrictClockRateScaler.c:clock" spec="ScaleOperator" parameter="@clockRate.c:clock" weight="3.0"/>
+        <operator id="strictClockUpDownOperator.c:clock" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
+            <up idref="clockRate.c:clock"/>
+            <down idref="Tree.t:tree"/>
+        </operator>
+        <operator id="originScalerFBD.t:tree" spec="ScaleOperator" parameter="@originFBD.t:tree" weight="3.0"/>
+        <operator id="divRateScalerFBD.t:tree" spec="ScaleOperator" parameter="@diversificationRateFBD.t:tree" weight="10.0"/>
+        <operator id="turnoverScalerFBD.t:tree" spec="ScaleOperator" parameter="@turnoverFBD.t:tree" weight="10.0"/>
+        <operator id="samplingPScalerFBD.t:tree" spec="ScaleOperator" parameter="@samplingProportionFBD.t:tree" weight="10.0"/>
+        <operator id="LeafToSAFBD.t:tree" spec="LeafToSampledAncestorJump" tree="@Tree.t:tree" weight="10.0"/>
+        <operator id="SAWilsonBaldingFBD.t:tree" spec="SAWilsonBalding" tree="@Tree.t:tree" weight="10.0"/>
+        <operator id="SAWideFBD.t:tree" spec="SAExchange" isNarrow="false" tree="@Tree.t:tree" weight="10.0"/>
+        <operator id="SANarrowFBD.t:tree" spec="SAExchange" tree="@Tree.t:tree" weight="10.0"/>
+        <operator id="SAUniformOperatorFBD.t:tree" spec="SAUniform" tree="@Tree.t:tree" weight="20.0"/>
+        <operator id="SATreeRootScalerFBD.t:tree" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:tree" weight="1.0"/>
+        <operator id="SATreeScalerFBD.t:tree" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:tree" weight="3.0"/>
+        <operator id="tipDatesSampler.LZ" spec="SampledNodeDateRandomWalker" taxonset="@LZ" tree="@Tree.t:tree" weight="1.0" windowSize="1.0"/>
+        <operator id="allTipDatesRandomWalker.t:tree" spec="TipDatesRandomWalker" tree="@Tree.t:tree" weight="0.0" windowSize="1.0"/>
+        <logger id="tracelog" spec="Logger" fileName="kd-looms_ctmc4.log" logEvery="10000" model="@posterior" sort="smart">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+            <log idref="treeLikelihood.level4"/>
+            <log id="TreeHeight.t:tree" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:tree"/>
+            <log idref="mutationRate.s:level4"/>
+            <log idref="freqParameter.s:level4"/>
+            <log idref="treeLikelihood.level1"/>
+            <log idref="mutationRate.s:level1"/>
+            <log idref="freqParameter.s:level1"/>
+            <log idref="treeLikelihood.level2"/>
+            <log idref="mutationRate.s:level2"/>
+            <log idref="freqParameter.s:level2"/>
+            <log idref="treeLikelihood.level3"/>
+            <log idref="mutationRate.s:level3"/>
+            <log idref="freqParameter.s:level3"/>
+            <log idref="clockRate.c:clock"/>
+            <log idref="FBD.t:tree"/>
+            <log idref="diversificationRateFBD.t:tree"/>
+            <log idref="turnoverFBD.t:tree"/>
+            <log idref="samplingProportionFBD.t:tree"/>
+            <log idref="originFBD.t:tree"/>
+            <log id="SACountFBD.t:tree" spec="beast.evolution.tree.SampledAncestorLogger" tree="@Tree.t:tree"/>
+            <log idref="LZ.prior"/>
+        </logger>
+        <logger id="screenlog" spec="Logger" logEvery="10000">
+            <log idref="posterior"/>
+            <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+        </logger>
+        <logger id="treelog.t:tree" spec="Logger" fileName="kd-looms_ctmc4.trees" logEvery="10000" mode="tree">
+            <log id="TreeWithMetaDataLogger.t:tree" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:tree"/>
+        </logger>
+    </run>
+</beast>
