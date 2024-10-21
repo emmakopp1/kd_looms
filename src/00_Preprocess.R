@@ -119,7 +119,7 @@ kd_looms_matrix8421 <- kd_looms_matrix_weighted |>
   as.matrix() |>
   MatrixToPhyDat()
 write_binary_nexus(
-  kd_looms_matrix8421,
+  kd_looms_matrix8421, 
   here("data/kd-looms/kd-looms_bcov8421/kd-looms_8421.nex")
 )
 
