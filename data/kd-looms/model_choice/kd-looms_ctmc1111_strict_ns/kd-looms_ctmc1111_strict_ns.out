@@ -1,0 +1,247 @@
+
+                        BEAST v2.6.7, 2002-2022
+             Bayesian Evolutionary Analysis Sampling Trees
+                       Designed and developed by
+ Remco Bouckaert, Alexei J. Drummond, Andrew Rambaut & Marc A. Suchard
+                                    
+                   Centre for Computational Evolution
+                         University of Auckland
+                       r.bouckaert@auckland.ac.nz
+                        alexei@cs.auckland.ac.nz
+                                    
+                   Institute of Evolutionary Biology
+                        University of Edinburgh
+                           a.rambaut@ed.ac.uk
+                                    
+                    David Geffen School of Medicine
+                 University of California, Los Angeles
+                           msuchard@ucla.edu
+                                    
+                      Downloads, Help & Resources:
+                           http://beast2.org/
+                                    
+  Source code distributed under the GNU Lesser General Public License:
+                   http://github.com/CompEvol/beast2
+                                    
+                           BEAST developers:
+   Alex Alekseyenko, Trevor Bedford, Erik Bloomquist, Joseph Heled, 
+ Sebastian Hoehna, Denise Kuehnert, Philippe Lemey, Wai Lok Sibon Li, 
+Gerton Lunter, Sidney Markowitz, Vladimir Minin, Michael Defoin Platel, 
+          Oliver Pybus, Tim Vaughan, Chieh-Hsi Wu, Walter Xie
+                                    
+                               Thanks to:
+          Roald Forsberg, Beth Shapiro and Korbinian Strimmer
+
+Random number seed: 1728134200540
+
+File: kd-looms_ctmc111_ns.xml seed: 1728134200540 threads: 1
+Loading package BEASTvntr v0.1.3
+Loading package PoMo v1.0.1
+Loading package speedemon v1.0.0
+Loading package feast v8.3.0
+Loading package phylodynamics v1.3.0
+Loading package SNAPP v1.5.2
+Loading package BADTRIP v1.0.0
+Loading package timtam v0.3.1
+Loading package ORC v1.0.3
+Loading package bacter v2.2.5
+Loading package SpeciesNetwork v0.13.0
+Loading package TreeStat2 v0.0.2
+Loading package Mascot v2.1.2
+Loading package starbeast2 v0.15.13
+Loading package Beasy v0.0.2
+Loading package bModelTest v1.2.1
+Loading package ClaDS v1.1.2
+Loading package Recombination v0.0.2
+Loading package CoalRe v0.0.7
+Loading package BASTA v3.0.1
+Loading package contraband v1.0.0
+Loading package BEAST v2.6.7
+Loading package besp v0.2.0
+Loading package BDMM v1.0.2
+Loading package PIQMEE v1.0.2
+Loading package BEASTLabs v1.9.7
+Loading package BEAST_CLASSIC v1.5.0
+Loading package BICEPS v1.0.1
+Loading package CA v2.0.0
+Loading package PhyDyn v1.3.8
+Loading package MGSM v0.3.0
+Loading package MASTER v6.1.2
+Loading package TMA v1.0.0
+Loading package flc v1.1.0
+Loading package Babel v0.3.2
+Loading package OBAMA v0.2.0
+Loading package NS v1.1.0
+Loading package starbeast3 v1.0.5
+Loading package MultiTypeTree v7.0.2
+Loading package MSBD v1.2.0
+Loading package snapper v1.0.3
+Loading package STACEY v1.2.5
+Loading package SCOTTI v2.0.1
+Loading package DENIM v1.0.1
+Loading package MODEL_SELECTION v1.5.3
+Loading package substBMA v1.2.3
+Loading package MM v1.1.1
+Loading package contactrees v1.0.0
+Loading package BREAK_AWAY v1.0.1
+Loading package EpiInf v7.5.2
+Loading package GEO_SPHERE v1.3.1
+Loading package SA v2.0.2
+Loading package FastRelaxedClockLogNormal v1.1.1
+Loading package BDSKY v1.4.8
+Loading package SSM v1.1.0
+Loading package CoupledMCMC v1.0.2
+Loading package CodonSubstModels v1.1.3
+Loading package BEAST v2.6.7
+Buyi_Libo: 216 2
+Buyi_Xingyi: 216 2
+Dai_Huayao: 216 2
+Dai_Jinghong: 216 2
+Dai_Tengchong: 216 2
+Dai_Yuxi_Yuanjiang: 216 2
+Dong_Tongdao: 216 2
+Ha_Li: 216 2
+Liangzhu: 216 2
+Maonan_Hechi: 216 2
+Meifu_Li: 216 2
+Miao_Zhaoxing: 216 2
+Nung_An: 216 2
+Qi_Li: 216 2
+Run_Li: 216 2
+Tai_Isan: 216 2
+Tai_Lu_Nà_Tăm: 216 2
+Tai_Mai_Chau: 216 2
+Tai_Phake: 216 2
+Tai_Trang_Ky_Son: 216 2
+Tai_Trang_Quan_Son: 216 2
+Tai_Xam_Nuea: 216 2
+Tai_Yuan: 216 2
+Tay_Ban_Rang: 216 2
+Tay_Lung_Noi: 216 2
+Zhuang_Binyang: 216 2
+Zhuang_Jingxi: 216 2
+Zhuang_Longzhou: 216 2
+Zhuang_Napo: 216 2
+Alignment(kd-looms_1111)
+  29 taxa
+  216 sites
+  153 patterns
+
+Buyi_Libo = 0 (0.0)
+Buyi_Xingyi = 0 (0.0)
+Dai_Huayao = 0 (0.0)
+Dai_Jinghong = 0 (0.0)
+Dai_Tengchong = 0 (0.0)
+Dai_Yuxi_Yuanjiang = 0 (0.0)
+Dong_Tongdao = 0 (0.0)
+Ha_Li = 0 (0.0)
+Liangzhu = 5.3 (5.3)
+Maonan_Hechi = 0 (0.0)
+19 more...
+Filter ::
+29 taxa
+216 sites
+153 patterns
+WARNING: found 4 sites in the alignment (bin.kd-looms_1111) that are equal to the ascertainment site. These sites will be ignored in the likelihood calculation.
+Failed to load BEAGLE library: no hmsbeagle-jni in java.library.path
+TreeLikelihood(treeLikelihood.kd-looms_1111) uses BeerLikelihoodCore
+  FilteredAlignment(bin.kd-looms_1111): [taxa, patterns, sites] = [29, 153, 211]
+WARNING: the dimension of the parameter is 1 at the start of the run.
+         The operator FixMeanMutationRatesOperator has no effect (if this does not change).
+===============================================================================
+Citations for this model:
+
+Patricio Maturana, Brendon J. Brewer, Steffen Klaere, Remco Bouckaert. Model selection and parameter inference in phylogenetics using Nested Sampling. Systematic Biology, syy050, 2018
+
+Gavryushkina A, Welch D, Stadler T, Drummond AJ (2014) 
+Bayesian inference of sampled ancestor trees for epidemiology and fossil calibration. 
+PLoS Comput Biol 10(12): e1003919. doi:10.1371/journal.pcbi.1003919
+
+===============================================================================
+Counting 122 parameters
+replacing logger tracelog with NSLogger
+Writing file kd-looms_ctmc111.trees
+         Sample      posterior ESS(posterior)     likelihood          prior
+Writing file kd-looms_ctmc111.log
+Start likelihood 0: -4810.053715341075 
+Start likelihood 1: -4241.833818046242 
+Start likelihood 2: -4288.215077692488 
+3 particles initialised
+              0      -Infinity              N     -4212.7430      -Infinity --
+ML: -4214.156585245735 Information: 1.4134952107251593
+              1      -Infinity              N     -4212.7430      -Infinity --
+ML: -4213.616279671046 Information: 0.8731896347417205
+              2      -Infinity              N     -4212.7430      -Infinity --
+ML: -4213.354606786268 Information: 0.611516749295788
+              3      -Infinity              N     -4212.7430      -Infinity --
+ML: -4213.201909584194 Information: 0.4588195467740661
+              4      -Infinity              N     -4212.7430      -Infinity --
+ML: -4213.105265490134 Information: 0.3621754513774249
+              5      -Infinity              N     -4212.7430      -Infinity --
+ML: -4213.04134509875 Information: 0.29825506170845983
+              6      -Infinity              N     -4212.7430      -Infinity --
+ML: -4212.997933323589 Information: 0.2548432851758662
+              7      -Infinity              N     -4212.7430      -Infinity --
+ML: -4212.967947059117 Information: 0.22485701935784164
+              8      -Infinity              N     -4212.7430      -Infinity --
+ML: -4212.947000821824 Information: 0.20391078313787148
+              9      -Infinity              N     -4212.7430      -Infinity --
+ML: -4212.932257501248 Information: 0.18916746212107682
+             10      -Infinity              N     -4212.7430      -Infinity --
+ML: -4212.921825546272 Information: 0.17873550669810356
+             11      -Infinity              N     -4212.7430      -Infinity --
+ML: -4212.914417087707 Information: 0.17132704978848778
+             12      -Infinity              N     -4212.7430      -Infinity --
+ML: -4212.909142246684 Information: 0.16605221033296402
+             13      -Infinity              N     -4212.7430      -Infinity --
+ML: -4212.9053796960725 Information: 0.16228965994378086
+14<=100000000&& (14<2.0*0.16228965994378086*3||Math.abs(-4212.9053796960725 - -4212.909142246684)/Math.abs(-4212.9053796960725) > 1.0E-6
+Finished in 14 steps!
+Marginal likelihood: -4138.185320477341 (bootstrap SD=15.175247368702637)
+Marginal likelihood: -4212.760774432876 (subsample SD=0.021442730596968725)
+Marginal likelihood: -4212.75918845963(0.019259301849807633)
+Information: 0.16228965994378086
+SD: 0.23258665764526051
+
+Operator                                                        Tuning    #accept    #reject      Pr(m)  Pr(acc|m)
+DeltaExchangeOperator(FrequenciesExchanger.s:kd-looms_1111)    0.01000         63        389    0.00105    0.13938 
+DeltaExchangeOperator(FixMeanMutationRatesOperator)            0.75000       1584       7456    0.02103    0.17522 
+ScaleOperator(StrictClockRateScaler.c:clock)                   0.75000       2052      11159    0.03155    0.15533 
+ScaleOperator(originScalerFBD.t:tree)                          0.75000       1431      12077    0.03155    0.10594 
+ScaleOperator(divRateScalerFBD.t:tree)                         0.75000       5604      38880    0.10515    0.12598 
+ScaleOperator(turnoverScalerFBD.t:tree)                        0.75000       6267      38395    0.10515    0.14032 
+ScaleOperator(samplingPScalerFBD.t:tree)                       0.75000       6674      38014    0.10515    0.14935 
+LeafToSampledAncestorJump(LeafToSAFBD.t:tree)                        -         30      44641    0.10515    0.00067 
+SAWilsonBalding(SAWilsonBaldingFBD.t:tree)                           -       3848      41295    0.10515    0.08524 
+SAExchange(SAWideFBD.t:tree)                                         -       3789      40781    0.10515    0.08501 
+SAExchange(SANarrowFBD.t:tree)                                       -          0          0    0.00000        NaN 
+SAUniform(SAUniformOperatorFBD.t:tree)                               -      13299      76059    0.21030    0.14883 
+SAScaleOperator(SATreeRootScalerFBD.t:tree)                    0.95000        658       3758    0.01052    0.14900 
+SAScaleOperator(SATreeScalerFBD.t:tree)                        0.95000       2120      11323    0.03155    0.15770 
+UpDownOperator(strictClockUpDownOperator.c:clock)              0.75000       1280      12074    0.03155    0.09585 Try setting scaleFactor to about 0.866
+
+     Tuning: The value of the operator's tuning parameter, or '-' if the operator can't be optimized.
+    #accept: The total number of times a proposal by this operator has been accepted.
+    #reject: The total number of times a proposal by this operator has been rejected.
+      Pr(m): The probability this operator is chosen in a step of the MCMC (i.e. the normalized weight).
+  Pr(acc|m): The acceptance probability (#accept as a fraction of the total proposals for this operator).
+
+
+Total calculation time: 4.163 seconds
+End likelihood: -Infinity
+Producing posterior samples
+
+Marginal likelihood: -4212.761245740081 sqrt(H/N)=(18.887939245466896)=?=SD=(0.02187674038639442) Information: 1070.262746821346
+Max ESS: 7.754675648148484
+
+
+Processing 14 trees from file.
+Log file written to kd-looms_ctmc111.posterior.trees
+Done!
+
+Marginal likelihood: -4212.760634123086 sqrt(H/N)=(19.03452713503492)=?=SD=(0.02057310337674044) Information: 1086.9396697631423
+Max ESS: 7.813185544283122
+
+
+Log file written to kd-looms_ctmc111.posterior.log
+Done!

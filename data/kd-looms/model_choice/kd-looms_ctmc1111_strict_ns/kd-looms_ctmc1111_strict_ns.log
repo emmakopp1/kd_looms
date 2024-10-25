@@ -1,0 +1,109 @@
+#
+#model:
+#
+#<?xml version="1.0" encoding="UTF-8" standalone="no"?><input id="posterior" spec="beast.core.util.CompoundDistribution">
+#    <distribution id="prior" spec="beast.core.util.CompoundDistribution">
+#        <distribution conditionOnRhoSampling="true" id="FBD.t:tree" spec="beast.evolution.speciation.SABirthDeathModel">
+#            <parameter id="originFBD.t:tree" lower="0.0" name="origin" spec="beast.core.parameter.RealParameter" upper="2000.0">100.0</parameter>
+#            <parameter id="diversificationRateFBD.t:tree" lower="0.0" name="diversificationRate" spec="beast.core.parameter.RealParameter" upper="10.0">1.0</parameter>
+#            <parameter id="turnoverFBD.t:tree" lower="0.0" name="turnover" spec="beast.core.parameter.RealParameter" upper="1.0">0.5</parameter>
+#            <parameter id="samplingProportionFBD.t:tree" lower="0.0" name="samplingProportion" spec="beast.core.parameter.RealParameter" upper="1.0">0.5</parameter>
+#            <parameter id="rFBD.t:tree" lower="0.0" name="removalProbability" spec="beast.core.parameter.RealParameter" upper="1.0">0.0</parameter>
+#            <parameter estimate="false" id="rhoFBD.t:tree" lower="0.0" name="rho" spec="beast.core.parameter.RealParameter" upper="1.0">1.0</parameter>
+#            <tree id="Tree.t:tree" spec="beast.evolution.tree.Tree">
+#                <trait id="dateTrait.t:tree" spec="beast.evolution.tree.TraitSet" traitname="date-backward">
+#Liangzhu=5.3,
+#Meifu_Li=0,
+#Qi_Li=0,
+#Ha_Li=0,
+#Run_Li=0,
+#Tai_Yuan=0,
+#Tai_Xam_Nuea=0,
+#Tai_Isan=0,
+#Tai_Mai_Chau=0,
+#Tai_Lu_Nà_Tăm=0,
+#Tai_Trang_Quan_Son=0,
+#Tai_Trang_Ky_Son=0,
+#Buyi_Xingyi=0,
+#Zhuang_Jingxi=0,
+#Dai_Huayao=0,
+#Dai_Yuxi_Yuanjiang=0,
+#Dai_Jinghong=0,
+#Tai_Phake=0,
+#Dai_Tengchong=0,
+#Zhuang_Napo=0,
+#Zhuang_Longzhou=0,
+#Nung_An=0,
+#Dong_Tongdao=0,
+#Miao_Zhaoxing=0,
+#Maonan_Hechi=0,
+#Zhuang_Binyang=0,
+#Buyi_Libo=0,
+#Tay_Ban_Rang=0,
+#Tay_Lung_Noi=0  
+#                                <taxa id="TaxonSet.kd-looms_1111" spec="beast.evolution.alignment.TaxonSet">
+#                    </taxa>
+#                </trait>
+#                <taxonset idref="TaxonSet.kd-looms_1111"/>
+#            </tree>
+#        </distribution>
+#        <prior id="ClockPrior.c:clock" name="distribution">
+#            <parameter id="clockRate.c:clock" lower="0.0" name="x" spec="beast.core.parameter.RealParameter" upper="10.0">1.0</parameter>
+#            <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
+#        </prior>
+#        <prior id="diversificationRatePriorFBD.t:tree" name="distribution" x="@diversificationRateFBD.t:tree">
+#            <Uniform id="Uniform.4" name="distr" upper="Infinity"/>
+#        </prior>
+#        <prior id="originPriorFBD.t:tree" name="distribution" x="@originFBD.t:tree">
+#            <Uniform id="Uniform.3" name="distr" upper="Infinity"/>
+#        </prior>
+#        <prior id="samplingProportionPriorFBD.t:tree" name="distribution" x="@samplingProportionFBD.t:tree">
+#            <Uniform id="Uniform.6" name="distr"/>
+#        </prior>
+#        <prior id="turnoverPriorFBD.t:tree" name="distribution" x="@turnoverFBD.t:tree">
+#            <Uniform id="Uniform.5" name="distr"/>
+#        </prior>
+#        <distribution id="LZ.prior" spec="beast.math.distributions.MRCAPrior" tipsonly="true" tree="@Tree.t:tree">
+#            <taxonset id="LZ" spec="beast.evolution.alignment.TaxonSet">
+#                <taxon id="Liangzhu" spec="beast.evolution.alignment.Taxon"/>
+#            </taxonset>
+#            <Uniform id="Uniform.8" lower="4.3" name="distr" upper="5.3"/>
+#        </distribution>
+#    </distribution>
+#    <distribution id="likelihood" spec="beast.core.util.CompoundDistribution" useThreads="true">
+#        <distribution id="treeLikelihood.kd-looms_1111" spec="beast.evolution.likelihood.TreeLikelihood" tree="@Tree.t:tree">
+#            <data ascertained="true" data="@kd-looms_1111" excludeto="1" filter="::" id="bin.kd-looms_1111" spec="beast.evolution.alignment.FilteredAlignment">
+#                <userDataType id="Binary.0" spec="beast.evolution.datatype.Binary"/>
+#            </data>
+#            <siteModel gammaCategoryCount="1" id="SiteModel.s:kd-looms_1111" spec="beast.evolution.sitemodel.SiteModel">
+#                <parameter id="mutationRate.s:kd-looms_1111" name="mutationRate" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                <parameter estimate="false" id="gammaShape.s:kd-looms_1111" name="shape" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                <parameter estimate="false" id="proportionInvariant.s:kd-looms_1111" lower="0.0" name="proportionInvariant" spec="beast.core.parameter.RealParameter" upper="1.0">0.0</parameter>
+#                <substModel id="CTMC.s:kd-looms_1111" spec="beast.evolution.substitutionmodel.GeneralSubstitutionModel">
+#                    <parameter dimension="2" estimate="false" id="rates.s:kd-looms_1111" lower="0.0" name="rates" spec="beast.core.parameter.RealParameter">1.0 1.0</parameter>
+#                    <frequencies id="estimatedFreqs.s:kd-looms_1111" spec="beast.evolution.substitutionmodel.Frequencies">
+#                        <parameter dimension="2" id="freqParameter.s:kd-looms_1111" lower="0.0" name="frequencies" spec="beast.core.parameter.RealParameter" upper="1.0">0.5</parameter>
+#                    </frequencies>
+#                </substModel>
+#            </siteModel>
+#            <branchRateModel clock.rate="@clockRate.c:clock" id="StrictClock.c:clock" spec="beast.evolution.branchratemodel.StrictClockModel"/>
+#        </distribution>
+#    </distribution>
+#    <distribution id="fossilCalibrations" spec="beast.core.util.CompoundDistribution"/>
+#</input>
+#
+Sample	NSlikelihood	posterior	likelihood	prior	treeLikelihood.kd-looms_1111	TreeHeight.t:tree	mutationRate.s:kd-looms_1111	freqParameter.s:kd-looms_1111.1	freqParameter.s:kd-looms_1111.2	clockRate.c:clock	FBD.t:tree	diversificationRateFBD.t:tree	turnoverFBD.t:tree	samplingProportionFBD.t:tree	originFBD.t:tree	SACountFBD.t:tree	logP(mrca(LZ.prior))	height(Liangzhu)
+0	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	22.900197819332877	1.0	0.5020086654890282	0.4979913345109715	9.60082114781703	-75.60269121813793	0.10068387803623281	0.1818105314933518	0.36729995793127984	23.988278058643434	1	-Infinity	5.300000000000001
+1	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	411.85643128142436	1.0	0.5174742985501681	0.482525701449832	5.477400319800101	-142.60088284719424	0.00821836037386661	0.7125383638844042	0.020748565151512317	465.9217902014987	0	-Infinity	5.300000000000125
+2	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	411.85643128142436	1.0	0.5174742985501681	0.482525701449832	5.477400319800101	-142.60088284719424	0.00821836037386661	0.7125383638844042	0.020748565151512317	465.9217902014987	0	-Infinity	5.300000000000125
+3	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	411.85643128142436	1.0	0.5174742985501681	0.482525701449832	5.477400319800101	-142.60088284719424	0.00821836037386661	0.7125383638844042	0.020748565151512317	465.9217902014987	0	-Infinity	5.300000000000125
+4	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	411.85643128142436	1.0	0.5174742985501681	0.482525701449832	5.477400319800101	-142.60088284719424	0.00821836037386661	0.7125383638844042	0.020748565151512317	465.9217902014987	0	-Infinity	5.300000000000125
+5	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	788.0985305344916	1.0	0.5170580189261883	0.48294198107381164	4.5987480790299555	-170.81680795351585	0.0037463846740717482	0.036647930998471155	0.4936601666025118	815.2870654410808	1	-Infinity	5.300000000000068
+6	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	788.0985305344916	1.0	0.5170580189261883	0.48294198107381164	4.5987480790299555	-170.81680795351585	0.0037463846740717482	0.036647930998471155	0.4936601666025118	815.2870654410808	1	-Infinity	5.300000000000068
+7	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	411.85643128142436	1.0	0.5174742985501681	0.482525701449832	5.477400319800101	-142.60088284719424	0.00821836037386661	0.7125383638844042	0.020748565151512317	465.9217902014987	0	-Infinity	5.300000000000125
+8	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	411.85643128142436	1.0	0.5174742985501681	0.482525701449832	5.477400319800101	-142.60088284719424	0.00821836037386661	0.7125383638844042	0.020748565151512317	465.9217902014987	0	-Infinity	5.300000000000125
+9	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	411.85643128142436	1.0	0.5174742985501681	0.482525701449832	5.477400319800101	-142.60088284719424	0.00821836037386661	0.7125383638844042	0.020748565151512317	465.9217902014987	0	-Infinity	5.300000000000125
+10	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	788.0985305344916	1.0	0.5170580189261883	0.48294198107381164	4.5987480790299555	-170.81680795351585	0.0037463846740717482	0.036647930998471155	0.4936601666025118	815.2870654410808	1	-Infinity	5.300000000000068
+11	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	788.0985305344916	1.0	0.5170580189261883	0.48294198107381164	4.5987480790299555	-170.81680795351585	0.0037463846740717482	0.036647930998471155	0.4936601666025118	815.2870654410808	1	-Infinity	5.300000000000068
+12	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	788.0985305344916	1.0	0.5170580189261883	0.48294198107381164	4.5987480790299555	-170.81680795351585	0.0037463846740717482	0.036647930998471155	0.4936601666025118	815.2870654410808	1	-Infinity	5.300000000000068
+13	-4212.74309003501	-Infinity	-4212.74309003501	-Infinity	-4212.74309003501	788.0985305344916	1.0	0.5170580189261883	0.48294198107381164	4.5987480790299555	-170.81680795351585	0.0037463846740717482	0.036647930998471155	0.4936601666025118	815.2870654410808	1	-Infinity	5.300000000000068
