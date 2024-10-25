@@ -1,0 +1,6 @@
+begin assumptions;
+    charset level1 = 1-36;
+    charset level2 = 37-138;
+    charset level3 = 139-203;
+    charset level4 = 204-216;
+end;
