@@ -6,6 +6,8 @@ library(rnaturalearth)
 library(ggspatial)
 library(tidyverse)
 library(stringi)
+library(BiocManager) # To install ggtree
+#BiocManager::install("ggtree")
 library(ggtree)
 nodeid.tbl_tree <- utils::getFromNamespace("nodeid.tbl_tree", "tidytree")
 rootnode.tbl_tree <- utils::getFromNamespace("rootnode.tbl_tree", "tidytree")
@@ -160,8 +162,7 @@ cs_tree <- function(tr, fontsize = base_font_size) {
 }
 
 # Languages
-
-kd_lgs_bcov_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_consensus.tree"))
+kd_lgs_bcov_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_byconcept_consensus.tree"))
 kd_lgs_bcov_cs_tree$node.label <- round(
   as.numeric(kd_lgs_bcov_cs_tree$node.label),
   2
@@ -194,16 +195,16 @@ kd_lgs_bcov_cs_tree_plot <- kd_lgs_bcov_cs_tree |>
     aspect.ratio = 2.25,
     plot.margin = margin(0, 3.5, 0, 0, unit = "line")
   )
-ggsave(here("output/figures/kd-lgs_bcov_cs_tree.pdf"),
+ggsave(here("output/figures/kd-lgs_bcov_byconcept_cs_tree.pdf"),
   kd_lgs_bcov_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
 )
-plot_crop(here("output/figures/kd-lgs_bcov_cs_tree.pdf"))
+plot_crop(here("output/figures/kd-lgs_bcov_byconcept_cs_tree.pdf"))
 
 # Looms
 
 ## Looms, level 1 characters only
-kd_looms_bcov1000_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1000_consensus.tree"))
+kd_looms_bcov1000_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1000_strict_consensus.tree"))
 kd_looms_bcov1000_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1000_cs_tree$node.label), 2) * 100
 kd_looms_bcov1000_cs_tree$node.label[1] <- NA
 kd_looms_bcov1000_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1000_cs_tree$tip.label, "_", " ")
@@ -225,7 +226,7 @@ ggsave(here("output/figures/kd-looms_bcov1000_cs_tree.pdf"),
 plot_crop(here("output/figures/kd-looms_bcov1000_cs_tree.pdf"))
 
 ## Looms, all levels, no weighting
-kd_looms_bcov1111_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_consensus.tree"))
+kd_looms_bcov1111_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_strict_consensus.tree"))
 kd_looms_bcov1111_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1111_cs_tree$node.label), 2) * 100
 kd_looms_bcov1111_cs_tree$node.label[1] <- NA
 kd_looms_bcov1111_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1111_cs_tree$tip.label, "_", " ")
@@ -249,7 +250,7 @@ ggsave(here("output/figures/kd-looms_bcov1111_cs_tree.pdf"),
 plot_crop(here("output/figures/kd-looms_bcov1111_cs_tree.pdf"))
 
 ## Looms, weighted characters
-kd_looms_bcov8421_cs_tree <- read.tree(here("output/trees/kd-looms_bcov8421_consensus.tree"))
+kd_looms_bcov8421_cs_tree <- read.tree(here("output/trees/kd-looms_bcov8421_strict_consensus.tree"))
 kd_looms_bcov8421_cs_tree$node.label <- round(as.numeric(kd_looms_bcov8421_cs_tree$node.label), 2) * 100
 kd_looms_bcov8421_cs_tree$node.label[1] <- NA
 kd_looms_bcov8421_cs_tree$tip.label <- str_replace_all(kd_looms_bcov8421_cs_tree$tip.label, "_", " ")
@@ -269,33 +270,34 @@ ggsave(here("output/figures/kd-looms_bcov8421_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_bcov8421_cs_tree.pdf"))
 
-## Looms, 4 variable rates
-kd_looms_ctmc4_cs_tree <- read.tree(here("output/trees/kd-looms_ctmc4_consensus.tree"))
-kd_looms_ctmc4_cs_tree$node.label <- round(
-  as.numeric(kd_looms_ctmc4_cs_tree$node.label),
+
+## Looms, binary covarion, strict, 4 variable rates
+kd_looms_bcov1111_strict_heterogene_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_strict_heterogene_consensus.tree"))
+kd_looms_bcov1111_strict_heterogene_cs_tree$node.label <- round(
+  as.numeric(kd_looms_bcov1111_strict_heterogene_cs_tree$node.label),
   2
 ) * 100
-kd_looms_ctmc4_cs_tree$node.label[1] <- NA
-kd_looms_ctmc4_cs_tree$tip.label <- str_replace_all(
-  kd_looms_ctmc4_cs_tree$tip.label,
+kd_looms_bcov1111_strict_heterogene_cs_tree$node.label[1] <- NA
+kd_looms_bcov1111_strict_heterogene_cs_tree$tip.label <- str_replace_all(
+  kd_looms_bcov1111_strict_heterogene_cs_tree$tip.label,
   "_",
   " "
 )
 
-kd_looms_ctmc4_cs_tree_plot <- kd_looms_ctmc4_cs_tree |>
+kd_looms_bcov1111_strict_heterogene_cs_tree_plot <- kd_looms_bcov1111_strict_heterogene_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
   cs_tree() +
   geom_rootedge(
-    max(node.depth.edgelength(kd_looms_ctmc4_cs_tree)) * .025,
+    max(node.depth.edgelength(kd_looms_bcov1111_strict_heterogene_cs_tree)) * .025,
     linewidth = lwd
   ) +
   theme(plot.margin = margin(0, 4.25, 0, 0, unit = "line"))
-ggsave(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"),
-  kd_looms_ctmc4_cs_tree_plot,
-  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+ggsave(here("output/figures/kd-looms_bcov_strict_heterogene_cs_tree.pdf"),
+       kd_looms_bcov1111_strict_heterogene_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
-plot_crop(here("output/figures/kd-looms_ctmc4_cs_tree.pdf"))
+plot_crop(here("output/figures/kd-looms_bcov_strict_heterogene_cs_tree.pdf"))
 
 ## Looms, basic features only
 kd_looms_bcov_basic_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_basic_consensus.tree"))
@@ -352,7 +354,7 @@ plot_crop(here("output/figures/kd-looms_bcov_patterns_cs_tree.pdf"))
 
 # Age density distribution for languages ---------------------------------------
 
-kd_lgs_ages <- read_csv(here("output/data/kd-lgs_ages.csv"))
+kd_lgs_ages <- read_csv(here("output/data/kd-lgs_ages2.csv"))
 
 kd_lgs_ages_plot <- kd_lgs_ages |>
   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
@@ -388,13 +390,13 @@ kd_lgs_ages_plot <- kd_lgs_ages |>
     aspect.ratio = 0.618,
     legend.position = "right"
   )
-ggsave(here("output/figures/kd-lgs_ages_plot.pdf"),
+ggsave(here("output/figures/kd-lgs_ages_plot2.pdf"),
   kd_lgs_ages_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
-plot_crop(here("output/figures/kd-lgs_ages_plot.pdf"))
+plot_crop(here("output/figures/kd-lgs_ages_plot2.pdf"))
 
-kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_ages_summary.csv"))
+kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_ages_summary2.csv"))
 
 kd_lgs_ages_summary |>
   mutate(across(where(is.numeric), ~ round(.x, 2))) |>
@@ -405,12 +407,12 @@ kd_lgs_ages_summary |>
     digits = 2,
     format = "latex", booktabs = TRUE
   ) |>
-  write_lines(here("output/tables/kd-lgs_ages_summary.tex"))
+  write_lines(here("output/tables/kd-lgs_ages_summary2.tex"))
 
 
 # Cophylogeny ------------------------------------------------------------------
 
-kd_lgs_cs <- read.tree(here("output/trees/kd-lgs_bcov_consensus.tree")) |>
+kd_lgs_cs <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_byconcept_consensus.tree")) |>
   fortify() |>
   left_join(kd_lgs) |>
   mutate(label = lng) |>
@@ -427,7 +429,7 @@ kd_loom_pb <- c(
   "Tai Phake"
 )
 
-kd_looms_cs <- kd_looms_bcov1111_cs_tree |>
+kd_looms_cs <- kd_looms_bcov1111_strict_heterogene_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
   mutate(label = ifelse(label %in% kd_loom_pb, label, lng)) |>
@@ -585,16 +587,16 @@ kd_cophylo_plot <- kd_lng_loom_tree +
     legend.box.margin = margin(0, 0, 0, 0, unit = "line"),
     legend.background = element_blank()
   )
-ggsave(here("output/figures/kd_cophylo_plot.pdf"),
+ggsave(here("output/figures/kd_cophylo_plot2.pdf"),
   kd_cophylo_plot,
   device = cairo_pdf, width = wd, height = ht * 2, units = "cm"
 )
-plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
+plot_crop(here("output/figures/kd_cophylo_plot2.pdf"))
 
 
 # Mutation rates ---------------------------------------------------------------
 
-kd_looms_mu_bylevel <- read_csv(here("output/data/kd-looms_mu_bylevel.csv"))
+kd_looms_mu_bylevel <- read_csv(here("output/data/kd-looms_mu_bylevel2.csv"))
 
 kd_looms_mu_plot <- kd_looms_mu_bylevel |>
   ggplot(aes(y = factor(level), x = rate)) +
@@ -631,13 +633,13 @@ kd_looms_mu_plot <- kd_looms_mu_bylevel |>
     aspect.ratio = 0.618,
     legend.position = "right"
   )
-ggsave(here("output/figures/kd-looms_mu_plot.pdf"),
+ggsave(here("output/figures/kd-looms_mu_plot2.pdf"),
   kd_looms_mu_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
-plot_crop(here("output/figures/kd-looms_mu_plot.pdf"))
+plot_crop(here("output/figures/kd-looms_mu_plot2.pdf"))
 
-kd_looms_mu_summary <- read_csv(here("output/data/kd-looms_mu_summary.csv"))
+kd_looms_mu_summary <- read_csv(here("output/data/kd-looms_mu_summary2.csv"))
 
 kd_looms_mu_summary |>
   mutate(across(everything(), ~ round(.x, 2))) |>
@@ -648,7 +650,7 @@ kd_looms_mu_summary |>
     digits = 2,
     format = "latex", booktabs = TRUE
   ) |>
-  write_lines(here("output/tables/kd-looms_mu_summary.tex"))
+  write_lines(here("output/tables/kd-looms_mu_summary2.tex"))
 
 
 # Maps -------------------------------------------------------------------------

@@ -46,8 +46,7 @@ unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconc
 )
 
 
-
-kd_lgs_bcov_relaxed_heterogene <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_byconcept.trees"))
+kd_lgs_bcov_relaxed_heterogene <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.trees"))
 kd_lgs_bcov_relaxed_heterogene <- kd_lgs_bcov_relaxed_heterogene[ceiling(length(kd_lgs_bcov_relaxed_heterogene) * burnin):length(kd_lgs_bcov_relaxed_heterogene)]
 kd_lgs_bcov_relaxed_heterogene_cs <- consensus(kd_lgs_bcov_relaxed_heterogene, p = .5, rooted = TRUE)
 kd_lgs_bcov_relaxed_heterogene_cs <- consensus.edges(
@@ -235,22 +234,22 @@ getMRCA_age <- function(tree, tips) {
   root_age - node.depth.edgelength(tree)[mrca]
 }
 
-kd_lgs_ages <- kd_lgs_bcov |>
+kd_lgs_ages <- kd_lgs_bcov_relaxed_heterogene |>
   seq_along() |>
   map_df(~ tibble(
-    `Kra-Dai` = getMRCA_age(kd_lgs_bcov[[.x]], kd_lgs_bcov[[1]]$tip.label),
+    `Kra-Dai` = getMRCA_age(kd_lgs_bcov_relaxed_heterogene[[.x]], kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label),
     `Kam-Tai` = getMRCA_age(
-      kd_lgs_bcov[[.x]],
-      str_subset(kd_lgs_bcov[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")
+      kd_lgs_bcov_relaxed_heterogene[[.x]],
+      str_subset(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")
     ),
     `Tai-Yay` = getMRCA_age(
-      kd_lgs_bcov[[.x]],
-      str_subset(kd_lgs_bcov[[1]]$tip.label, "^(Tc|Tn|Tsw)")
+      kd_lgs_bcov_relaxed_heterogene[[.x]],
+      str_subset(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label, "^(Tc|Tn|Tsw)")
     )
   )) |>
   pivot_longer(everything(), names_to = "group", values_to = "age")
 
-write_csv(kd_lgs_ages, here("output/data/kd-lgs_ages.csv"))
+write_csv(kd_lgs_ages, here("output/data/kd-lgs_ages2.csv"))
 
 kd_lgs_ages_summary <- kd_lgs_ages |>
   group_by(group) |>
@@ -263,15 +262,15 @@ kd_lgs_ages_summary <- kd_lgs_ages |>
   ) |>
   left_join(tribble(
     ~group, ~n,
-    "Kam-Tai", length(str_subset(kd_lgs_bcov[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
-    "Tai-Yay", length(str_subset(kd_lgs_bcov[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
-    "Kra-Dai", length(kd_lgs_bcov[[1]]$tip.label)
+    "Kam-Tai", length(str_subset(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
+    "Tai-Yay", length(str_subset(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
+    "Kra-Dai", length(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label)
   )) |>
   relocate(n, .after = group) |>
   arrange(-n) |>
   rename(n_lgs = n)
 
-write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary.csv"))
+write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary2.csv"))
 
 
 # Mutation rates ---------------------------------------------------------------
@@ -305,7 +304,7 @@ kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |
   select(code, level)
 
 kd_looms_mu_bylevel <- parse_beast_tracelog_file(
-  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.log")
+  here("data/kd-looms/kd-looms_ctmc1111_strict_heterogene/kd-looms_ctmc1111_strict_heterogene.log")
 ) |>
   as_tibble() |>
   select(
@@ -324,7 +323,7 @@ kd_looms_mu_bylevel_tb <- kd_looms_mu_bylevel |>
   pivot_longer(-Sample, names_to = "level", values_to = "rate") |>
   mutate(level = str_remove_all(level, "[^0-9]") |> as.numeric())
 
-write_csv(kd_looms_mu_bylevel_tb, here("output/data/kd-looms_mu_bylevel.csv"))
+write_csv(kd_looms_mu_bylevel_tb, here("output/data/kd-looms_mu_bylevel2.csv"))
 
 kd_looms_mu_summary <- kd_looms_mu_bylevel_tb |>
   group_by(level) |>
@@ -339,4 +338,4 @@ kd_looms_mu_summary <- kd_looms_mu_bylevel_tb |>
   relocate(n, .after = level) |>
   rename(n_chars = n)
 
-write_csv(kd_looms_mu_summary, here("output/data/kd-looms_mu_summary.csv"))
+write_csv(kd_looms_mu_summary, here("output/data/kd-looms_mu_summary2.csv"))
