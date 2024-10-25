@@ -4,6 +4,7 @@ library(phytools)
 library(TreeTools)
 library(tracerer)
 library(tidyverse)
+library(fs)
 
 dir.create(here("data/kd-lgs/"))
 dir.create(here("data/kd-looms/"))
@@ -53,10 +54,16 @@ kd_lgs_matrix <- kd_lgs_lx |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
+
 write_binary_nexus(
   kd_lgs_matrix,
-  here("data/kd-lgs/kd-lgs_bcov/kd-lgs.nex")
+  here("data/nexus/kd-lgs.nex")
 )
+
+#write_binary_nexus(
+#  kd_lgs_matrix,
+#  here("data/kd-lgs/kd-lgs_bcov/kd-lgs.nex")
+#)
 
 # Looms
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
@@ -70,13 +77,19 @@ kd_looms_matrix1111 <- kd_looms_matrix |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
+
 write_binary_nexus(
   kd_looms_matrix1111,
-  here("data/kd-looms/kd-looms_bcov1111/kd-looms_1111.nex")
+  here("data/nexus/kd-looms_1111.nex")
 )
 
+#write_binary_nexus(
+#  kd_looms_matrix1111,
+#  here("data/kd-looms/kd-looms_bcov1111/kd-looms_1111.nex")
+#)
+
 ## Looms, level 1 characters only
-dir.create(here("data/kd-looms/kd-looms_bcov1000/"))
+#dir.create(here("data/kd-looms/kd-looms_bcov1000/"))
 kd_looms_matrix1000 <- select(
   kd_looms_matrix,
   Taxon,
@@ -85,14 +98,20 @@ kd_looms_matrix1000 <- select(
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
+
 write_binary_nexus(
   kd_looms_matrix1000,
-  here("data/kd-looms/kd-looms_bcov1000/kd-looms_1000.nex")
+  here("data/nexus/kd-looms_1000.nex")
 )
+
+#write_binary_nexus(
+#  kd_looms_matrix1000,
+#  here("data/kd-looms/kd-looms_bcov1000/kd-looms_1000.nex")
+#)
 
 ## Looms, weighted characters
 weights <- c(8, 4, 2, 1)
-dir.create(here("data/kd-looms/kd-looms_bcov8421/"))
+#dir.create(here("data/kd-looms/kd-looms_bcov8421/"))
 
 kd_looms_matrix_weighted <- kd_looms_matrix |>
   mutate(across(everything(), as.character)) |>
@@ -118,13 +137,19 @@ kd_looms_matrix8421 <- kd_looms_matrix_weighted |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
+
 write_binary_nexus(
   kd_looms_matrix8421, 
-  here("data/kd-looms/kd-looms_bcov8421/kd-looms_8421.nex")
+  here("data/nexus/kd-looms_8421.nex")
 )
 
+#write_binary_nexus(
+#  kd_looms_matrix8421, 
+#  here("data/kd-looms/kd-looms_bcov8421/kd-looms_8421.nex")
+#)
+
 ## Looms, 4 variable rates
-dir.create(here("data/kd-looms/kd-looms_ctmc4/"))
+#dir.create(here("data/kd-looms/kd-looms_ctmc4/"))
 
 kd_looms_matrix_bylevel <- kd_looms_matrix |>
   mutate(across(everything(), as.character)) |>
@@ -159,17 +184,30 @@ kd_looms_partition <- kd_looms_characters |>
   pull(charset) |>
   paste0(collapse = "\n")
 
+
 write_binary_nexus(
   kd_looms_matrix_bylevel,
-  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex")
-)
-write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
-  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"),
-  append = TRUE
+  here("data/nexus/kd-looms_ctmc4.nex")
 )
 
+#write_binary_nexus(
+#  kd_looms_matrix_bylevel,
+#  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex")
+#)
+
+
+write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
+           here("data/nexus/kd-looms_ctmc4.nex"),
+           append = TRUE
+)
+
+#write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
+#  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"),
+#  append = TRUE
+#)
+
 ## Looms, basic features only
-dir.create(here("data/kd-looms/kd-looms_bcov_basic/"))
+#dir.create(here("data/kd-looms/kd-looms_bcov_basic/"))
 
 kd_looms_matrix_basic <- select(
   kd_looms_matrix,
@@ -179,13 +217,19 @@ kd_looms_matrix_basic <- select(
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
+
 write_binary_nexus(
   kd_looms_matrix_basic,
-  here("data/kd-looms/kd-looms_bcov_basic/kd-looms_basic.nex")
+  here("data/nexus/kd-looms_basic.nex")
 )
 
+#write_binary_nexus(
+#  kd_looms_matrix_basic,
+#  here("data/kd-looms/kd-looms_bcov_basic/kd-looms_basic.nex")
+#)
+
 ## Looms, pattern features only
-dir.create(here("data/kd-looms/kd-looms_bcov_patterns/"))
+#dir.create(here("data/kd-looms/kd-looms_bcov_patterns/"))
 
 kd_looms_matrix_patterns <- select(
   kd_looms_matrix,
@@ -195,46 +239,37 @@ kd_looms_matrix_patterns <- select(
   column_to_rownames("Taxon") |>
   as.matrix() |>
   MatrixToPhyDat()
+
 write_binary_nexus(
   kd_looms_matrix_patterns,
-  here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_patterns.nex")
+  here("data/nexus/kd-looms_patterns.nex")
 )
 
+#write_binary_nexus(
+#  kd_looms_matrix_patterns,
+#  here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_patterns.nex")
+#)
 
-# Add the missing "End;" line at the end of the beast tree files ---------------
 
-write_file("End;",
-  here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.trees"),
-  append = TRUE
-)
-write_file("End;",
-  here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.trees"),
-  append = TRUE
-)
-write_file("End;",
-  here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.trees"),
-  append = TRUE
-)
-write_file("End;",
-  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.trees"),
-  append = TRUE
-)
-write_file("End;",
-  here("data/kd-looms/kd-looms_bcov_basic/kd-looms_bcov_basic.trees"),
-  append = TRUE
-)
-write_file("End;",
-  here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_bcov_patterns.trees"),
-  append = TRUE
-)
-write_file("End;", here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees"),
-  append = TRUE
-)
+# Add the missing "End;" line at the end of the tree files ---------------
 
-zip(
-  here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees.zip"),
-  here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.trees")
-)
+tree_files <- dir_ls(here("data"), glob = "*.trees", recurse = TRUE)
+
+# Fonction pour ajouter "End;" si elle n'est pas présente à la fin
+add_end_if_missing <- function(file_path) {
+  
+  lines <- read_lines(file_path)
+
+  if (last(lines) != "End;") {
+    write_lines("End;", file_path, append = TRUE)
+    message(glue::glue("Ajout de 'End;' à la fin de {file_path}"))
+  } else {
+    message(glue::glue("Le fichier {file_path} contient déjà 'End;' à la fin"))
+  }
+}
+
+# Appliquer la fonction sur chaque fichier
+walk(tree_files, add_end_if_missing)
 
 
 # Check the ESS values ---------------------------------------------------------
@@ -242,82 +277,142 @@ zip(
 burnin <- .1
 
 # Languages
-
-kd_lgs_bcov_log <- parse_beast_tracelog_file(
-  here("data/kd-lgs/kd-lgs_bcov/kd-lgs_bcov.log")
+# Binary covarion relaxed clock
+kd_lgs_bcov_relaxed_log <- parse_beast_tracelog_file(
+  here("data/kd-lgs/kd-lgs_bcov_relaxed/kd-lgs_bcov_relaxed.log")
 ) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd-lgs_bcov")
-kd_lgs_bcov_ess <- kd_lgs_bcov_log |>
+kd_lgs_bcov_relaxed_ess <- kd_lgs_bcov_relaxed_log |>
   filter(burnin == FALSE) |>
   select(-rowid, -burnin, -data) |>
-  calc_esses(sample_interval = max(kd_lgs_bcov_log$Sample) / (nrow(kd_lgs_bcov_log) - 1)) |>
+  calc_esses(sample_interval = max(kd_lgs_bcov_relaxed_log$Sample) / (nrow(kd_lgs_bcov_relaxed_log) - 1)) |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
-filter(kd_lgs_bcov_ess, ESS < 200)
+filter(kd_lgs_bcov_relaxed_ess, ESS < 200)
+
+# Binary covarion strict clock
+kd_lgs_bcov_strict_log <- parse_beast_tracelog_file(
+  here("data/kd-lgs/kd-lgs_bcov_strict/kd-lgs_bcov_strict.log")
+) |>
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  mutate(data = "kd-lgs_bcov")
+kd_lgs_bcov_strict_ess <- kd_lgs_bcov_strict_log |>
+  filter(burnin == FALSE) |>
+  select(-rowid, -burnin, -data) |>
+  calc_esses(sample_interval = max(kd_lgs_bcov_strict_log$Sample) / (nrow(kd_lgs_bcov_strict_log) - 1)) |>
+  as_tibble() |>
+  pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
+filter(kd_lgs_bcov_strict_ess, ESS < 200)
+
+# Binary covarion relaxed clock by concept
+kd_lgs_bcov_relaxed_byconcept_log <- parse_beast_tracelog_file(
+  here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.log")
+) |>
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  mutate(data = "kd-lgs_bcov")
+kd_lgs_bcov_relaxed_byconcept_ess <- kd_lgs_bcov_relaxed_byconcept_log |>
+  filter(burnin == FALSE) |>
+  select(-rowid, -burnin, -data) |>
+  calc_esses(sample_interval = max(kd_lgs_bcov_relaxed_byconcept_log$Sample) / (nrow(kd_lgs_bcov_relaxed_byconcept_log) - 1)) |>
+  as_tibble() |>
+  pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
+filter(kd_lgs_bcov_relaxed_byconcept_ess, ESS < 200)
 
 # Looms
 
 ## Looms 1000
-kd_looms_bcov1000_log <- parse_beast_tracelog_file(
-  here("data/kd-looms/kd-looms_bcov1000/kd-looms_bcov1000.log")
+kd_looms_bcov1000_strict_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_bcov1000_strict/kd-looms_bcov1000_strict.log")
 ) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd-looms_bcov1000")
-kd_looms_bcov1000_ess <- kd_looms_bcov1000_log |>
+kd_looms_bcov1000_strict_ess <- kd_looms_bcov1000_strict_log |>
   filter(burnin == FALSE) |>
   select(-rowid, -burnin, -data) |>
-  calc_esses(sample_interval = max(kd_looms_bcov1000_log$Sample) / (nrow(kd_looms_bcov1000_log) - 1)) |>
+  calc_esses(sample_interval = max(kd_looms_bcov1000_strict_log$Sample) / (nrow(kd_looms_bcov1000_strict_log) - 1)) |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
-filter(kd_looms_bcov1000_ess, ESS < 200)
+filter(kd_looms_bcov1000_strict_ess, ESS < 200)
 
-## Looms 1111
-kd_looms_bcov1111_log <- parse_beast_tracelog_file(
-  here("data/kd-looms/kd-looms_bcov1111/kd-looms_bcov1111.log")
+## Looms 1111 bcov strict
+kd_looms_bcov1111_strict_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_bcov1111_strict/kd-looms_bcov1111_strict.log")
 ) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd-looms_bcov1111")
-kd_looms_bcov1111_ess <- kd_looms_bcov1111_log |>
+kd_looms_bcov1111_strict_ess <- kd_looms_bcov1111_strict_log |>
   filter(burnin == FALSE) |>
   select(-rowid, -burnin, -data) |>
-  calc_esses(sample_interval = max(kd_looms_bcov1111_log$Sample) / (nrow(kd_looms_bcov1111_log) - 1)) |>
+  calc_esses(sample_interval = max(kd_looms_bcov1111_strict_log$Sample) / (nrow(kd_looms_bcov1111_strict_log) - 1)) |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
-filter(kd_looms_bcov1111_ess, ESS < 200)
+filter(kd_looms_bcov1111_strict_ess, ESS < 200)
+
+## Looms 1111 bcov relaxed
+kd_looms_bcov1111_relaxed_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_bcov1111_relaxed/kd-looms_bcov1111_relaxed.log")
+) |>
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  mutate(data = "kd-looms_bcov1111")
+kd_looms_bcov1111_relaxed_ess <- kd_looms_bcov1111_relaxed_log |>
+  filter(burnin == FALSE) |>
+  select(-rowid, -burnin, -data) |>
+  calc_esses(sample_interval = max(kd_looms_bcov1111_relaxed_log$Sample) / (nrow(kd_looms_bcov1111_relaxed_log) - 1)) |>
+  as_tibble() |>
+  pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
+filter(kd_looms_bcov1111_relaxed_ess, ESS < 200)
 
 ## Looms 8421
-kd_looms_bcov8421_log <- parse_beast_tracelog_file(
-  here("data/kd-looms/kd-looms_bcov8421/kd-looms_bcov8421.log")
+kd_looms_bcov8421_strict_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_bcov8421_strict/kd-looms_bcov8421_strict.log")
 ) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd-looms_bcov8421")
-kd_looms_bcov84211_ess <- kd_looms_bcov8421_log |>
+kd_looms_bcov84211_strict_ess <- kd_looms_bcov8421_strict_log |>
   filter(burnin == FALSE) |>
   select(-rowid, -burnin, -data) |>
-  calc_esses(sample_interval = max(kd_looms_bcov8421_log$Sample) / (nrow(kd_looms_bcov8421_log) - 1)) |>
+  calc_esses(sample_interval = max(kd_looms_bcov8421_strict_log$Sample) / (nrow(kd_looms_bcov8421_strict_log) - 1)) |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
-filter(kd_looms_bcov84211_ess, ESS < 200)
+filter(kd_looms_bcov84211_strict_ess, ESS < 200)
 
-## Looms CTMC 4
-kd_looms_ctmc4_log <- parse_beast_tracelog_file(
-  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.log")
+## Looms CTMC strict clock heterogene
+kd_looms_ctmc1111_strict_heterogene_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_ctmc1111_strict_heterogene/kd-looms_ctmc1111_strict_heterogene.log")
 ) |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   mutate(data = "kd_looms_ctmc4")
-kd_looms_ctmc4_ess <- kd_looms_ctmc4_log |>
+kd_looms_ctmc1111_strict_heterogene_ess <- kd_looms_ctmc1111_strict_heterogene_log |>
   filter(burnin == FALSE) |>
   select(-rowid, -burnin, -data) |>
-  calc_esses(sample_interval = max(kd_looms_ctmc4_log$Sample) / (nrow(kd_looms_ctmc4_log) - 1)) |>
+  calc_esses(sample_interval = max(kd_looms_ctmc1111_strict_heterogene_log$Sample) / (nrow(kd_looms_ctmc1111_strict_heterogene_log) - 1)) |>
   as_tibble() |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
-filter(kd_looms_ctmc4_ess, ESS < 200)
+filter(kd_looms_ctmc1111_strict_heterogene_ess, ESS < 200)
+
+## Looms CTMC strict clock 
+kd_looms_ctmc1111_strict_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_ctmc1111_strict/kd-looms_ctmc1111_strict.log")
+) |>
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  mutate(data = "kd_looms_ctmc4")
+kd_looms_ctmc1111_strict_ess <- kd_looms_ctmc1111_strict_log |>
+  filter(burnin == FALSE) |>
+  select(-rowid, -burnin, -data) |>
+  calc_esses(sample_interval = max(kd_looms_ctmc1111_strict_log$Sample) / (nrow(kd_looms_ctmc1111_strict_log) - 1)) |>
+  as_tibble() |>
+  pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
+filter(kd_looms_ctmc1111_strict_ess, ESS < 200)
 
 ## Looms, basic features only
 kd_looms_bcov_basic_log <- parse_beast_tracelog_file(
@@ -349,20 +444,174 @@ kd_looms_bcov_patterns_ess <- kd_looms_bcov_basic_log |>
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_bcov_patterns_ess, ESS < 200)
 
+## Binary covarion, strict clock, heterogene
+kd_looms_bcov1111_strict_heterogene_log <- parse_beast_tracelog_file(
+  here("data/kd-looms/kd-looms_bcov1111_strict_heterogene/kd-looms_bcov1111_strict_heterogene.log")
+) |>
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  mutate(data = "kd-looms_bcov_patterns")
+kd_looms_bcov1111_strict_heterogene_ess <- kd_looms_bcov1111_strict_heterogene_log |>
+  filter(burnin == FALSE) |>
+  select(-rowid, -burnin, -data) |>
+  calc_esses(sample_interval = max(kd_looms_bcov1111_strict_heterogene_log$Sample) / (nrow(kd_looms_bcov1111_strict_heterogene_log) - 1)) |>
+  as_tibble() |>
+  pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
+filter(kd_looms_bcov1111_strict_heterogene_ess, ESS < 200)
+
 
 # Check the traces -------------------------------------------------------------
 
 bind_rows(
-  kd_lgs_bcov_log,
-  kd_looms_bcov1000_log,
-  kd_looms_bcov1111_log,
-  kd_looms_bcov8421_log,
-  kd_looms_ctmc4_log,
+  kd_looms_bcov1111_relaxed_log,
+  #kd_looms_bcov1111_strict_heterogene_log,
+  kd_looms_bcov8421_strict_log,
+  kd_looms_ctmc1111_strict_log,
+  #kd_lgs_bcov_relaxed_byconcept_log,
+  kd_lgs_bcov_relaxed_log,
+  kd_lgs_bcov_strict_log,
   kd_looms_bcov_basic_log,
-  kd_looms_bcov_patterns_log
-) |>
+  kd_looms_bcov_patterns_log,
+  kd_looms_bcov1000_strict_log,
+  kd_looms_bcov1111_strict_log,
+  #kd_looms_ctmc1111_strict_heterogene_log
+  ) |>
   filter(burnin == FALSE) |>
   ggplot(aes(x = Sample, y = posterior)) +
   geom_line(linewidth = .15, color = ggthemes::few_pal("Dark")(2)[1]) +
   facet_wrap(~data, scales = "free") +
   theme_minimal()
+
+
+# Elage the nexus files  -------------------------------------------------------
+# Read kra-dai looms correspondances
+lgs_to_looms = read_excel(
+  here("data/Kra-DaiLooms.xlsx"),
+  skip = 5,
+  sheet=1) |> 
+  select(Looms = 2, KD = 3)
+
+# Looms data
+data_looms = read.nexus.data(here("data/nexus/kd-looms_1111.nex")) |> 
+  as.data.frame() |>
+  t() |>
+  as.data.frame() |>
+  rownames_to_column(var = "rowname") |>  
+  mutate(across(-'rowname', as.integer)) |> 
+  mutate(rowname = str_remove_all(rowname, "_")) |> 
+  column_to_rownames(var = "rowname") 
+
+#Language data
+data_lg = read.nexus.data(here("data/nexus/kd-lgs.nex")) |>
+  as.data.frame() |>
+  t() |>
+  as.data.frame() |> 
+  rownames_to_column(var = "rowname") |>
+  mutate(across(-'rowname', as.integer)) |> 
+  column_to_rownames(var = "rowname") 
+
+# Matching taxa (indice)
+indices <- match(rownames(data_lg), lgs_to_looms$KD)
+
+# Languages - keep on only matching taxa
+data_lg2 <- data_lg |> 
+  rownames_to_column(var = "rowname") |> 
+  mutate(rowname = ifelse(!is.na(indices), lgs_to_looms$Looms[indices], rowname)) |>
+  filter(rowname %in%  lgs_to_looms$Looms[indices[!is.na(indices)]] ) |> 
+  column_to_rownames(var = "rowname") 
+
+# Matching taxa (taxa)
+common_tip <- intersect(rownames(data_lg2),rownames(data_looms))
+
+# Languages elaged
+data_lg2 <- data_lg2 |> 
+  rownames_to_column(var = "rowname") |> 
+  filter(rowname %in% common_tip) |> 
+  column_to_rownames(var = "rowname") |> 
+  mutate(across(everything(), as.character)) |> 
+  mutate(across(everything(), ~ replace_na(.x, "-"))) |> 
+  as.matrix() 
+
+# Looms elaged 
+data_looms2 <- data_looms |>
+  rownames_to_column(var = "rowname") |> 
+  filter(rowname %in% common_tip) |> 
+  column_to_rownames(var = "rowname") |> 
+  mutate(across(everything(), as.character)) |> 
+  mutate(across(everything(), ~ replace_na(.x, "-"))) |> 
+  as.matrix() 
+
+# Merged 
+data_merged <- merge(data_looms2, data_lg2, by="row.names", suffixe="") |>
+  column_to_rownames(var = "Row.names") |>
+  as.matrix()
+
+# Write nexus files 
+dir.create("data/kd-elaged_analysis/")
+
+# Languages
+write.nexus.data(
+  data_lg2,
+  here("data/nexus/kd-lg_elaged.nex"), 
+  format="standard", missing="-")
+
+# Looms
+write.nexus.data(
+  data_looms2,
+  here("data/nexus/kd-looms_elaged.nex"), 
+  format="standard", missing="-")
+
+# Merged dataset
+write.nexus.data(
+  data_merged,
+  here("data/nexus/kd-merged.nex"),
+  format = 'standard', missing="-")
+
+# Filtering  : delete null columns ---------------------------------------------
+
+# Languages 
+read.nexus.data(here("data/nexus/kd-lg-elaged.nex"))|>
+  as_tibble() |>
+  mutate(across(everything(), ~ na_if(.x, "-"))) |>
+  mutate(across(everything(), as.numeric))  |>
+  mutate(total = rowSums(across(everything()), na.rm=T)) |>
+  filter(total != 0) |> 
+  select(-total) |>
+  mutate(across(everything(), as.character))  |>
+  mutate(across(everything(), ~ replace_na(.x, "?"))) |>
+  write.nexus.data(
+    here("data/nexus/kd-lg-elaged-filtered.nex"),
+    format = "STANDARD")
+
+
+# Looms
+read.nexus.data(here("data/nexus/kd-looms_elaged.nex"))|>
+  as_tibble() |>
+  mutate(across(everything(), ~ na_if(.x, "-"))) |>
+  mutate(across(everything(), as.numeric))  |>
+  mutate(total = rowSums(across(everything()), na.rm=T)) |>
+  filter(total != 0) |> 
+  select(-total) |>
+  mutate(across(everything(), as.character))  |>
+  mutate(across(everything(), ~ replace_na(.x, "?"))) |>
+  write.nexus.data(
+    here("data/nexus/kd-looms_elaged-filtered.nex"),
+    format = "STANDARD")
+
+
+# Merged data
+read.nexus.data(here("data/nexus/kd-merged.nex"))|>
+  as_tibble() |>
+  mutate(across(everything(), ~ na_if(.x, "-"))) |>
+  mutate(across(everything(), as.numeric))  |>
+  mutate(total = rowSums(across(everything()), na.rm=T)) |>
+  filter(total != 0) |> 
+  select(-total) |>
+  mutate(across(everything(), as.character))  |>
+  mutate(across(everything(), ~ replace_na(.x, "?"))) |>
+  write.nexus.data(
+    here("data/nexus/kd-merged-filtered.nex"),
+    format = "STANDARD")
+
+
+
