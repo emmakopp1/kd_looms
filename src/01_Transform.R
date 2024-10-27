@@ -303,7 +303,7 @@ kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |
   select(code, level)
 
 kd_looms_mu_bylevel <- parse_beast_tracelog_file(
-  here("data/kd-looms/kd-looms_ctmc1111_strict_heterogene/kd-looms_ctmc1111_strict_heterogene.log")
+  here("data/kd-looms/kd-looms_bcov1111_strict_heterogene/kd-looms_bcov1111_strict_heterogene.log")
 ) |>
   as_tibble() |>
   select(
