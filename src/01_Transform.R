@@ -299,7 +299,6 @@ kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
 write_csv(kd_lgs_mu_summary, here("output/data/kd-lgs_mu_summary.csv"))
 
 # Looms
-
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
   select(code, level)
 
