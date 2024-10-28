@@ -39,10 +39,10 @@ unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconc
   junkpaths = TRUE,
   exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
 )
-unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.log.zip"),
-  junkpaths = TRUE,
-  exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
-)
+# unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.log.zip"),
+#   junkpaths = TRUE,
+#   exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
+# )
 
 kd_lgs_bcov_relaxed_heterogene <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.trees"))
 kd_lgs_bcov_relaxed_heterogene <- kd_lgs_bcov_relaxed_heterogene[ceiling(length(kd_lgs_bcov_relaxed_heterogene) * burnin):length(kd_lgs_bcov_relaxed_heterogene)]
@@ -278,6 +278,20 @@ burnin <- .1
 
 kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   count(concept_id)
+
+kd_lgs_mu_byconcept <- parse_beast_tracelog_file(
+  here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.log")
+) |>
+  as_tibble() |>
+  select(Sample, starts_with("mutationRate.s.concept_"))
+
+kd_lgs_mu_byconcept_tb <- kd_lgs_mu_byconcept |> 
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  filter(burnin == FALSE) |>
+  select(-burnin, -rowid) |>
+  pivot_longer(-Sample, names_to = "concept", values_to = "rate") |> 
+  mutate(concept = str_remove(concept, "mutationRate.s.concept_"))
 
 kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
   group_by(concept) |>
