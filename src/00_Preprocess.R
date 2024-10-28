@@ -439,89 +439,100 @@ bind_rows(
 
 # Prune the taxa in the nexus files and keep common taxa only -------------
 
-kd_looms <- read_csv(here("data/kd-looms/kd-looms_datapoints.csv")) |> 
-  select(group, lng, lng_group_code) |> 
-  filter(!is.na(lng_group_code)) |> 
+kd_looms <- read_csv(here("data/kd-looms/kd-looms_datapoints.csv")) |>
+  select(group, lng, lng_group_code) |>
+  filter(!is.na(lng_group_code)) |>
   mutate(lng_label = paste0(str_replace_na(lng_group_code, ""), lng)) |>
   mutate(group = str_replace_all(group, " ", "_"))
-kd_lgs <- read_csv(here("data/kd-lgs/kd-lgs_datapoints.csv")) |> 
-  select(lng, lng_group_code) |> 
-  filter(!is.na(lng_group_code)) |> 
+kd_lgs <- read_csv(here("data/kd-lgs/kd-lgs_datapoints.csv")) |>
+  select(lng, lng_group_code) |>
+  filter(!is.na(lng_group_code)) |>
   mutate(lng_label = paste0(str_replace_na(lng_group_code, ""), lng))
 kd_lgs_looms <- inner_join(kd_looms, kd_lgs)
 
-kd_looms_pruned <- ReadAsPhyDat(here("data/nexus/kd-looms_1111.nex")) |> 
-  as_tibble() |> 
-  select(any_of(kd_lgs_looms$group)) |> 
-  as.matrix() |> 
+kd_looms_pruned <- ReadAsPhyDat(here("data/nexus/kd-looms_1111.nex")) |>
+  as_tibble() |>
+  select(any_of(kd_lgs_looms$group)) |>
+  as.matrix() |>
   t() |>
   MatrixToPhyDat()
 
-kd_lgs_pruned <- ReadAsPhyDat(here("data/nexus/kd-lgs.nex")) |> 
-  as_tibble() |> 
-  select(any_of(kd_lgs_looms$lng_label)) |> 
-  as.matrix() |> 
-  t() |> 
+kd_lgs_pruned <- ReadAsPhyDat(here("data/nexus/kd-lgs.nex")) |>
+  as_tibble() |>
+  select(any_of(kd_lgs_looms$lng_label)) |>
+  as.matrix() |>
+  t() |>
   MatrixToPhyDat()
 
 write_binary_nexus(kd_lgs_pruned, here("data/nexus/kd-lgs_pruned.nex"))
 write_binary_nexus(kd_looms_pruned, here("data/nexus/kd-looms_pruned.nex"))
 
 # Merged dataset
-kd_merged <- kd_looms_pruned |> 
-  as_tibble() |> 
-  rename(all_of(setNames(kd_lgs_looms$group, kd_lgs_looms$lng_label))) |> 
-  bind_rows(as_tibble(kd_lgs_pruned))|> 
-  as.matrix() |> 
-  t() |> 
+kd_merged <- kd_looms_pruned |>
+  as_tibble() |>
+  rename(all_of(setNames(kd_lgs_looms$group, kd_lgs_looms$lng_label))) |>
+  bind_rows(as_tibble(kd_lgs_pruned)) |>
+  as.matrix() |>
+  t() |>
   MatrixToPhyDat()
 write_binary_nexus(kd_merged, here("data/nexus/kd-merged.nex"))
 
-# Filtering  : delete null columns ---------------------------------------------
+# Filtering: delete 0 columns ---------------------------------------------
 
 # Languages
-read.nexus.data(here("data/nexus/kd-lg-elaged.nex")) |>
+kd_lngs_pruned_filtered <- kd_lgs_pruned |>
   as_tibble() |>
-  mutate(across(everything(), ~ na_if(.x, "-"))) |>
+  mutate(across(everything(), ~ na_if(.x, "?"))) |>
   mutate(across(everything(), as.numeric)) |>
-  mutate(total = rowSums(across(everything()), na.rm = T)) |>
+  mutate(total = rowSums(across(everything()), na.rm = TRUE)) |>
   filter(total != 0) |>
   select(-total) |>
   mutate(across(everything(), as.character)) |>
-  mutate(across(everything(), ~ replace_na(.x, "?"))) |>
-  write.nexus.data(
-    here("data/nexus/kd-lg-elaged-filtered.nex"),
-    format = "STANDARD"
-  )
+  mutate(across(everything(), ~ str_replace_na(.x, "?"))) |>
+  as.matrix() |>
+  t() |>
+  MatrixToPhyDat()
+
+write_binary_nexus(
+  kd_lngs_pruned_filtered,
+  here("data/nexus/kd-lngs_pruned_filtered.nex")
+)
 
 
 # Looms
-read.nexus.data(here("data/nexus/kd-looms_elaged.nex")) |>
+kd_looms_pruned_filtered <- kd_looms_pruned |>
   as_tibble() |>
-  mutate(across(everything(), ~ na_if(.x, "-"))) |>
+  mutate(across(everything(), ~ na_if(.x, "?"))) |>
   mutate(across(everything(), as.numeric)) |>
-  mutate(total = rowSums(across(everything()), na.rm = T)) |>
+  mutate(total = rowSums(across(everything()), na.rm = TRUE)) |>
   filter(total != 0) |>
   select(-total) |>
   mutate(across(everything(), as.character)) |>
-  mutate(across(everything(), ~ replace_na(.x, "?"))) |>
-  write.nexus.data(
-    here("data/nexus/kd-looms_elaged-filtered.nex"),
-    format = "STANDARD"
-  )
+  mutate(across(everything(), ~ str_replace_na(.x, "?"))) |>
+  as.matrix() |>
+  t() |>
+  MatrixToPhyDat()
 
+write_binary_nexus(
+  kd_looms_pruned_filtered,
+  here("data/nexus/kd-looms_pruned_filtered.nex")
+)
 
 # Merged data
-read.nexus.data(here("data/nexus/kd-merged.nex")) |>
+kd_merged_filtered <- kd_merged |>
   as_tibble() |>
-  mutate(across(everything(), ~ na_if(.x, "-"))) |>
+  mutate(across(everything(), ~ na_if(.x, "?"))) |>
   mutate(across(everything(), as.numeric)) |>
-  mutate(total = rowSums(across(everything()), na.rm = T)) |>
+  mutate(total = rowSums(across(everything()), na.rm = TRUE)) |>
   filter(total != 0) |>
   select(-total) |>
   mutate(across(everything(), as.character)) |>
-  mutate(across(everything(), ~ replace_na(.x, "?"))) |>
-  write.nexus.data(
-    here("data/nexus/kd-merged-filtered.nex"),
-    format = "STANDARD"
-  )
+  mutate(across(everything(), ~ str_replace_na(.x, "?"))) |>
+  as.matrix() |>
+  t() |>
+  MatrixToPhyDat()
+
+write_binary_nexus(
+  kd_merged_filtered,
+  here("data/nexus/kd-merged_filtered.nex")
+)
