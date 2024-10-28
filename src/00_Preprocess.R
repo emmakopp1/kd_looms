@@ -68,7 +68,6 @@ kd_looms_matrix <- read_csv(here("data/kd-looms/kd-looms_matrix.csv")) |>
   mutate(Taxon = str_replace_all(Taxon, " ", "_"))
 
 ## Looms, all levels, no weighting
-dir.create(here("data/kd-looms/kd-looms_bcov1111/"))
 kd_looms_matrix1111 <- kd_looms_matrix |>
   column_to_rownames("Taxon") |>
   as.matrix() |>
@@ -80,7 +79,6 @@ write_binary_nexus(
 )
 
 ## Looms, level 1 characters only
-# dir.create(here("data/kd-looms/kd-looms_bcov1000/"))
 kd_looms_matrix1000 <- select(
   kd_looms_matrix,
   Taxon,
