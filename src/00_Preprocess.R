@@ -9,6 +9,7 @@ library(fs)
 dir.create(here("data/kd-lgs/"))
 dir.create(here("data/kd-looms/"))
 
+
 # Prepare the nexus files ------------------------------------------------------
 
 # Function to force NEXUS files to specify the symbols to be 0 and 1
@@ -60,11 +61,6 @@ write_binary_nexus(
   here("data/nexus/kd-lgs.nex")
 )
 
-#write_binary_nexus(
-#  kd_lgs_matrix,
-#  here("data/kd-lgs/kd-lgs_bcov/kd-lgs.nex")
-#)
-
 # Looms
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
   select(code, level, type)
@@ -83,13 +79,8 @@ write_binary_nexus(
   here("data/nexus/kd-looms_1111.nex")
 )
 
-#write_binary_nexus(
-#  kd_looms_matrix1111,
-#  here("data/kd-looms/kd-looms_bcov1111/kd-looms_1111.nex")
-#)
-
 ## Looms, level 1 characters only
-#dir.create(here("data/kd-looms/kd-looms_bcov1000/"))
+# dir.create(here("data/kd-looms/kd-looms_bcov1000/"))
 kd_looms_matrix1000 <- select(
   kd_looms_matrix,
   Taxon,
@@ -104,14 +95,8 @@ write_binary_nexus(
   here("data/nexus/kd-looms_1000.nex")
 )
 
-#write_binary_nexus(
-#  kd_looms_matrix1000,
-#  here("data/kd-looms/kd-looms_bcov1000/kd-looms_1000.nex")
-#)
-
 ## Looms, weighted characters
 weights <- c(8, 4, 2, 1)
-#dir.create(here("data/kd-looms/kd-looms_bcov8421/"))
 
 kd_looms_matrix_weighted <- kd_looms_matrix |>
   mutate(across(everything(), as.character)) |>
@@ -139,17 +124,17 @@ kd_looms_matrix8421 <- kd_looms_matrix_weighted |>
   MatrixToPhyDat()
 
 write_binary_nexus(
-  kd_looms_matrix8421, 
+  kd_looms_matrix8421,
   here("data/nexus/kd-looms_8421.nex")
 )
 
-#write_binary_nexus(
-#  kd_looms_matrix8421, 
+# write_binary_nexus(
+#  kd_looms_matrix8421,
 #  here("data/kd-looms/kd-looms_bcov8421/kd-looms_8421.nex")
-#)
+# )
 
 ## Looms, 4 variable rates
-#dir.create(here("data/kd-looms/kd-looms_ctmc4/"))
+# dir.create(here("data/kd-looms/kd-looms_ctmc4/"))
 
 kd_looms_matrix_bylevel <- kd_looms_matrix |>
   mutate(across(everything(), as.character)) |>
@@ -190,24 +175,24 @@ write_binary_nexus(
   here("data/nexus/kd-looms_ctmc4.nex")
 )
 
-#write_binary_nexus(
+# write_binary_nexus(
 #  kd_looms_matrix_bylevel,
 #  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex")
-#)
+# )
 
 
 write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
-           here("data/nexus/kd-looms_ctmc4.nex"),
-           append = TRUE
+  here("data/nexus/kd-looms_ctmc4.nex"),
+  append = TRUE
 )
 
-#write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
+# write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
 #  here("data/kd-looms/kd-looms_ctmc4/kd-looms_ctmc4.nex"),
 #  append = TRUE
-#)
+# )
 
 ## Looms, basic features only
-#dir.create(here("data/kd-looms/kd-looms_bcov_basic/"))
+# dir.create(here("data/kd-looms/kd-looms_bcov_basic/"))
 
 kd_looms_matrix_basic <- select(
   kd_looms_matrix,
@@ -223,13 +208,13 @@ write_binary_nexus(
   here("data/nexus/kd-looms_basic.nex")
 )
 
-#write_binary_nexus(
+# write_binary_nexus(
 #  kd_looms_matrix_basic,
 #  here("data/kd-looms/kd-looms_bcov_basic/kd-looms_basic.nex")
-#)
+# )
 
 ## Looms, pattern features only
-#dir.create(here("data/kd-looms/kd-looms_bcov_patterns/"))
+# dir.create(here("data/kd-looms/kd-looms_bcov_patterns/"))
 
 kd_looms_matrix_patterns <- select(
   kd_looms_matrix,
@@ -245,10 +230,10 @@ write_binary_nexus(
   here("data/nexus/kd-looms_patterns.nex")
 )
 
-#write_binary_nexus(
+# write_binary_nexus(
 #  kd_looms_matrix_patterns,
 #  here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_patterns.nex")
-#)
+# )
 
 
 # Add the missing "End;" line at the end of the tree files ---------------
@@ -257,7 +242,6 @@ tree_files <- dir_ls(here("data"), glob = "*.trees", recurse = TRUE)
 
 # Fonction pour ajouter "End;" si elle n'est pas présente à la fin
 add_end_if_missing <- function(file_path) {
-  
   lines <- read_lines(file_path)
 
   if (last(lines) != "End;") {
@@ -399,7 +383,7 @@ kd_looms_ctmc1111_strict_heterogene_ess <- kd_looms_ctmc1111_strict_heterogene_l
   pivot_longer(everything(), names_to = "parameter", values_to = "ESS")
 filter(kd_looms_ctmc1111_strict_heterogene_ess, ESS < 200)
 
-## Looms CTMC strict clock 
+## Looms CTMC strict clock
 kd_looms_ctmc1111_strict_log <- parse_beast_tracelog_file(
   here("data/kd-looms/kd-looms_ctmc1111_strict/kd-looms_ctmc1111_strict.log")
 ) |>
@@ -464,18 +448,18 @@ filter(kd_looms_bcov1111_strict_heterogene_ess, ESS < 200)
 
 bind_rows(
   kd_looms_bcov1111_relaxed_log,
-  #kd_looms_bcov1111_strict_heterogene_log,
+  # kd_looms_bcov1111_strict_heterogene_log,
   kd_looms_bcov8421_strict_log,
   kd_looms_ctmc1111_strict_log,
-  #kd_lgs_bcov_relaxed_byconcept_log,
+  # kd_lgs_bcov_relaxed_byconcept_log,
   kd_lgs_bcov_relaxed_log,
   kd_lgs_bcov_strict_log,
   kd_looms_bcov_basic_log,
   kd_looms_bcov_patterns_log,
   kd_looms_bcov1000_strict_log,
   kd_looms_bcov1111_strict_log,
-  #kd_looms_ctmc1111_strict_heterogene_log
-  ) |>
+  # kd_looms_ctmc1111_strict_heterogene_log
+) |>
   filter(burnin == FALSE) |>
   ggplot(aes(x = Sample, y = posterior)) +
   geom_line(linewidth = .15, color = ggthemes::few_pal("Dark")(2)[1]) +
@@ -485,133 +469,137 @@ bind_rows(
 
 # Elage the nexus files  -------------------------------------------------------
 # Read kra-dai looms correspondances
-lgs_to_looms = read_excel(
+lgs_to_looms <- read_excel(
   here("data/Kra-DaiLooms.xlsx"),
   skip = 5,
-  sheet=1) |> 
+  sheet = 1
+) |>
   select(Looms = 2, KD = 3)
 
 # Looms data
-data_looms = read.nexus.data(here("data/nexus/kd-looms_1111.nex")) |> 
+data_looms <- read.nexus.data(here("data/nexus/kd-looms_1111.nex")) |>
   as.data.frame() |>
   t() |>
   as.data.frame() |>
-  rownames_to_column(var = "rowname") |>  
-  mutate(across(-'rowname', as.integer)) |> 
-  mutate(rowname = str_remove_all(rowname, "_")) |> 
-  column_to_rownames(var = "rowname") 
-
-#Language data
-data_lg = read.nexus.data(here("data/nexus/kd-lgs.nex")) |>
-  as.data.frame() |>
-  t() |>
-  as.data.frame() |> 
   rownames_to_column(var = "rowname") |>
-  mutate(across(-'rowname', as.integer)) |> 
-  column_to_rownames(var = "rowname") 
+  mutate(across(-"rowname", as.integer)) |>
+  mutate(rowname = str_remove_all(rowname, "_")) |>
+  column_to_rownames(var = "rowname")
+
+# Language data
+data_lg <- read.nexus.data(here("data/nexus/kd-lgs.nex")) |>
+  as.data.frame() |>
+  t() |>
+  as.data.frame() |>
+  rownames_to_column(var = "rowname") |>
+  mutate(across(-"rowname", as.integer)) |>
+  column_to_rownames(var = "rowname")
 
 # Matching taxa (indice)
 indices <- match(rownames(data_lg), lgs_to_looms$KD)
 
 # Languages - keep on only matching taxa
-data_lg2 <- data_lg |> 
-  rownames_to_column(var = "rowname") |> 
+data_lg2 <- data_lg |>
+  rownames_to_column(var = "rowname") |>
   mutate(rowname = ifelse(!is.na(indices), lgs_to_looms$Looms[indices], rowname)) |>
-  filter(rowname %in%  lgs_to_looms$Looms[indices[!is.na(indices)]] ) |> 
-  column_to_rownames(var = "rowname") 
+  filter(rowname %in% lgs_to_looms$Looms[indices[!is.na(indices)]]) |>
+  column_to_rownames(var = "rowname")
 
 # Matching taxa (taxa)
-common_tip <- intersect(rownames(data_lg2),rownames(data_looms))
+common_tip <- intersect(rownames(data_lg2), rownames(data_looms))
 
 # Languages elaged
-data_lg2 <- data_lg2 |> 
-  rownames_to_column(var = "rowname") |> 
-  filter(rowname %in% common_tip) |> 
-  column_to_rownames(var = "rowname") |> 
-  mutate(across(everything(), as.character)) |> 
-  mutate(across(everything(), ~ replace_na(.x, "-"))) |> 
-  as.matrix() 
+data_lg2 <- data_lg2 |>
+  rownames_to_column(var = "rowname") |>
+  filter(rowname %in% common_tip) |>
+  column_to_rownames(var = "rowname") |>
+  mutate(across(everything(), as.character)) |>
+  mutate(across(everything(), ~ replace_na(.x, "-"))) |>
+  as.matrix()
 
-# Looms elaged 
+# Looms elaged
 data_looms2 <- data_looms |>
-  rownames_to_column(var = "rowname") |> 
-  filter(rowname %in% common_tip) |> 
-  column_to_rownames(var = "rowname") |> 
-  mutate(across(everything(), as.character)) |> 
-  mutate(across(everything(), ~ replace_na(.x, "-"))) |> 
-  as.matrix() 
+  rownames_to_column(var = "rowname") |>
+  filter(rowname %in% common_tip) |>
+  column_to_rownames(var = "rowname") |>
+  mutate(across(everything(), as.character)) |>
+  mutate(across(everything(), ~ replace_na(.x, "-"))) |>
+  as.matrix()
 
-# Merged 
-data_merged <- merge(data_looms2, data_lg2, by="row.names", suffixe="") |>
+# Merged
+data_merged <- merge(data_looms2, data_lg2, by = "row.names", suffixe = "") |>
   column_to_rownames(var = "Row.names") |>
   as.matrix()
 
-# Write nexus files 
+# Write nexus files
 dir.create("data/kd-elaged_analysis/")
 
 # Languages
 write.nexus.data(
   data_lg2,
-  here("data/nexus/kd-lg_elaged.nex"), 
-  format="standard", missing="-")
+  here("data/nexus/kd-lg_elaged.nex"),
+  format = "standard", missing = "-"
+)
 
 # Looms
 write.nexus.data(
   data_looms2,
-  here("data/nexus/kd-looms_elaged.nex"), 
-  format="standard", missing="-")
+  here("data/nexus/kd-looms_elaged.nex"),
+  format = "standard", missing = "-"
+)
 
 # Merged dataset
 write.nexus.data(
   data_merged,
   here("data/nexus/kd-merged.nex"),
-  format = 'standard', missing="-")
+  format = "standard", missing = "-"
+)
 
 # Filtering  : delete null columns ---------------------------------------------
 
-# Languages 
-read.nexus.data(here("data/nexus/kd-lg-elaged.nex"))|>
+# Languages
+read.nexus.data(here("data/nexus/kd-lg-elaged.nex")) |>
   as_tibble() |>
   mutate(across(everything(), ~ na_if(.x, "-"))) |>
-  mutate(across(everything(), as.numeric))  |>
-  mutate(total = rowSums(across(everything()), na.rm=T)) |>
-  filter(total != 0) |> 
+  mutate(across(everything(), as.numeric)) |>
+  mutate(total = rowSums(across(everything()), na.rm = T)) |>
+  filter(total != 0) |>
   select(-total) |>
-  mutate(across(everything(), as.character))  |>
+  mutate(across(everything(), as.character)) |>
   mutate(across(everything(), ~ replace_na(.x, "?"))) |>
   write.nexus.data(
     here("data/nexus/kd-lg-elaged-filtered.nex"),
-    format = "STANDARD")
+    format = "STANDARD"
+  )
 
 
 # Looms
-read.nexus.data(here("data/nexus/kd-looms_elaged.nex"))|>
+read.nexus.data(here("data/nexus/kd-looms_elaged.nex")) |>
   as_tibble() |>
   mutate(across(everything(), ~ na_if(.x, "-"))) |>
-  mutate(across(everything(), as.numeric))  |>
-  mutate(total = rowSums(across(everything()), na.rm=T)) |>
-  filter(total != 0) |> 
+  mutate(across(everything(), as.numeric)) |>
+  mutate(total = rowSums(across(everything()), na.rm = T)) |>
+  filter(total != 0) |>
   select(-total) |>
-  mutate(across(everything(), as.character))  |>
+  mutate(across(everything(), as.character)) |>
   mutate(across(everything(), ~ replace_na(.x, "?"))) |>
   write.nexus.data(
     here("data/nexus/kd-looms_elaged-filtered.nex"),
-    format = "STANDARD")
+    format = "STANDARD"
+  )
 
 
 # Merged data
-read.nexus.data(here("data/nexus/kd-merged.nex"))|>
+read.nexus.data(here("data/nexus/kd-merged.nex")) |>
   as_tibble() |>
   mutate(across(everything(), ~ na_if(.x, "-"))) |>
-  mutate(across(everything(), as.numeric))  |>
-  mutate(total = rowSums(across(everything()), na.rm=T)) |>
-  filter(total != 0) |> 
+  mutate(across(everything(), as.numeric)) |>
+  mutate(total = rowSums(across(everything()), na.rm = T)) |>
+  filter(total != 0) |>
   select(-total) |>
-  mutate(across(everything(), as.character))  |>
+  mutate(across(everything(), as.character)) |>
   mutate(across(everything(), ~ replace_na(.x, "?"))) |>
   write.nexus.data(
     here("data/nexus/kd-merged-filtered.nex"),
-    format = "STANDARD")
-
-
-
+    format = "STANDARD"
+  )
