@@ -39,12 +39,10 @@ unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconc
   junkpaths = TRUE,
   exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
 )
-
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.log.zip"),
   junkpaths = TRUE,
   exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
 )
-
 
 kd_lgs_bcov_relaxed_heterogene <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.trees"))
 kd_lgs_bcov_relaxed_heterogene <- kd_lgs_bcov_relaxed_heterogene[ceiling(length(kd_lgs_bcov_relaxed_heterogene) * burnin):length(kd_lgs_bcov_relaxed_heterogene)]
