@@ -285,12 +285,12 @@ kd_lgs_mu_byconcept <- parse_beast_tracelog_file(
   as_tibble() |>
   select(Sample, starts_with("mutationRate.s.concept_"))
 
-kd_lgs_mu_byconcept_tb <- kd_lgs_mu_byconcept |> 
+kd_lgs_mu_byconcept_tb <- kd_lgs_mu_byconcept |>
   rowid_to_column() |>
   mutate(burnin = rowid <= max(rowid) * burnin) |>
   filter(burnin == FALSE) |>
   select(-burnin, -rowid) |>
-  pivot_longer(-Sample, names_to = "concept", values_to = "rate") |> 
+  pivot_longer(-Sample, names_to = "concept", values_to = "rate") |>
   mutate(concept = str_remove(concept, "mutationRate.s.concept_"))
 
 kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
