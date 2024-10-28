@@ -6,8 +6,7 @@ library(rnaturalearth)
 library(ggspatial)
 library(tidyverse)
 library(stringi)
-library(BiocManager) # To install ggtree
-#BiocManager::install("ggtree")
+# BiocManager::install("ggtree")
 library(ggtree)
 nodeid.tbl_tree <- utils::getFromNamespace("nodeid.tbl_tree", "tidytree")
 rootnode.tbl_tree <- utils::getFromNamespace("rootnode.tbl_tree", "tidytree")
@@ -113,6 +112,7 @@ kd_looms <- read_csv(here("data/kd-looms/kd-looms_datapoints.csv")) |>
   mutate(loom_type_code = factor(loom_type_code,
     levels = levels(plt_tb_looms$loom_type_code)
   )) |>
+  mutate(lng_label = paste0(str_replace_na(lng_group_code, ""), lng)) |>
   left_join(plt_tb_looms) |>
   arrange(loom_type_code, lng_group) |>
   mutate(loom_type = fct_inorder(loom_type))
@@ -161,6 +161,7 @@ cs_tree <- function(tr, fontsize = base_font_size) {
     )
 }
 
+
 # Languages
 kd_lgs_bcov_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_byconcept_consensus.tree"))
 kd_lgs_bcov_cs_tree$node.label <- round(
@@ -201,6 +202,7 @@ ggsave(here("output/figures/kd-lgs_bcov_byconcept_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-lgs_bcov_byconcept_cs_tree.pdf"))
 
+
 # Looms
 
 ## Looms, level 1 characters only
@@ -212,6 +214,7 @@ kd_looms_bcov1000_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1000_cs_tree
 kd_looms_bcov1000_cs_tree_plot <- kd_looms_bcov1000_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
+  rename(group = label, label = lng_label) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov1000_cs_tree)) * .025,
@@ -234,6 +237,7 @@ kd_looms_bcov1111_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1111_cs_tree
 kd_looms_bcov1111_cs_tree_plot <- kd_looms_bcov1111_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
+  rename(group = label, label = lng_label) |>
   cs_tree() +
   geom_rootedge(
     max(
@@ -258,6 +262,7 @@ kd_looms_bcov8421_cs_tree$tip.label <- str_replace_all(kd_looms_bcov8421_cs_tree
 kd_looms_bcov8421_cs_tree_plot <- kd_looms_bcov8421_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
+  rename(group = label, label = lng_label) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov8421_cs_tree)) * .025,
@@ -287,6 +292,7 @@ kd_looms_bcov1111_strict_heterogene_cs_tree$tip.label <- str_replace_all(
 kd_looms_bcov1111_strict_heterogene_cs_tree_plot <- kd_looms_bcov1111_strict_heterogene_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
+  rename(group = label, label = lng_label) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov1111_strict_heterogene_cs_tree)) * .025,
@@ -294,8 +300,8 @@ kd_looms_bcov1111_strict_heterogene_cs_tree_plot <- kd_looms_bcov1111_strict_het
   ) +
   theme(plot.margin = margin(0, 4.25, 0, 0, unit = "line"))
 ggsave(here("output/figures/kd-looms_bcov_strict_heterogene_cs_tree.pdf"),
-       kd_looms_bcov1111_strict_heterogene_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_bcov1111_strict_heterogene_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov_strict_heterogene_cs_tree.pdf"))
 
@@ -308,6 +314,7 @@ kd_looms_bcov_basic_cs_tree$tip.label <- str_replace_all(kd_looms_bcov_basic_cs_
 kd_looms_bcov_basic_cs_tree_plot <- kd_looms_bcov_basic_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
+  rename(group = label, label = lng_label) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov_basic_cs_tree)) * .025,
@@ -331,6 +338,7 @@ kd_looms_bcov_patterns_cs_tree$tip.label <- str_replace_all(kd_looms_bcov_patter
 kd_looms_bcov_patterns_cs_tree_plot <- kd_looms_bcov_patterns_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
+  rename(group = label, label = lng_label) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov_patterns_cs_tree)) * .025,
@@ -368,7 +376,7 @@ kd_lgs_ages_plot <- kd_lgs_ages |>
   ) +
   stat_summary(
     geom = "text", fun = "median",
-    aes(label = round(..x..)),
+    aes(label = after_stat(round(x))),
     family = base_font,
     size = base_font_size / .pt, vjust = 1.5
   ) +
@@ -612,7 +620,7 @@ kd_looms_mu_plot <- kd_looms_mu_bylevel |>
   stat_summary(
     geom = "text",
     fun = "median",
-    aes(label = round(..x.., 2)),
+    aes(label = after_stat(round(x, 2))),
     family = base_font,
     size = base_font_size / .pt,
     vjust = 1.5
