@@ -33,7 +33,7 @@ write.tree(
 )
 unlink(tmp, recursive = TRUE)
 
-# Language binary covarion relaxed by concept
+# Languages binary covarion relaxed by concept
 tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.trees.zip"),
   junkpaths = TRUE,
