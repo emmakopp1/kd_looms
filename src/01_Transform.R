@@ -12,7 +12,7 @@ dir.create(here("output/data"))
 # Consensus trees --------------------------------------------------------------
 burnin <- .1
 
-# Languages binary covarion relaxed 
+# Languages binary covarion relaxed
 tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed/kd-lgs_bcov_relaxed.trees.zip"),
   junkpaths = TRUE,
@@ -36,13 +36,13 @@ unlink(tmp, recursive = TRUE)
 # Language binary covarion relaxed by concept
 tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.trees.zip"),
-      junkpaths = TRUE,
-      exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
+  junkpaths = TRUE,
+  exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
 )
 
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.log.zip"),
-      junkpaths = TRUE,
-      exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
+  junkpaths = TRUE,
+  exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
 )
 
 
@@ -61,10 +61,10 @@ write.tree(
   here("output/trees/kd-lgs_bcov_relaxed_byconcept_consensus.tree")
 )
 
-# Language binary covarion strict 
+# Language binary covarion strict
 unzip(here("data/kd-lgs/kd-lgs_bcov_strict/kd-lgs_bcov_strict.trees.zip"),
-      junkpaths = TRUE,
-      exdir = here("data/kd-lgs/kd-lgs_bcov_strict/")
+  junkpaths = TRUE,
+  exdir = here("data/kd-lgs/kd-lgs_bcov_strict/")
 )
 
 kd_lgs_bcov_strict <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict/kd-lgs_bcov_strict.trees"))
