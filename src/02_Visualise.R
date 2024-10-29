@@ -165,11 +165,13 @@ cs_tree <- function(tr, fontsize = base_font_size) {
 
 # Languages
 kd_lgs_bcov_relaxed_ht_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_consensus.tree"))
+if (!is.rooted(kd_lgs_bcov_relaxed_ht_cs_tree)) {
+  kd_lgs_bcov_relaxed_ht_cs_tree$root.edge.length <- 0
+}
 kd_lgs_bcov_relaxed_ht_cs_tree$node.label <- round(
   as.numeric(kd_lgs_bcov_relaxed_ht_cs_tree$node.label),
   2
 ) * 100
-kd_lgs_bcov_relaxed_ht_cs_tree$root.edge.length <- 0
 kd_lgs_bcov_relaxed_ht_cs_tree$node.label[1] <- NA
 kd_lgs_bcov_relaxed_ht_cs_tree$tip.label <- str_replace_all(
   kd_lgs_bcov_relaxed_ht_cs_tree$tip.label,
@@ -208,6 +210,9 @@ plot_crop(here("output/figures/kd-lgs_bcov_relaxed_ht_cs_tree.pdf"))
 
 ## Looms, level 1 characters only
 kd_looms_bcov1000_strict_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1000_strict_uni_consensus.tree"))
+if (!is.rooted(kd_looms_bcov1000_strict_uni_cs_tree)) {
+  kd_looms_bcov1000_strict_uni_cs_tree$root.edge.length <- 0
+}
 kd_looms_bcov1000_strict_uni_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1000_strict_uni_cs_tree$node.label), 2) * 100
 kd_looms_bcov1000_strict_uni_cs_tree$node.label[1] <- NA
 kd_looms_bcov1000_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1000_strict_uni_cs_tree$tip.label, "_", " ")
@@ -231,6 +236,9 @@ plot_crop(here("output/figures/kd-looms_bcov1000_strict_uni_cs_tree.pdf"))
 
 ## Looms, all levels, no weighting
 kd_looms_bcov1111_relaxed_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_relaxed_uni_consensus.tree"))
+if (!is.rooted(kd_looms_bcov1111_relaxed_uni_cs_tree)) {
+  kd_looms_bcov1111_relaxed_uni_cs_tree$root.edge.length <- 0
+}
 kd_looms_bcov1111_relaxed_uni_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1111_relaxed_uni_cs_tree$node.label), 2) * 100
 kd_looms_bcov1111_relaxed_uni_cs_tree$node.label[1] <- NA
 kd_looms_bcov1111_relaxed_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1111_relaxed_uni_cs_tree$tip.label, "_", " ")
@@ -256,6 +264,9 @@ plot_crop(here("output/figures/kd-looms_bcov1111_relaxed_uni_cs_tree.pdf"))
 
 ## Looms, weighted characters
 kd_looms_bcov8421_strict_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov8421_strict_uni_consensus.tree"))
+if (!is.rooted(kd_looms_bcov8421_strict_uni_cs_tree)) {
+  kd_looms_bcov8421_strict_uni_cs_tree$root.edge.length <- 0
+}
 kd_looms_bcov8421_strict_uni_cs_tree$node.label <- round(as.numeric(kd_looms_bcov8421_strict_uni_cs_tree$node.label), 2) * 100
 kd_looms_bcov8421_strict_uni_cs_tree$node.label[1] <- NA
 kd_looms_bcov8421_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov8421_strict_uni_cs_tree$tip.label, "_", " ")
@@ -279,6 +290,9 @@ plot_crop(here("output/figures/kd-looms_bcov8421_strict_uni_cs_tree.pdf"))
 
 ## Looms, binary covarion, strict, 4 variable rates
 kd_looms_bcov1111_strict_ht_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_strict_ht_consensus.tree"))
+if (!is.rooted(kd_looms_bcov1111_strict_ht_cs_tree)) {
+  kd_looms_bcov1111_strict_ht_cs_tree$root.edge.length <- 0
+}
 kd_looms_bcov1111_strict_ht_cs_tree$node.label <- round(
   as.numeric(kd_looms_bcov1111_strict_ht_cs_tree$node.label),
   2
@@ -308,6 +322,9 @@ plot_crop(here("output/figures/kd-looms_bcov_strict_ht_cs_tree.pdf"))
 
 ## Looms, basic features only
 kd_looms_bcov_basic_strict_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_basic_strict_uni_consensus.tree"))
+if (!is.rooted(kd_looms_bcov_basic_strict_uni_cs_tree)) {
+  kd_looms_bcov_basic_strict_uni_cs_tree$root.edge.length <- 0
+}
 kd_looms_bcov_basic_strict_uni_cs_tree$node.label <- round(as.numeric(kd_looms_bcov_basic_strict_uni_cs_tree$node.label), 2) * 100
 kd_looms_bcov_basic_strict_uni_cs_tree$node.label[1] <- NA
 kd_looms_bcov_basic_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov_basic_strict_uni_cs_tree$tip.label, "_", " ")
@@ -323,7 +340,6 @@ kd_looms_bcov_basic_strict_uni_cs_tree_plot <- kd_looms_bcov_basic_strict_uni_cs
   ) +
   theme(plot.margin = margin(0, 3.85, 0, 0, unit = "line"))
 kd_looms_bcov_basic_strict_uni_cs_tree_plot <- flip(kd_looms_bcov_basic_strict_uni_cs_tree_plot, 32, 41)
-
 ggsave(here("output/figures/kd-looms_bcov_basic_strict_uni_cs_tree.pdf"),
   kd_looms_bcov_basic_strict_uni_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
@@ -332,6 +348,9 @@ plot_crop(here("output/figures/kd-looms_bcov_basic_strict_uni_cs_tree.pdf"))
 
 ## Looms, pattern features only
 kd_looms_bcov_patterns_strict_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_patterns_strict_uni_consensus.tree"))
+if (!is.rooted(kd_looms_bcov_patterns_strict_uni_cs_tree)) {
+  kd_looms_bcov_patterns_strict_uni_cs_tree$root.edge.length <- 0
+}
 kd_looms_bcov_patterns_strict_uni_cs_tree$node.label <- round(as.numeric(kd_looms_bcov_patterns_strict_uni_cs_tree$node.label), 2) * 100
 kd_looms_bcov_patterns_strict_uni_cs_tree$node.label[1] <- NA
 kd_looms_bcov_patterns_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov_patterns_strict_uni_cs_tree$tip.label, "_", " ")
@@ -420,7 +439,7 @@ kd_lgs_ages_summary |>
 
 # Cophylogeny ------------------------------------------------------------------
 
-kd_lgs_cs <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_consensus.tree")) |>
+kd_lgs_cs <- kd_lgs_bcov_relaxed_ht_cs_tree |>
   fortify() |>
   left_join(kd_lgs) |>
   mutate(label = lng) |>
@@ -444,6 +463,9 @@ kd_looms_cs <- kd_looms_bcov1111_strict_ht_cs_tree |>
   left_join(kd_looms, by = join_by(label == group)) |>
   mutate(label = ifelse(label %in% kd_loom_pb, label, lng)) |>
   as.phylo()
+if (!is.rooted(kd_looms_cs)) {
+  kd_looms_cs$root.edge.length <- 0
+}
 
 kd_cophylo <- cophylo(kd_lgs_cs, kd_looms_cs,
   methods = c("pre", "post"), rotate.multi = FALSE
