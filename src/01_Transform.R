@@ -12,28 +12,28 @@ dir.create(here("output/data"))
 # Consensus trees --------------------------------------------------------------
 burnin <- .1
 
-# Languages binary covarion relaxed
+# Languages binary covarion relaxed uniform rate
 tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed/kd-lgs_bcov_relaxed.trees.zip"),
   junkpaths = TRUE,
   exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed/")
 )
 
-kd_lgs_bcov_relaxed <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed/kd-lgs_bcov_relaxed.trees"))
-kd_lgs_bcov_relaxed <- kd_lgs_bcov_relaxed[ceiling(length(kd_lgs_bcov_relaxed) * burnin):length(kd_lgs_bcov_relaxed)]
-kd_lgs_bcov_relaxed_cs <- consensus(kd_lgs_bcov_relaxed, p = .5, rooted = TRUE)
-kd_lgs_bcov_relaxed_cs <- consensus.edges(kd_lgs_bcov_relaxed,
-  consensus.tree = kd_lgs_bcov_relaxed_cs,
+kd_lgs_bcov_relaxed_uni <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed/kd-lgs_bcov_relaxed.trees"))
+kd_lgs_bcov_relaxed_uni <- kd_lgs_bcov_relaxed_uni[ceiling(length(kd_lgs_bcov_relaxed_uni) * burnin):length(kd_lgs_bcov_relaxed_uni)]
+kd_lgs_bcov_relaxed_uni_cs <- consensus(kd_lgs_bcov_relaxed_uni, p = .5, rooted = TRUE)
+kd_lgs_bcov_relaxed_uni_cs <- consensus.edges(kd_lgs_bcov_relaxed_uni,
+  consensus.tree = kd_lgs_bcov_relaxed_uni_cs,
   rooted = TRUE
 )
-kd_lgs_bcov_relaxed_cs$root.edge.length <- 0
+kd_lgs_bcov_relaxed_uni_cs$root.edge.length <- 0
 write.tree(
-  kd_lgs_bcov_relaxed_cs,
-  here("output/trees/kd-lgs_bcov_relaxed_consensus.tree")
+  kd_lgs_bcov_relaxed_uni_cs,
+  here("output/trees/kd-lgs_bcov_relaxed_uni_consensus.tree")
 )
 unlink(tmp, recursive = TRUE)
 
-# Languages binary covarion relaxed by concept
+# Languages binary covarion relaxed heterogeneous rate
 tmp <- tempdir()
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.trees.zip"),
   junkpaths = TRUE,
@@ -44,43 +44,42 @@ unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconc
 #   exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/")
 # )
 
-kd_lgs_bcov_relaxed_heterogene <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.trees"))
-kd_lgs_bcov_relaxed_heterogene <- kd_lgs_bcov_relaxed_heterogene[ceiling(length(kd_lgs_bcov_relaxed_heterogene) * burnin):length(kd_lgs_bcov_relaxed_heterogene)]
-kd_lgs_bcov_relaxed_heterogene_cs <- consensus(kd_lgs_bcov_relaxed_heterogene, p = .5, rooted = TRUE)
-kd_lgs_bcov_relaxed_heterogene_cs <- consensus.edges(
-  kd_lgs_bcov_relaxed_heterogene,
-  consensus.tree = kd_lgs_bcov_relaxed_heterogene_cs,
+kd_lgs_bcov_relaxed_ht <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_byconcept/kd-lgs_bcov_relaxed_byconcept.trees"))
+kd_lgs_bcov_relaxed_ht <- kd_lgs_bcov_relaxed_ht[ceiling(length(kd_lgs_bcov_relaxed_ht) * burnin):length(kd_lgs_bcov_relaxed_ht)]
+kd_lgs_bcov_relaxed_ht_cs <- consensus(kd_lgs_bcov_relaxed_ht, p = .5, rooted = TRUE)
+kd_lgs_bcov_relaxed_ht_cs <- consensus.edges(
+  kd_lgs_bcov_relaxed_ht,
+  consensus.tree = kd_lgs_bcov_relaxed_ht_cs,
   rooted = TRUE
 )
-
-kd_lgs_bcov_relaxed_heterogene_cs$root.edge.length <- 0
+kd_lgs_bcov_relaxed_ht_cs$root.edge.length <- 0
 write.tree(
-  kd_lgs_bcov_relaxed_heterogene_cs,
-  here("output/trees/kd-lgs_bcov_relaxed_byconcept_consensus.tree")
+  kd_lgs_bcov_relaxed_ht_cs,
+  here("output/trees/kd-lgs_bcov_relaxed_ht_consensus.tree")
 )
 
-# Language binary covarion strict
+# Language binary covarion strict uniform rate
 unzip(here("data/kd-lgs/kd-lgs_bcov_strict/kd-lgs_bcov_strict.trees.zip"),
   junkpaths = TRUE,
   exdir = here("data/kd-lgs/kd-lgs_bcov_strict/")
 )
 
-kd_lgs_bcov_strict <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict/kd-lgs_bcov_strict.trees"))
-kd_lgs_bcov_strict <- kd_lgs_bcov_strict[ceiling(length(kd_lgs_bcov_strict) * burnin):length(kd_lgs_bcov_strict)]
-kd_lgs_bcov_strict_cs <- consensus(kd_lgs_bcov_strict, p = .5, rooted = TRUE)
-kd_lgs_bcov_strict_cs <- consensus.edges(
-  kd_lgs_bcov_strict,
-  consensus.tree = kd_lgs_bcov_strict_cs,
+kd_lgs_bcov_strict_uni <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict/kd-lgs_bcov_strict.trees"))
+kd_lgs_bcov_strict_uni <- kd_lgs_bcov_strict_uni[ceiling(length(kd_lgs_bcov_strict_uni) * burnin):length(kd_lgs_bcov_strict_uni)]
+kd_lgs_bcov_strict_uni_cs <- consensus(kd_lgs_bcov_strict_uni, p = .5, rooted = TRUE)
+kd_lgs_bcov_strict_uni_cs <- consensus.edges(
+  kd_lgs_bcov_strict_uni,
+  consensus.tree = kd_lgs_bcov_strict_uni_cs,
   rooted = TRUE
 )
-
-kd_lgs_bcov_strict_cs$root.edge.length <- 0
+kd_lgs_bcov_strict_uni_cs$root.edge.length <- 0
 write.tree(
-  kd_lgs_bcov_strict_cs,
-  here("output/trees/kd-lgs_bcov_strict_consensus.tree")
+  kd_lgs_bcov_strict_uni_cs,
+  here("output/trees/kd-lgs_bcov_strict_uni_consensus.tree")
 )
 
 # Looms
+
 ## Looms, level 1 characters only
 kd_looms_bcov1000_strict <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1000_strict/kd-looms_bcov1000_strict.trees")
@@ -126,18 +125,18 @@ write.tree(
   here("output/trees/kd-looms_bcov8421_strict_consensus.tree")
 )
 
-## Looms, binary covarion strict heterogene (bizzare car différent de ctmc4rates)
-kd_looms_bcov1111_strict_heterogene <- read.nexus(
+## Looms, binary covarion strict heterogeneous rate (bizzare car différent de ctmc4rates)
+kd_looms_bcov1111_strict_ht <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1111_strict_heterogene/kd-looms_bcov1111_strict_heterogene.trees")
 )
-kd_looms_bcov1111_strict_heterogene <- kd_looms_bcov1111_strict_heterogene[ceiling(length(kd_looms_bcov1111_strict_heterogene) * burnin):length(kd_looms_bcov1111_strict_heterogene)]
-kd_looms_bcov1111_strict_heterogene_cs <- consensus(kd_looms_bcov1111_strict_heterogene, p = .5, rooted = TRUE)
-kd_looms_bcov1111_strict_heterogene_cs <- consensus.edges(kd_looms_bcov1111_strict_heterogene,
-  consensus.tree = kd_looms_bcov1111_strict_heterogene_cs,
+kd_looms_bcov1111_strict_ht <- kd_looms_bcov1111_strict_ht[ceiling(length(kd_looms_bcov1111_strict_ht) * burnin):length(kd_looms_bcov1111_strict_ht)]
+kd_looms_bcov1111_strict_ht_cs <- consensus(kd_looms_bcov1111_strict_ht, p = .5, rooted = TRUE)
+kd_looms_bcov1111_strict_ht_cs <- consensus.edges(kd_looms_bcov1111_strict_ht,
+  consensus.tree = kd_looms_bcov1111_strict_ht_cs,
   rooted = TRUE
 )
 write.tree(
-  kd_looms_bcov1111_strict_heterogene_cs,
+  kd_looms_bcov1111_strict_ht_cs,
   here("output/trees/kd-looms_bcov_strict_heterogene_consensus.tree")
 )
 
@@ -171,7 +170,6 @@ write.tree(
   here("output/trees/kd-looms_bcov_patterns_consensus.tree")
 )
 
-
 ## Looms, pattern features only
 kd_looms_bcov1111_relaxed <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1111_relaxed/kd-looms_bcov1111_relaxed.trees")
@@ -183,44 +181,41 @@ kd_looms_bcov1111_relaxed_cs <- consensus.edges(
   consensus.tree = kd_looms_bcov1111_relaxed_cs,
   rooted = TRUE
 )
-
 write.tree(
   kd_looms_bcov1111_relaxed_cs,
   here("output/trees/kd-looms_bcov1111_relaxed_consensus.tree")
 )
 
-## Looms, ctmc strict
-kd_looms_ctmc1111_strict <- read.nexus(
+## Looms, ctmc strict unfiform rate
+kd_looms_ctmc1111_strict_uni <- read.nexus(
   here("data/kd-looms/kd-looms_ctmc1111_strict/kd-looms_ctmc1111_strict.trees")
 )
-kd_looms_ctmc1111_strict <- kd_looms_ctmc1111_strict[ceiling(length(kd_looms_ctmc1111_strict) * burnin):length(kd_looms_ctmc1111_strict)]
-kd_looms_ctmc1111_strict_cs <- consensus(kd_looms_ctmc1111_strict, p = .5, rooted = TRUE)
-kd_looms_ctmc1111_strict_cs <- consensus.edges(
-  kd_looms_ctmc1111_strict,
-  consensus.tree = kd_looms_ctmc1111_strict_cs,
+kd_looms_ctmc1111_strict_uni <- kd_looms_ctmc1111_strict_uni[ceiling(length(kd_looms_ctmc1111_strict_uni) * burnin):length(kd_looms_ctmc1111_strict_uni)]
+kd_looms_ctmc1111_strict_uni_cs <- consensus(kd_looms_ctmc1111_strict_uni, p = .5, rooted = TRUE)
+kd_looms_ctmc1111_strict_uni_cs <- consensus.edges(
+  kd_looms_ctmc1111_strict_uni,
+  consensus.tree = kd_looms_ctmc1111_strict_uni_cs,
   rooted = TRUE
 )
-
 write.tree(
-  kd_looms_ctmc1111_strict_cs,
-  here("output/trees/kd-looms_ctmc1111_strict_consensus.tree")
+  kd_looms_ctmc1111_strict_uni_cs,
+  here("output/trees/kd-looms_ctmc1111_strict_uni_consensus.tree")
 )
 
-## Looms, ctmc strict heterogene
-kd_looms_ctmc1111_strict_heterogene <- read.nexus(
+## Looms, ctmc strict heterogeneous rate
+kd_looms_ctmc1111_strict_ht <- read.nexus(
   here("data/kd-looms/kd-looms_ctmc1111_strict_heterogene/kd-looms_ctmc1111_strict_heterogene.trees")
 )
-kd_looms_ctmc1111_strict_heterogene <- kd_looms_ctmc1111_strict_heterogene[ceiling(length(kd_looms_ctmc1111_strict_heterogene) * burnin):length(kd_looms_ctmc1111_strict_heterogene)]
-kd_looms_ctmc1111_strict_heterogene_cs <- consensus(kd_looms_ctmc1111_strict_heterogene, p = .5, rooted = TRUE)
-kd_looms_ctmc1111_strict_heterogene_cs <- consensus.edges(
-  kd_looms_ctmc1111_strict_heterogene,
-  consensus.tree = kd_looms_ctmc1111_strict_heterogene_cs,
+kd_looms_ctmc1111_strict_ht <- kd_looms_ctmc1111_strict_ht[ceiling(length(kd_looms_ctmc1111_strict_ht) * burnin):length(kd_looms_ctmc1111_strict_ht)]
+kd_looms_ctmc1111_strict_ht_cs <- consensus(kd_looms_ctmc1111_strict_ht, p = .5, rooted = TRUE)
+kd_looms_ctmc1111_strict_ht_cs <- consensus.edges(
+  kd_looms_ctmc1111_strict_ht,
+  consensus.tree = kd_looms_ctmc1111_strict_ht_cs,
   rooted = TRUE
 )
-
 write.tree(
-  kd_looms_ctmc1111_strict_heterogene_cs,
-  here("output/trees/kd-looms_ctmc1111_strict_heterogene_consensus.tree")
+  kd_looms_ctmc1111_strict_ht_cs,
+  here("output/trees/kd-looms_ctmc1111_strict_ht_consensus.tree")
 )
 
 # Ages in language trees -------------------------------------------------------
@@ -232,17 +227,17 @@ getMRCA_age <- function(tree, tips) {
   root_age - node.depth.edgelength(tree)[mrca]
 }
 
-kd_lgs_ages <- kd_lgs_bcov_relaxed_heterogene |>
+kd_lgs_ages <- kd_lgs_bcov_relaxed_ht |>
   seq_along() |>
   map_df(~ tibble(
-    `Kra-Dai` = getMRCA_age(kd_lgs_bcov_relaxed_heterogene[[.x]], kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label),
+    `Kra-Dai` = getMRCA_age(kd_lgs_bcov_relaxed_ht[[.x]], kd_lgs_bcov_relaxed_ht[[1]]$tip.label),
     `Kam-Tai` = getMRCA_age(
-      kd_lgs_bcov_relaxed_heterogene[[.x]],
-      str_subset(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")
+      kd_lgs_bcov_relaxed_ht[[.x]],
+      str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")
     ),
     `Tai-Yay` = getMRCA_age(
-      kd_lgs_bcov_relaxed_heterogene[[.x]],
-      str_subset(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label, "^(Tc|Tn|Tsw)")
+      kd_lgs_bcov_relaxed_ht[[.x]],
+      str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Tc|Tn|Tsw)")
     )
   )) |>
   pivot_longer(everything(), names_to = "group", values_to = "age")
@@ -260,9 +255,9 @@ kd_lgs_ages_summary <- kd_lgs_ages |>
   ) |>
   left_join(tribble(
     ~group, ~n,
-    "Kam-Tai", length(str_subset(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
-    "Tai-Yay", length(str_subset(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
-    "Kra-Dai", length(kd_lgs_bcov_relaxed_heterogene[[1]]$tip.label)
+    "Kam-Tai", length(str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
+    "Tai-Yay", length(str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
+    "Kra-Dai", length(kd_lgs_bcov_relaxed_ht[[1]]$tip.label)
   )) |>
   relocate(n, .after = group) |>
   arrange(-n) |>
