@@ -26,7 +26,9 @@ kd_lgs_bcov_relaxed_uni_cs <- consensus.edges(kd_lgs_bcov_relaxed_uni,
   consensus.tree = kd_lgs_bcov_relaxed_uni_cs,
   rooted = TRUE
 )
-kd_lgs_bcov_relaxed_uni_cs$root.edge.length <- 0
+if (!is.rooted(kd_lgs_bcov_relaxed_uni_cs)) {
+  kd_lgs_bcov_relaxed_uni_cs$root.edge.length <- 0
+}
 write.tree(
   kd_lgs_bcov_relaxed_uni_cs,
   here("output/trees/kd-lgs_bcov_relaxed_uni_consensus.tree")
@@ -52,7 +54,9 @@ kd_lgs_bcov_relaxed_ht_cs <- consensus.edges(
   consensus.tree = kd_lgs_bcov_relaxed_ht_cs,
   rooted = TRUE
 )
-kd_lgs_bcov_relaxed_ht_cs$root.edge.length <- 0
+if (!is.rooted(kd_lgs_bcov_relaxed_ht_cs)) {
+  kd_lgs_bcov_relaxed_ht_cs$root.edge.length <- 0
+}
 write.tree(
   kd_lgs_bcov_relaxed_ht_cs,
   here("output/trees/kd-lgs_bcov_relaxed_ht_consensus.tree")
@@ -63,7 +67,6 @@ unzip(here("data/kd-lgs/kd-lgs_bcov_strict/kd-lgs_bcov_strict.trees.zip"),
   junkpaths = TRUE,
   exdir = here("data/kd-lgs/kd-lgs_bcov_strict/")
 )
-
 kd_lgs_bcov_strict_uni <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict/kd-lgs_bcov_strict.trees"))
 kd_lgs_bcov_strict_uni <- kd_lgs_bcov_strict_uni[ceiling(length(kd_lgs_bcov_strict_uni) * burnin):length(kd_lgs_bcov_strict_uni)]
 kd_lgs_bcov_strict_uni_cs <- consensus(kd_lgs_bcov_strict_uni, p = .5, rooted = TRUE)
@@ -72,7 +75,9 @@ kd_lgs_bcov_strict_uni_cs <- consensus.edges(
   consensus.tree = kd_lgs_bcov_strict_uni_cs,
   rooted = TRUE
 )
-kd_lgs_bcov_strict_uni_cs$root.edge.length <- 0
+if (!is.rooted(kd_lgs_bcov_strict_uni_cs)) {
+  kd_lgs_bcov_strict_uni_cs$root.edge.length <- 0
+}
 write.tree(
   kd_lgs_bcov_strict_uni_cs,
   here("output/trees/kd-lgs_bcov_strict_uni_consensus.tree")
@@ -80,52 +85,43 @@ write.tree(
 
 # Looms
 
-## Looms, level 1 characters only
-kd_looms_bcov1000_strict <- read.nexus(
+## Looms, binary covarion, level 1 characters only, strict uniform rate
+kd_looms_bcov1000_strict_uni <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1000_strict/kd-looms_bcov1000_strict.trees")
 )
-kd_looms_bcov1000_strict <- kd_looms_bcov1000_strict[ceiling(length(kd_looms_bcov1000_strict) * burnin):length(kd_looms_bcov1000_strict)]
-kd_looms_bcov1000_strict_cs <- consensus(kd_looms_bcov1000_strict, p = .5, rooted = TRUE)
-kd_looms_bcov1000_strict_cs <- consensus.edges(kd_looms_bcov1000_strict,
-  consensus.tree = kd_looms_bcov1000_strict_cs,
+kd_looms_bcov1000_strict_uni <- kd_looms_bcov1000_strict_uni[ceiling(length(kd_looms_bcov1000_strict_uni) * burnin):length(kd_looms_bcov1000_strict_uni)]
+kd_looms_bcov1000_strict_uni_cs <- consensus(kd_looms_bcov1000_strict_uni, p = .5, rooted = TRUE)
+kd_looms_bcov1000_strict_uni_cs <- consensus.edges(kd_looms_bcov1000_strict_uni,
+  consensus.tree = kd_looms_bcov1000_strict_uni_cs,
   rooted = TRUE
 )
+if (!is.rooted(kd_looms_bcov1000_strict_uni_cs)) {
+  kd_looms_bcov1000_strict_uni_cs$root.edge.length <- 0
+}
 write.tree(
-  kd_looms_bcov1000_strict_cs,
-  here("output/trees/kd-looms_bcov1000_strict_consensus.tree")
+  kd_looms_bcov1000_strict_uni_cs,
+  here("output/trees/kd-looms_bcov1000_strict_uni_consensus.tree")
 )
 
-## Looms, all levels, no weighting
-kd_looms_bcov1111_strict <- read.nexus(
+## Looms, binary covarion, all levels, no weighting, strict uniform rate
+kd_looms_bcov1111_strict_uni <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1111_strict/kd-looms_bcov1111_strict.trees")
 )
-kd_looms_bcov1111_strict <- kd_looms_bcov1111_strict[ceiling(length(kd_looms_bcov1111_strict) * burnin):length(kd_looms_bcov1111_strict)]
-kd_looms_bcov1111_strict_cs <- consensus(kd_looms_bcov1111_strict, p = .5, rooted = TRUE)
-kd_looms_bcov1111_strict_cs <- consensus.edges(kd_looms_bcov1111_strict,
-  consensus.tree = kd_looms_bcov1111_strict_cs,
+kd_looms_bcov1111_strict_uni <- kd_looms_bcov1111_strict_uni[ceiling(length(kd_looms_bcov1111_strict_uni) * burnin):length(kd_looms_bcov1111_strict_uni)]
+kd_looms_bcov1111_strict_uni_cs <- consensus(kd_looms_bcov1111_strict_uni, p = .5, rooted = TRUE)
+kd_looms_bcov1111_strict_uni_cs <- consensus.edges(kd_looms_bcov1111_strict_uni,
+  consensus.tree = kd_looms_bcov1111_strict_uni_cs,
   rooted = TRUE
 )
+if (!is.rooted(kd_looms_bcov1111_strict_uni_cs)) {
+  kd_looms_bcov1111_strict_uni_cs$root.edge.length <- 0
+}
 write.tree(
-  kd_looms_bcov1111_strict_cs,
-  here("output/trees/kd_looms_bcov1111_strict_consensus.tree")
+  kd_looms_bcov1111_strict_uni_cs,
+  here("output/trees/kd_looms_bcov1111_strict_uni_consensus.tree")
 )
 
-## Looms, weighted characters
-kd_looms_bcov8421_strict <- read.nexus(
-  here("data/kd-looms/kd-looms_bcov8421_strict/kd-looms_bcov8421_strict.trees")
-)
-kd_looms_bcov8421_strict <- kd_looms_bcov8421_strict[ceiling(length(kd_looms_bcov8421_strict) * burnin):length(kd_looms_bcov8421_strict)]
-kd_looms_bcov8421_strict_cs <- consensus(kd_looms_bcov8421_strict, p = .5, rooted = TRUE)
-kd_looms_bcov8421_strict_cs <- consensus.edges(kd_looms_bcov8421_strict,
-  consensus.tree = kd_looms_bcov8421_strict_cs,
-  rooted = TRUE
-)
-write.tree(
-  kd_looms_bcov8421_strict_cs,
-  here("output/trees/kd-looms_bcov8421_strict_consensus.tree")
-)
-
-## Looms, binary covarion strict heterogeneous rate (bizzare car différent de ctmc4rates)
+## Looms, binary covarion, all levels, no weighting, strict heterogeneous rate
 kd_looms_bcov1111_strict_ht <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1111_strict_heterogene/kd-looms_bcov1111_strict_heterogene.trees")
 )
@@ -135,58 +131,88 @@ kd_looms_bcov1111_strict_ht_cs <- consensus.edges(kd_looms_bcov1111_strict_ht,
   consensus.tree = kd_looms_bcov1111_strict_ht_cs,
   rooted = TRUE
 )
+if (!is.rooted(kd_looms_bcov1111_strict_ht_cs)) {
+  kd_looms_bcov1111_strict_ht_cs$root.edge.length <- 0
+}
 write.tree(
   kd_looms_bcov1111_strict_ht_cs,
   here("output/trees/kd-looms_bcov_strict_heterogene_consensus.tree")
 )
 
-## Looms, basic features only
-kd_looms_bcov_basic <- read.nexus(
-  here("data/kd-looms/kd-looms_bcov_basic/kd-looms_bcov_basic.trees")
-)
-kd_looms_bcov_basic <- kd_looms_bcov_basic[ceiling(length(kd_looms_bcov_basic) * burnin):length(kd_looms_bcov_basic)]
-kd_looms_bcov_basic_cs <- consensus(kd_looms_bcov_basic, p = .5, rooted = TRUE)
-kd_looms_bcov_basic_cs <- consensus.edges(kd_looms_bcov_basic,
-  consensus.tree = kd_looms_bcov_basic_cs,
-  rooted = TRUE
-)
-write.tree(
-  kd_looms_bcov_basic_cs,
-  here("output/trees/kd-looms_bcov_basic_consensus.tree")
-)
-
-## Looms, pattern features only
-kd_looms_bcov_patterns <- read.nexus(
-  here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_bcov_patterns.trees")
-)
-kd_looms_bcov_patterns <- kd_looms_bcov_patterns[ceiling(length(kd_looms_bcov_patterns) * burnin):length(kd_looms_bcov_patterns)]
-kd_looms_bcov_patterns_cs <- consensus(kd_looms_bcov_patterns, p = .5, rooted = TRUE)
-kd_looms_bcov_patterns_cs <- consensus.edges(kd_looms_bcov_patterns,
-  consensus.tree = kd_looms_bcov_patterns_cs,
-  rooted = TRUE
-)
-write.tree(
-  kd_looms_bcov_patterns_cs,
-  here("output/trees/kd-looms_bcov_patterns_consensus.tree")
-)
-
-## Looms, pattern features only
-kd_looms_bcov1111_relaxed <- read.nexus(
+## Looms, binary covarion, all levels, no weighting, relaxed uniform rate
+kd_looms_bcov1111_relaxed_uni <- read.nexus(
   here("data/kd-looms/kd-looms_bcov1111_relaxed/kd-looms_bcov1111_relaxed.trees")
 )
-kd_looms_bcov1111_relaxed <- kd_looms_bcov1111_relaxed[ceiling(length(kd_looms_bcov1111_relaxed) * burnin):length(kd_looms_bcov1111_relaxed)]
-kd_looms_bcov1111_relaxed_cs <- consensus(kd_looms_bcov1111_relaxed, p = .5, rooted = TRUE)
-kd_looms_bcov1111_relaxed_cs <- consensus.edges(
-  kd_looms_bcov1111_relaxed,
-  consensus.tree = kd_looms_bcov1111_relaxed_cs,
+kd_looms_bcov1111_relaxed_uni <- kd_looms_bcov1111_relaxed_uni[ceiling(length(kd_looms_bcov1111_relaxed_uni) * burnin):length(kd_looms_bcov1111_relaxed_uni)]
+kd_looms_bcov1111_relaxed_uni_cs <- consensus(kd_looms_bcov1111_relaxed_uni, p = .5, rooted = TRUE)
+kd_looms_bcov1111_relaxed_uni_cs <- consensus.edges(
+  kd_looms_bcov1111_relaxed_uni,
+  consensus.tree = kd_looms_bcov1111_relaxed_uni_cs,
   rooted = TRUE
 )
+if (!is.rooted(kd_looms_bcov1111_relaxed_uni_cs)) {
+  kd_looms_bcov1111_relaxed_uni_cs$root.edge.length <- 0
+}
 write.tree(
-  kd_looms_bcov1111_relaxed_cs,
-  here("output/trees/kd-looms_bcov1111_relaxed_consensus.tree")
+  kd_looms_bcov1111_relaxed_uni_cs,
+  here("output/trees/kd-looms_bcov1111_relaxed_uni_consensus.tree")
 )
 
-## Looms, ctmc strict unfiform rate
+## Looms, binary covarion, weighted characters, strict uniform rate
+kd_looms_bcov8421_strict_uni <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov8421_strict/kd-looms_bcov8421_strict.trees")
+)
+kd_looms_bcov8421_strict_uni <- kd_looms_bcov8421_strict_uni[ceiling(length(kd_looms_bcov8421_strict_uni) * burnin):length(kd_looms_bcov8421_strict_uni)]
+kd_looms_bcov8421_strict_uni_cs <- consensus(kd_looms_bcov8421_strict_uni, p = .5, rooted = TRUE)
+kd_looms_bcov8421_strict_uni_cs <- consensus.edges(kd_looms_bcov8421_strict_uni,
+  consensus.tree = kd_looms_bcov8421_strict_uni_cs,
+  rooted = TRUE
+)
+if (!is.rooted(kd_looms_bcov8421_strict_uni_cs)) {
+  kd_looms_bcov8421_strict_uni_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_looms_bcov8421_strict_uni_cs,
+  here("output/trees/kd-looms_bcov8421_strict_uni_consensus.tree")
+)
+
+## Looms, binary covarion, basic features only, strict uniform rate
+kd_looms_bcov_basic_strict_uni <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov_basic/kd-looms_bcov_basic.trees")
+)
+kd_looms_bcov_basic_strict_uni <- kd_looms_bcov_basic_strict_uni[ceiling(length(kd_looms_bcov_basic_strict_uni) * burnin):length(kd_looms_bcov_basic_strict_uni)]
+kd_looms_bcov_basic_strict_uni_cs <- consensus(kd_looms_bcov_basic_strict_uni, p = .5, rooted = TRUE)
+kd_looms_bcov_basic_strict_uni_cs <- consensus.edges(kd_looms_bcov_basic_strict_uni,
+  consensus.tree = kd_looms_bcov_basic_strict_uni_cs,
+  rooted = TRUE
+)
+if (!is.rooted(kd_looms_bcov_basic_strict_uni_cs)) {
+  kd_looms_bcov_basic_strict_uni_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_looms_bcov_basic_strict_uni_cs,
+  here("output/trees/kd-looms_bcov_basic_strict_uni_consensus.tree")
+)
+
+## Looms, binary covarion, pattern features only, strict uniform rate
+kd_looms_bcov_patterns_strict_uni <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov_patterns/kd-looms_bcov_patterns.trees")
+)
+kd_looms_bcov_patterns_strict_uni <- kd_looms_bcov_patterns_strict_uni[ceiling(length(kd_looms_bcov_patterns_strict_uni) * burnin):length(kd_looms_bcov_patterns_strict_uni)]
+kd_looms_bcov_patterns_strict_uni_cs <- consensus(kd_looms_bcov_patterns_strict_uni, p = .5, rooted = TRUE)
+kd_looms_bcov_patterns_strict_uni_cs <- consensus.edges(kd_looms_bcov_patterns_strict_uni,
+  consensus.tree = kd_looms_bcov_patterns_strict_uni_cs,
+  rooted = TRUE
+)
+if (!is.rooted(kd_looms_bcov_patterns_strict_uni_cs)) {
+  kd_looms_bcov_patterns_strict_uni_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_looms_bcov_patterns_strict_uni_cs,
+  here("output/trees/kd-looms_bcov_patterns_strict_uni_consensus.tree")
+)
+
+## Looms, ctmc strict uniform rate
 kd_looms_ctmc1111_strict_uni <- read.nexus(
   here("data/kd-looms/kd-looms_ctmc1111_strict/kd-looms_ctmc1111_strict.trees")
 )
@@ -197,6 +223,9 @@ kd_looms_ctmc1111_strict_uni_cs <- consensus.edges(
   consensus.tree = kd_looms_ctmc1111_strict_uni_cs,
   rooted = TRUE
 )
+if (!is.rooted(kd_looms_ctmc1111_strict_uni_cs)) {
+  kd_looms_ctmc1111_strict_uni_cs$root.edge.length <- 0
+}
 write.tree(
   kd_looms_ctmc1111_strict_uni_cs,
   here("output/trees/kd-looms_ctmc1111_strict_uni_consensus.tree")
@@ -213,6 +242,9 @@ kd_looms_ctmc1111_strict_ht_cs <- consensus.edges(
   consensus.tree = kd_looms_ctmc1111_strict_ht_cs,
   rooted = TRUE
 )
+if (!is.rooted(kd_looms_ctmc1111_strict_ht_cs)) {
+  kd_looms_ctmc1111_strict_ht_cs$root.edge.length <- 0
+}
 write.tree(
   kd_looms_ctmc1111_strict_ht_cs,
   here("output/trees/kd-looms_ctmc1111_strict_ht_consensus.tree")
@@ -230,7 +262,10 @@ getMRCA_age <- function(tree, tips) {
 kd_lgs_ages <- kd_lgs_bcov_relaxed_ht |>
   seq_along() |>
   map_df(~ tibble(
-    `Kra-Dai` = getMRCA_age(kd_lgs_bcov_relaxed_ht[[.x]], kd_lgs_bcov_relaxed_ht[[1]]$tip.label),
+    `Kra-Dai` = getMRCA_age(
+      kd_lgs_bcov_relaxed_ht[[.x]],
+      kd_lgs_bcov_relaxed_ht[[1]]$tip.label
+    ),
     `Kam-Tai` = getMRCA_age(
       kd_lgs_bcov_relaxed_ht[[.x]],
       str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")
@@ -242,7 +277,7 @@ kd_lgs_ages <- kd_lgs_bcov_relaxed_ht |>
   )) |>
   pivot_longer(everything(), names_to = "group", values_to = "age")
 
-write_csv(kd_lgs_ages, here("output/data/kd-lgs_ages2.csv"))
+write_csv(kd_lgs_ages, here("output/data/kd-lgs_ages.csv"))
 
 kd_lgs_ages_summary <- kd_lgs_ages |>
   group_by(group) |>
@@ -262,15 +297,13 @@ kd_lgs_ages_summary <- kd_lgs_ages |>
   relocate(n, .after = group) |>
   arrange(-n) |>
   rename(n_lgs = n)
-
-write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary2.csv"))
+write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary.csv"))
 
 
 # Mutation rates ---------------------------------------------------------------
 burnin <- .1
 
 # Languages
-
 kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   count(concept_id)
 
@@ -287,6 +320,7 @@ kd_lgs_mu_byconcept_tb <- kd_lgs_mu_byconcept |>
   select(-burnin, -rowid) |>
   pivot_longer(-Sample, names_to = "concept", values_to = "rate") |>
   mutate(concept = str_remove(concept, "mutationRate.s.concept_"))
+# write_csv(kd_lgs_mu_byconcept_tb, here("output/data/kd-lgs_mu_byconcept.csv"))
 
 kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
   group_by(concept) |>
@@ -302,7 +336,6 @@ kd_lgs_mu_summary <- kd_lgs_mu_byconcept_tb |>
   relocate(n, .after = concept) |>
   rename(n_cogsets = n) |>
   select(-concept_id)
-
 write_csv(kd_lgs_mu_summary, here("output/data/kd-lgs_mu_summary.csv"))
 
 # Looms
@@ -328,8 +361,7 @@ kd_looms_mu_bylevel_tb <- kd_looms_mu_bylevel |>
   select(-burnin, -rowid) |>
   pivot_longer(-Sample, names_to = "level", values_to = "rate") |>
   mutate(level = str_remove_all(level, "[^0-9]") |> as.numeric())
-
-write_csv(kd_looms_mu_bylevel_tb, here("output/data/kd-looms_mu_bylevel2.csv"))
+write_csv(kd_looms_mu_bylevel_tb, here("output/data/kd-looms_mu_bylevel.csv"))
 
 kd_looms_mu_summary <- kd_looms_mu_bylevel_tb |>
   group_by(level) |>
@@ -343,5 +375,4 @@ kd_looms_mu_summary <- kd_looms_mu_bylevel_tb |>
   left_join(count(kd_looms_characters, level)) |>
   relocate(n, .after = level) |>
   rename(n_chars = n)
-
-write_csv(kd_looms_mu_summary, here("output/data/kd-looms_mu_summary2.csv"))
+write_csv(kd_looms_mu_summary, here("output/data/kd-looms_mu_summary.csv"))
