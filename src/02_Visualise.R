@@ -533,7 +533,8 @@ kd_cophylo_plot <- kd_lng_loom_tree +
     data = kd_lng_tree_data,
     aes(label = label, color = color, fill = color, x = x1),
     size = (base_font_size - 2) / .pt,
-    family = base_font2, hjust = 1
+    family = base_font2, hjust = 1,
+    show.legend = FALSE
   ) +
   scale_color_identity(
     guide = guide_legend(
@@ -563,7 +564,8 @@ kd_cophylo_plot <- kd_lng_loom_tree +
     hjust = 0,
     size = (base_font_size - 2) / .pt,
     family = base_font2,
-    lineheight = 1
+    lineheight = 1,
+    show.legend = FALSE
   ) +
   scale_color_identity(
     guide = guide_legend(
@@ -606,8 +608,7 @@ plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
 
 # Mutation rates ---------------------------------------------------------------
 
-kd_looms_mu_bylevel <- read_csv(here("output/data/kd-looms_mu_bylevel2.csv"))
-
+kd_looms_mu_bylevel <- read_csv(here("output/data/kd-looms_mu_bylevel.csv"))
 kd_looms_mu_plot <- kd_looms_mu_bylevel |>
   ggplot(aes(y = factor(level), x = rate)) +
   stat_density_ridges(
@@ -641,16 +642,16 @@ kd_looms_mu_plot <- kd_looms_mu_bylevel |>
   theme(
     plot.margin = margin(0, 0, 0, 0, unit = "line"),
     aspect.ratio = 0.618,
-    legend.position = "right"
+    legend.position = "right",
+    legend.background = element_rect(color = NA)
   )
-ggsave(here("output/figures/kd-looms_mu_plot2.pdf"),
+ggsave(here("output/figures/kd-looms_mu_plot.pdf"),
   kd_looms_mu_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
-plot_crop(here("output/figures/kd-looms_mu_plot2.pdf"))
+plot_crop(here("output/figures/kd-looms_mu_plot.pdf"))
 
-kd_looms_mu_summary <- read_csv(here("output/data/kd-looms_mu_summary2.csv"))
-
+kd_looms_mu_summary <- read_csv(here("output/data/kd-looms_mu_summary.csv"))
 kd_looms_mu_summary |>
   mutate(across(everything(), ~ round(.x, 2))) |>
   unite(hdi, HPDI_lower, HPDI_upper, sep = ", ") |>
@@ -660,12 +661,12 @@ kd_looms_mu_summary |>
     digits = 2,
     format = "latex", booktabs = TRUE
   ) |>
-  write_lines(here("output/tables/kd-looms_mu_summary2.tex"))
+  write_lines(here("output/tables/kd-looms_mu_summary.tex"))
 
 
 # Maps -------------------------------------------------------------------------
 
-theme_set(theme_bw() + ytheme)
+theme_set(theme_bw() + ytheme + theme(legend.key.spacing.y = unit(.25, "line")))
 
 prj <- "+proj=laea +lon_0=107.11 +lat_0=19.03 +datum=WGS84 +units=m +no_defs"
 
