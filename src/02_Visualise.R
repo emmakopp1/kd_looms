@@ -514,7 +514,7 @@ kd_loom_tree_data$y <- ((kd_loom_tree_data$y - min(kd_loom_tree_data$y)) / (max(
 
 kd_lng_loom_tree <- kd_lng_tree +
   geom_tree(data = kd_loom_tree_data, linewidth = lwd)
-kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) |> 
+kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) |>
   filter(!is.na(group) & !is.na(lng)) |>
   mutate(pb = group %in% kd_loom_pb)
 
@@ -913,3 +913,32 @@ ggsave(here("output/figures/kd-looms_Tsw_map.pdf"),
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_Tsw_map.pdf"))
+
+
+# Model comparison --------------------------------------------------------
+
+models_summary <- read_csv(here("output/data/models_summary.csv"))
+
+models_summary |>
+  filter(data == "looms") |>
+  select(-data) |>
+  arrange(-ML) |>
+  mutate(ML = round(ML)) |>
+  mutate(` ` = ifelse(ML == max(ML), "\\ding{43}", ""), .before = everything()) |>
+  kbl(
+    digits = 2,
+    format = "latex", booktabs = TRUE, escape = FALSE
+  ) |>
+  write_lines(here("output/tables/kd-looms_models_summary.tex"))
+
+models_summary |>
+  filter(data == "lgs") |>
+  select(-data) |>
+  arrange(-ML) |>
+  mutate(ML = round(ML)) |>
+  mutate(` ` = ifelse(ML == max(ML), "\\ding{43}", ""), .before = everything()) |>
+  kbl(
+    digits = 2,
+    format = "latex", booktabs = TRUE, escape = FALSE
+  ) |>
+  write_lines(here("output/tables/kd-lgs_models_summary.tex"))
