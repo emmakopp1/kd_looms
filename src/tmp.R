@@ -239,26 +239,3 @@ kd_lgs_on_looms_k |>
   summarise(across(everything(), mean))
 kd_looms_on_lgs_k |>
   summarise(across(everything(), mean))
-
-
-out_files <- list.files(
-  c(here("data/kd-lgs/model_choice"), here("data/kd-looms/model_choice")),
-  "\\.out",
-  recursive = TRUE,
-  full.names = TRUE
-)
-
-out_files |>
-  map_df(~
-    read_lines(.x) |>
-      str_subset("Marginal likelihood") |>
-      tail(n = 1) |>
-      enframe(name = NULL) |>
-      mutate(data = str_extract(.x, "(?<=choice/kd-)(lgs|looms)")) |>
-      mutate(substitution = ifelse(str_detect(.x, "bcov"), "binary covarion", "CTMC")) |>
-      mutate(clock = str_extract(.x, "relaxed|strict")) |>
-      mutate(rate = ifelse(str_detect(.x, "ht"), "heterogeneous", "uniform")) |>
-      mutate(ML = str_extract(value, "(?<=hood: )-[0-9.]+") |> as.numeric()) |>
-      mutate(sd = str_extract(value, "(?<=SD=\\()[0-9.]+") |> as.numeric()) |>
-      select(-value)) |> 
-  write_csv(here("output/data/models_summary.csv"))
