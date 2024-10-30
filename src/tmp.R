@@ -255,9 +255,10 @@ out_files |>
       tail(n = 1) |>
       enframe(name = NULL) |>
       mutate(data = str_extract(.x, "(?<=choice/kd-)(lgs|looms)")) |>
-      mutate(substitution = str_extract(.x, "bcov|ctmc")) |>
+      mutate(substitution = ifelse(str_detect(.x, "bcov"), "binary covarion", "CTMC")) |>
       mutate(clock = str_extract(.x, "relaxed|strict")) |>
-      mutate(rate = str_extract(.x, "ht|uni")) |>
+      mutate(rate = ifelse(str_detect(.x, "ht"), "heterogeneous", "uniform")) |>
       mutate(ML = str_extract(value, "(?<=hood: )-[0-9.]+") |> as.numeric()) |>
       mutate(sd = str_extract(value, "(?<=SD=\\()[0-9.]+") |> as.numeric()) |>
-      select(-value))
+      select(-value)) |> 
+  write_csv(here("output/data/models_summary.csv"))
