@@ -1,7 +1,7 @@
 library(TreeTools)
 kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
   as_tibble() |>
-  colnames() |> 
+  colnames() |>
   str_remove("^[A-Z][a-z]+(?=[A-Z])")
 
 kd_looms_cs <- kd_looms_bcov1111_strict_ht_cs_tree |>
@@ -20,21 +20,21 @@ keep.tip(kd_looms_cs, kd_lgs_pruned_tips)
 kd_looms_cs$tip.label |> sort()
 kd_lgs_pruned_tips |> sort()
 
-kd_cophylo_pruned <- cophylo(keep.tip(kd_lgs_cs, kd_lgs_pruned_tips), 
-                             keep.tip(kd_looms_cs, kd_lgs_pruned_tips),
-                      methods = c("pre", "post"), rotate.multi = FALSE
+kd_cophylo_pruned <- cophylo(keep.tip(kd_lgs_cs, kd_lgs_pruned_tips),
+  keep.tip(kd_looms_cs, kd_lgs_pruned_tips),
+  methods = c("pre", "post"), rotate.multi = FALSE
 )
 
 kd_lng_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[1]],
-                      ladderize = FALSE,
-                      size = lwd,
-                      branch.length = "none"
+  ladderize = FALSE,
+  size = lwd,
+  branch.length = "none"
 )
 
 kd_loom_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[2]],
-                       ladderize = FALSE,
-                       size = lwd,
-                       branch.length = "none"
+  ladderize = FALSE,
+  size = lwd,
+  branch.length = "none"
 )
 
 kd_lng_tree_pruned_data <- kd_lng_tree_pruned$data |>
@@ -53,7 +53,7 @@ kd_loom_tree_pruned_data$x <- kd_loom_tree_pruned_data$x + (max(c(kd_lng_tree_pr
 
 kd_lng_loom_tree_pruned <- kd_lng_tree_pruned +
   geom_tree(data = kd_loom_tree_pruned_data, linewidth = lwd)
-kd_lng_loom_tree_pruned_data <- bind_rows(kd_lng_tree_pruned_data, kd_loom_tree_pruned_data) |> 
+kd_lng_loom_tree_pruned_data <- bind_rows(kd_lng_tree_pruned_data, kd_loom_tree_pruned_data) |>
   filter(!is.na(group) & !is.na(lng)) |>
   mutate(pb = group %in% kd_loom_pb)
 
@@ -239,3 +239,25 @@ kd_lgs_on_looms_k |>
   summarise(across(everything(), mean))
 kd_looms_on_lgs_k |>
   summarise(across(everything(), mean))
+
+
+out_files <- list.files(
+  c(here("data/kd-lgs/model_choice"), here("data/kd-looms/model_choice")),
+  "\\.out",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+out_files |>
+  map_df(~
+    read_lines(.x) |>
+      str_subset("Marginal likelihood") |>
+      tail(n = 1) |>
+      enframe(name = NULL) |>
+      mutate(data = str_extract(.x, "(?<=choice/kd-)(lgs|looms)")) |>
+      mutate(substitution = str_extract(.x, "bcov|ctmc")) |>
+      mutate(clock = str_extract(.x, "relaxed|strict")) |>
+      mutate(rate = str_extract(.x, "ht|uni")) |>
+      mutate(ML = str_extract(value, "(?<=hood: )-[0-9.]+") |> as.numeric()) |>
+      mutate(sd = str_extract(value, "(?<=SD=\\()[0-9.]+") |> as.numeric()) |>
+      select(-value))
