@@ -514,7 +514,7 @@ kd_loom_tree_data$y <- ((kd_loom_tree_data$y - min(kd_loom_tree_data$y)) / (max(
 
 kd_lng_loom_tree <- kd_lng_tree +
   geom_tree(data = kd_loom_tree_data, linewidth = lwd)
-kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) %>%
+kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) |> 
   filter(!is.na(group) & !is.na(lng)) |>
   mutate(pb = group %in% kd_loom_pb)
 
