@@ -199,6 +199,9 @@ kd_lgs_bcov_relaxed_ht_cs_tree_plot <- kd_lgs_bcov_relaxed_ht_cs_tree |>
     aspect.ratio = 2.25,
     plot.margin = margin(0, 3.5, 0, 0, unit = "line")
   )
+kd_lgs_bcov_relaxed_ht_cs_tree_plot <- flip(kd_lgs_bcov_relaxed_ht_cs_tree_plot, 167, 162) |> 
+  flip(167, 154) |> 
+  flip(105, 125)
 ggsave(here("output/figures/kd-lgs_bcov_relaxed_ht_cs_tree.pdf"),
   kd_lgs_bcov_relaxed_ht_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
@@ -487,7 +490,11 @@ kd_lng_tree <- ggtree(kd_cophylo$trees[[1]],
   ladderize = FALSE,
   size = lwd,
   branch.length = "none"
-)
+) |> 
+  flip(167, 162) |>
+  flip(167, 154) |> 
+  flip(162, 154)
+#   flip(105, 125)
 # flip(113, 128) |>
 # flip(103,172)
 kd_loom_tree <- ggtree(kd_cophylo$trees[[2]],

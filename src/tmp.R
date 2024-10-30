@@ -6,6 +6,7 @@ kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
 
 kd_looms_cs <- kd_looms_bcov1111_strict_ht_cs_tree |>
   fortify() |>
+  mutate(label = str_replace_all(label, "_", " ")) |> 
   left_join(kd_looms, by = join_by(label == group)) |>
   mutate(label = ifelse(is.na(lng), label, lng)) |>
   # mutate(label = ifelse(label %in% kd_loom_pb, label, lng)) |>
@@ -78,7 +79,7 @@ imgs <- paste0(
   ".png' height=30>"
 )
 
-kd_lng_loom_tree_pruned +
+kd_cophylo_pruned_plot <- kd_lng_loom_tree_pruned +
   geom_rootedge(1, linewidth = lwd) +
   geom_segment(
     data = filter(kd_loom_tree_pruned_data, parent == node),
@@ -155,14 +156,18 @@ kd_lng_loom_tree_pruned +
   ) +
   scale_linetype(guide = "none") +
   theme(
-    aspect.ratio = 3,
+    aspect.ratio = 1.5,
     legend.box = "horizontal",
     legend.text = element_text(size = base_font_size - 2, family = base_font2),
     legend.key = element_rect(),
     legend.box.margin = margin(0, 0, 0, 0, unit = "line"),
     legend.background = element_blank()
   )
-
+ggsave(here("output/figures/kd_cophylo_pruned_plot.pdf"),
+       kd_cophylo_pruned_plot,
+       device = cairo_pdf, width = wd, height = ht * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd_cophylo_pruned_plot.pdf"))
 
 
 library(here)
