@@ -264,7 +264,7 @@ filter="204-216"/>
         <up idref="clockRate.c:clock"/>
         <down idref="Tree.t:tree"/>
     </operator>
-    <logger id="tracelog" spec="Logger" fileName="kd-looms_ctmc1111_heterogene.log" logEvery="10000" model="@posterior" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="kd-looms_ctmc1111_strict_ht_ns.log" logEvery="10000" model="@posterior" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -296,7 +296,7 @@ filter="204-216"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
     </logger>
-    <logger id="treelog.t:tree" spec="Logger" fileName="kd-looms_ctmc1111_heterogene.trees" logEvery="10000" mode="tree">
+    <logger id="treelog.t:tree" spec="Logger" fileName="kd-looms_ctmc1111_strict_ht_ns.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:tree" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:tree"/>
     </logger>
 </run>

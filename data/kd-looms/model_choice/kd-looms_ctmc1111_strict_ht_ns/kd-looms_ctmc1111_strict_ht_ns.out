@@ -34,7 +34,7 @@ Gerton Lunter, Sidney Markowitz, Vladimir Minin, Michael Defoin Platel,
 
 Random number seed: 1728299566263
 
-File: kd-looms_ctmc1111_heterogene_ns.xml seed: 1728299566263 threads: 1
+File: kd-looms_ctmc1111_strict_ht_ns.xml seed: 1728299566263 threads: 1
 Loading package BEASTvntr v0.1.3
 Loading package PoMo v1.0.1
 Loading package speedemon v1.0.0
@@ -196,9 +196,9 @@ PLoS Comput Biol 10(12): e1003919. doi:10.1371/journal.pcbi.1003919
 ===============================================================================
 Counting 131 parameters
 replacing logger tracelog with NSLogger
-Writing file kd-looms_ctmc1111_heterogene.trees
+Writing file kd-looms_ctmc1111_strict_ht_ns.trees
          Sample      posterior ESS(posterior)     likelihood          prior
-Writing file kd-looms_ctmc1111_heterogene.log
+Writing file kd-looms_ctmc1111_strict_ht_ns.log
 Start likelihood 0: -4712.456044938483 
 Start likelihood 1: -3080.407699062464 
 Start likelihood 2: -4137.523679601574 
@@ -1745,12 +1745,12 @@ Max ESS: 71.80579217882814
 
 
 Processing 749 trees from file.
-Log file written to kd-looms_ctmc1111_heterogene.posterior.trees
+Log file written to kd-looms_ctmc1111_strict_ht_ns.posterior.trees
 Done!
 
 Marginal likelihood: -2049.577891420966 sqrt(H/N)=(6.405289465883494)=?=SD=(6.484759061783148) Information: 123.08319942527416
 Max ESS: 71.55727526627153
 
 
-Log file written to kd-looms_ctmc1111_heterogene.posterior.log
+Log file written to kd-looms_ctmc1111_strict_ht_ns.posterior.log
 Done!
