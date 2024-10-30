@@ -341,7 +341,7 @@ filter="-">
     <operator id="SATreeRootScalerFBD.t:tree" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:tree" weight="1.0"/>
     <operator id="SATreeScalerFBD.t:tree" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:tree" weight="3.0"/>
     <!--operator id="tipDatesSampler.Ahom" spec="TipDatesRandomWalker" taxonset="@Ahom" tree="@Tree.t:tree" weight="1.0" windowSize="1.0"/-->
-    <logger id="tracelog" spec="Logger" fileName="kd-lgs_bcov_strict_ns.log" logEvery="10000" model="@posterior" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="kd-lgs_bcov_strict_uni_ns.log" logEvery="10000" model="@posterior" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -367,7 +367,7 @@ filter="-">
         <log idref="likelihood"/>
         <log idref="prior"/>
     </logger>
-    <logger id="treelog.t:tree" spec="Logger" fileName="kd-lgs_bcov_strict_ns.trees" logEvery="10000" mode="tree">
+    <logger id="treelog.t:tree" spec="Logger" fileName="kd-lgs_bcov_strict_uni_ns.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:tree" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:tree"/>
     </logger>
 </run>

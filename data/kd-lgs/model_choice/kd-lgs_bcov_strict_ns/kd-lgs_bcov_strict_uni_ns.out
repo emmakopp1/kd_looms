@@ -34,7 +34,7 @@ Gerton Lunter, Sidney Markowitz, Vladimir Minin, Michael Defoin Platel,
 
 Random number seed: 1728299236135
 
-File: kd-lgs_bcov_strict_ns.xml seed: 1728299236135 threads: 1
+File: kd-lgs_bcov_strict_uni_ns.xml seed: 1728299236135 threads: 1
 Loading package BEASTvntr v0.1.3
 Loading package PoMo v1.0.1
 Loading package speedemon v1.0.0
@@ -130,9 +130,9 @@ PLoS Comput Biol 10(12): e1003919. doi:10.1371/journal.pcbi.1003919
 ===============================================================================
 Counting 416 parameters
 replacing logger tracelog with NSLogger
-Writing file kd-lgs_bcov_strict_ns.trees
+Writing file kd-lgs_bcov_strict_uni_ns.trees
          Sample      posterior ESS(posterior)     likelihood          prior
-Writing file kd-lgs_bcov_strict_ns.log
+Writing file kd-lgs_bcov_strict_uni_ns.log
 Start likelihood 0: -40023.975460089765 
 Start likelihood 1: -44013.30981911515 
 Start likelihood 2: -44616.29110866493 
@@ -5947,12 +5947,12 @@ Max ESS: 99.0349770218013
 
 
 Processing 2884 trees from file.
-Log file written to kd-lgs_bcov_strict_ns.posterior.trees
+Log file written to kd-lgs_bcov_strict_uni_ns.posterior.trees
 Done!
 
 Marginal likelihood: -8667.300268496549 sqrt(H/N)=(12.624302017343187)=?=SD=(12.393997998432738) Information: 478.11900427528576
 Max ESS: 97.76506406871543
 
 
-Log file written to kd-lgs_bcov_strict_ns.posterior.log
+Log file written to kd-lgs_bcov_strict_uni_ns.posterior.log
 Done!
