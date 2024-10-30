@@ -220,7 +220,7 @@ kd_looms_bcov1000_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1
 kd_looms_bcov1000_strict_uni_cs_tree_plot <- kd_looms_bcov1000_strict_uni_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
-  rename(group = label, label = lng_label) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov1000_strict_uni_cs_tree)) * .025,
@@ -246,7 +246,7 @@ kd_looms_bcov1111_relaxed_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov
 kd_looms_bcov1111_relaxed_uni_cs_tree_plot <- kd_looms_bcov1111_relaxed_uni_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
-  rename(group = label, label = lng_label) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
   cs_tree() +
   geom_rootedge(
     max(
@@ -256,6 +256,7 @@ kd_looms_bcov1111_relaxed_uni_cs_tree_plot <- kd_looms_bcov1111_relaxed_uni_cs_t
   ) +
   theme(plot.margin = margin(0, 3.75, 0, 0, unit = "line"))
 kd_looms_bcov1111_relaxed_uni_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_uni_cs_tree_plot, 32, 43)
+kd_looms_bcov1111_relaxed_uni_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_uni_cs_tree_plot, 50, 48)
 ggsave(here("output/figures/kd-looms_bcov1111_relaxed_uni_cs_tree.pdf"),
   kd_looms_bcov1111_relaxed_uni_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
@@ -274,7 +275,7 @@ kd_looms_bcov8421_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov8
 kd_looms_bcov8421_strict_uni_cs_tree_plot <- kd_looms_bcov8421_strict_uni_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
-  rename(group = label, label = lng_label) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov8421_strict_uni_cs_tree)) * .025,
@@ -307,13 +308,14 @@ kd_looms_bcov1111_strict_ht_cs_tree$tip.label <- str_replace_all(
 kd_looms_bcov1111_strict_ht_cs_tree_plot <- kd_looms_bcov1111_strict_ht_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
-  rename(group = label, label = lng_label) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov1111_strict_ht_cs_tree)) * .025,
     linewidth = lwd
   ) +
   theme(plot.margin = margin(0, 3.95, 0, 0, unit = "line"))
+kd_looms_bcov1111_strict_ht_cs_tree_plot <- flip(kd_looms_bcov1111_strict_ht_cs_tree_plot, 32, 43)
 ggsave(here("output/figures/kd-looms_bcov_strict_ht_cs_tree.pdf"),
   kd_looms_bcov1111_strict_ht_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
@@ -332,7 +334,7 @@ kd_looms_bcov_basic_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bco
 kd_looms_bcov_basic_strict_uni_cs_tree_plot <- kd_looms_bcov_basic_strict_uni_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
-  rename(group = label, label = lng_label) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov_basic_strict_uni_cs_tree)) * .025,
@@ -358,7 +360,7 @@ kd_looms_bcov_patterns_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_
 kd_looms_bcov_patterns_strict_uni_cs_tree_plot <- kd_looms_bcov_patterns_strict_uni_cs_tree |>
   fortify() |>
   left_join(kd_looms, by = join_by(label == group)) |>
-  rename(group = label, label = lng_label) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
   cs_tree() +
   geom_rootedge(
     max(node.depth.edgelength(kd_looms_bcov_patterns_strict_uni_cs_tree)) * .025,
