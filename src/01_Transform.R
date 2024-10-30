@@ -376,3 +376,28 @@ kd_looms_mu_summary <- kd_looms_mu_bylevel_tb |>
   relocate(n, .after = level) |>
   rename(n_chars = n)
 write_csv(kd_looms_mu_summary, here("output/data/kd-looms_mu_summary.csv"))
+
+
+# Model comparison --------------------------------------------------------
+
+out_files <- list.files(
+  c(here("data/kd-lgs/model_choice"), here("data/kd-looms/model_choice")),
+  "\\.out",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+out_files |>
+  map_df(~
+           read_lines(.x) |>
+           str_subset("Marginal likelihood") |>
+           tail(n = 1) |>
+           enframe(name = NULL) |>
+           mutate(data = str_extract(.x, "(?<=choice/kd-)(lgs|looms)")) |>
+           mutate(substitution = ifelse(str_detect(.x, "bcov"), "binary covarion", "CTMC")) |>
+           mutate(clock = str_extract(.x, "relaxed|strict")) |>
+           mutate(rate = ifelse(str_detect(.x, "ht"), "heterogeneous", "uniform")) |>
+           mutate(ML = str_extract(value, "(?<=hood: )-[0-9.]+") |> as.numeric()) |>
+           mutate(sd = str_extract(value, "(?<=SD=\\()[0-9.]+") |> as.numeric()) |>
+           select(-value)) |> 
+  write_csv(here("output/data/models_summary.csv"))
