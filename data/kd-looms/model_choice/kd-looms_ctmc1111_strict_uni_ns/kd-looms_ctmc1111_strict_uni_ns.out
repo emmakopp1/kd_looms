@@ -34,7 +34,7 @@ Gerton Lunter, Sidney Markowitz, Vladimir Minin, Michael Defoin Platel,
 
 Random number seed: 1728134200540
 
-File: kd-looms_ctmc111_ns.xml seed: 1728134200540 threads: 1
+File: kd-looms_ctmc1111_strict_uni_ns.xml seed: 1728134200540 threads: 1
 Loading package BEASTvntr v0.1.3
 Loading package PoMo v1.0.1
 Loading package speedemon v1.0.0
@@ -160,9 +160,9 @@ PLoS Comput Biol 10(12): e1003919. doi:10.1371/journal.pcbi.1003919
 ===============================================================================
 Counting 122 parameters
 replacing logger tracelog with NSLogger
-Writing file kd-looms_ctmc111.trees
+Writing file kd-looms_ctmc1111_strict_uni_ns.trees
          Sample      posterior ESS(posterior)     likelihood          prior
-Writing file kd-looms_ctmc111.log
+Writing file kd-looms_ctmc1111_strict_uni_ns.log
 Start likelihood 0: -4810.053715341075 
 Start likelihood 1: -4241.833818046242 
 Start likelihood 2: -4288.215077692488 
@@ -236,12 +236,12 @@ Max ESS: 7.754675648148484
 
 
 Processing 14 trees from file.
-Log file written to kd-looms_ctmc111.posterior.trees
+Log file written to kd-looms_ctmc1111_strict_uni_ns.posterior.trees
 Done!
 
 Marginal likelihood: -4212.760634123086 sqrt(H/N)=(19.03452713503492)=?=SD=(0.02057310337674044) Information: 1086.9396697631423
 Max ESS: 7.813185544283122
 
 
-Log file written to kd-looms_ctmc111.posterior.log
+Log file written to kd-looms_ctmc1111_strict_uni_ns.posterior.log
 Done!
