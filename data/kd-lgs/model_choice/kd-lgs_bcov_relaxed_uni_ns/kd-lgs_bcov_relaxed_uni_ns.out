@@ -34,7 +34,7 @@ Gerton Lunter, Sidney Markowitz, Vladimir Minin, Michael Defoin Platel,
 
 Random number seed: 1728300632845
 
-File: kd-lgs_bcov_ns.xml seed: 1728300632845 threads: 1
+File: kd-lgs_bcov_relaxed_uni_ns.xml seed: 1728300632845 threads: 1
 Loading package BEASTvntr v0.1.3
 Loading package PoMo v1.0.1
 Loading package speedemon v1.0.0
@@ -134,9 +134,9 @@ Drummond AJ, Ho SYW, Phillips MJ, Rambaut A (2006) Relaxed Phylogenetics and
 ===============================================================================
 Counting 619 parameters
 replacing logger tracelog with NSLogger
-Writing file kd-lgs_bcov_ns.trees
+Writing file kd-lgs_bcov_relaxed_uni_ns.trees
          Sample      posterior ESS(posterior)     likelihood          prior
-Writing file kd-lgs_bcov_ns.log
+Writing file kd-lgs_bcov_relaxed_uni_ns.log
 Start likelihood 0: -40951.86577588037 
 Start likelihood 1: -19587.58468388088 
 Start likelihood 2: -42614.575880334814 
@@ -7063,12 +7063,12 @@ Max ESS: 73.97846561970374
 
 
 Processing 3437 trees from file.
-Log file written to kd-lgs_bcov_ns.posterior.trees
+Log file written to kd-lgs_bcov_relaxed_uni_ns.posterior.trees
 Done!
 
 Marginal likelihood: -8608.517079267944 sqrt(H/N)=(13.752814722057673)=?=SD=(13.4128076264094) Information: 567.4197383377387
 Max ESS: 77.73332153669901
 
 
-Log file written to kd-lgs_bcov_ns.posterior.log
+Log file written to kd-lgs_bcov_relaxed_uni_ns.posterior.log
 Done!
