@@ -299,7 +299,7 @@ plot_crop(here("output/figures/kd-lgs_bcov_strict_uni_cs_tree.pdf"))
 
 # Looms
 
-## Looms, level 1 characters only
+## Looms, level 1 characters only, strict uni
 kd_looms_bcov1000_strict_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1000_strict_uni_consensus.tree"))
 if (!is.rooted(kd_looms_bcov1000_strict_uni_cs_tree)) {
   kd_looms_bcov1000_strict_uni_cs_tree$root.edge.length <- 0
