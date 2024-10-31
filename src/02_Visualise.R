@@ -1,4 +1,5 @@
 library(here)
+library(utils)
 library(phangorn)
 library(phytools)
 library(sf)
@@ -8,17 +9,18 @@ library(tidyverse)
 library(stringi)
 # BiocManager::install("ggtree")
 library(ggtree)
-nodeid.tbl_tree <- utils::getFromNamespace("nodeid.tbl_tree", "tidytree")
-rootnode.tbl_tree <- utils::getFromNamespace("rootnode.tbl_tree", "tidytree")
-offspring.tbl_tree <- utils::getFromNamespace("offspring.tbl_tree", "tidytree")
-offspring.tbl_tree_item <- utils::getFromNamespace(".offspring.tbl_tree_item", "tidytree")
-child.tbl_tree <- utils::getFromNamespace("child.tbl_tree", "tidytree")
-parent.tbl_tree <- utils::getFromNamespace("parent.tbl_tree", "tidytree")
+nodeid.tbl_tree <- getFromNamespace("nodeid.tbl_tree", "tidytree")
+rootnode.tbl_tree <- getFromNamespace("rootnode.tbl_tree", "tidytree")
+offspring.tbl_tree <- getFromNamespace("offspring.tbl_tree", "tidytree")
+offspring.tbl_tree_item <- getFromNamespace(".offspring.tbl_tree_item", "tidytree")
+child.tbl_tree <- getFromNamespace("child.tbl_tree", "tidytree")
+parent.tbl_tree <- getFromNamespace("parent.tbl_tree", "tidytree")
 library(ggthemes)
 library(ggridges)
 library(ggtext)
 library(ggstar)
 library(ggforce)
+library(ggnewscale)
 library(knitr)
 library(kableExtra)
 library(patchwork)
@@ -164,6 +166,8 @@ cs_tree <- function(tr, fontsize = base_font_size) {
 
 
 # Languages
+
+## Languages, bcov relaxed heterogeneous
 kd_lgs_bcov_relaxed_ht_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_consensus.tree"))
 if (!is.rooted(kd_lgs_bcov_relaxed_ht_cs_tree)) {
   kd_lgs_bcov_relaxed_ht_cs_tree$root.edge.length <- 0
@@ -208,6 +212,90 @@ ggsave(here("output/figures/kd-lgs_bcov_relaxed_ht_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-lgs_bcov_relaxed_ht_cs_tree.pdf"))
 
+## Languages, bcov relaxed uniform
+kd_lgs_bcov_relaxed_uni_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_uni_consensus.tree"))
+if (!is.rooted(kd_lgs_bcov_relaxed_uni_cs_tree)) {
+  kd_lgs_bcov_relaxed_uni_cs_tree$root.edge.length <- 0
+}
+kd_lgs_bcov_relaxed_uni_cs_tree$node.label <- round(
+  as.numeric(kd_lgs_bcov_relaxed_uni_cs_tree$node.label),
+  2
+) * 100
+kd_lgs_bcov_relaxed_uni_cs_tree$node.label[1] <- NA
+kd_lgs_bcov_relaxed_uni_cs_tree$tip.label <- str_replace_all(
+  kd_lgs_bcov_relaxed_uni_cs_tree$tip.label,
+  "_",
+  " "
+)
+
+kd_lgs_bcov_relaxed_uni_cs_tree_plot <- kd_lgs_bcov_relaxed_uni_cs_tree |>
+  fortify() |>
+  left_join(kd_lgs, by = join_by(label == label)) |>
+  cs_tree(base_font_size - 1) +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_lgs_bcov_relaxed_uni_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  scale_fill_identity(
+    guide = guide_legend(),
+    labels = levels(kd_lgs$lng_group)
+  ) +
+  guides(fill = guide_legend(
+    title = "Language group",
+    override.aes = aes(label = "     ")
+  )) +
+  theme(
+    aspect.ratio = 2.25,
+    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
+  )
+ggsave(here("output/figures/kd-lgs_bcov_relaxed_uni_cs_tree.pdf"),
+       kd_lgs_bcov_relaxed_uni_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
+)
+plot_crop(here("output/figures/kd-lgs_bcov_relaxed_uni_cs_tree.pdf"))
+
+## Languages, bcov strict uniform
+kd_lgs_bcov_strict_uni_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_strict_uni_consensus.tree"))
+if (!is.rooted(kd_lgs_bcov_strict_uni_cs_tree)) {
+  kd_lgs_bcov_strict_uni_cs_tree$root.edge.length <- 0
+}
+kd_lgs_bcov_strict_uni_cs_tree$node.label <- round(
+  as.numeric(kd_lgs_bcov_strict_uni_cs_tree$node.label),
+  2
+) * 100
+kd_lgs_bcov_strict_uni_cs_tree$node.label[1] <- NA
+kd_lgs_bcov_strict_uni_cs_tree$tip.label <- str_replace_all(
+  kd_lgs_bcov_strict_uni_cs_tree$tip.label,
+  "_",
+  " "
+)
+
+kd_lgs_bcov_strict_uni_cs_tree_plot <- kd_lgs_bcov_strict_uni_cs_tree |>
+  fortify() |>
+  left_join(kd_lgs, by = join_by(label == label)) |>
+  cs_tree(base_font_size - 1) +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_lgs_bcov_strict_uni_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  scale_fill_identity(
+    guide = guide_legend(),
+    labels = levels(kd_lgs$lng_group)
+  ) +
+  guides(fill = guide_legend(
+    title = "Language group",
+    override.aes = aes(label = "     ")
+  )) +
+  theme(
+    aspect.ratio = 2.25,
+    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
+  )
+kd_lgs_bcov_strict_uni_cs_tree_plot <- flip(kd_lgs_bcov_strict_uni_cs_tree_plot, 127, 108)
+ggsave(here("output/figures/kd-lgs_bcov_strict_uni_cs_tree.pdf"),
+       kd_lgs_bcov_strict_uni_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
+)
+plot_crop(here("output/figures/kd-lgs_bcov_strict_uni_cs_tree.pdf"))
 
 # Looms
 
@@ -558,7 +646,7 @@ kd_cophylo_plot <- kd_lng_loom_tree +
     aes(x, y, group = lng, linetype = pb, color = pb)
   ) +
   scale_color_manual(guide = "none", values = c("grey50", "grey70")) +
-  ggnewscale::new_scale_colour() +
+  new_scale_colour() +
   geom_tippoint(data = kd_lng_tree_data, aes(color = color, fill = color)) +
   geom_tiplab(
     data = kd_lng_tree_data,
@@ -582,8 +670,8 @@ kd_cophylo_plot <- kd_lng_loom_tree +
   ) +
   xtheme +
   scale_fill_identity(guide = "none") +
-  ggnewscale::new_scale_colour() +
-  ggnewscale::new_scale_fill() +
+  new_scale_colour() +
+  new_scale_fill() +
   geom_tippoint(data = kd_loom_tree_data, aes(color = color, fill = color)) +
   geom_tiplab(
     data = filter(kd_loom_tree_data, isTip == TRUE),
