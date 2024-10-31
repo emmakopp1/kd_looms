@@ -178,34 +178,10 @@ library(FactoMineR)
 library(ggtree)
 library(tidyverse)
 
-kd_looms <- read_csv(here("data/kd-looms/kd-looms_datapoints.csv")) |>
-  mutate(lng_label = paste0(str_replace_na(lng_group_code, ""), lng)) |>
-  select(group, lng_label)
 
-burnin <- .1
 
-kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
-  as_tibble() |>
-  colnames()
-kd_lgs_phylo <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed/kd-lgs_bcov_relaxed.trees"))
-kd_lgs_phylo <- kd_lgs_phylo[ceiling(length(kd_lgs_phylo) * burnin):length(kd_lgs_phylo)]
-kd_lgs_phylo <- keep.tip(kd_lgs_phylo, kd_lgs_pruned_tips)
 
-kd_looms_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-looms_pruned.nex")) |>
-  as_tibble() |>
-  colnames()
-kd_looms_phylo <- read.nexus(
-  here("data/kd-looms/kd-looms_bcov1111_strict_heterogene/kd-looms_bcov1111_strict_heterogene.trees")
-)
-kd_looms_phylo <- kd_looms_phylo[ceiling(length(kd_looms_phylo) * burnin):length(kd_looms_phylo)]
-kd_looms_phylo <- map(1:length(kd_looms_phylo), ~ kd_looms_phylo[[.x]] |>
-  keep.tip(kd_looms_pruned_tips) |>
-  fortify() |>
-  mutate(label = str_replace_all(label, "_", " ")) |>
-  left_join(kd_looms, by = c("label" = "group")) |>
-  mutate(label = lng_label) |>
-  as.phylo()) |>
-  as.multiPhylo()
+
 
 pca_looms <- ReadAsPhyDat(here("data/nexus/kd-looms_pruned.nex")) |>
   as_tibble() |>
