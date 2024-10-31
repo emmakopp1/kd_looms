@@ -169,12 +169,3 @@ ggsave(here("output/figures/kd_cophylo_pruned_plot.pdf"),
 )
 plot_crop(here("output/figures/kd_cophylo_pruned_plot.pdf"))
 
-
-# Hypothèse A : data/kd-pruned/kd-merged_pruned_bcov_strict_bd_ns/kd-merged_bcov_strict_bd_ns.out
-# 
-# Hypothèse B :
-#   
-# data/kd-pruned/kd-looms_pruned_bcov_strict_bd_ns/kd-looms_pruned_bcov_strict_bd_ns.out
-# data/kd-pruned/kd-lgs_pruned_bcov_strict_bd_ns/kd-lgs_pruned_bcov_strict_bd_ns.out
-
-
