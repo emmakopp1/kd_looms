@@ -381,7 +381,7 @@ plot_crop(here("output/figures/kd-looms_bcov8421_strict_uni_cs_tree.pdf"))
 
 
 ## Looms, binary covarion, strict, 4 variable rates
-kd_looms_bcov1111_strict_ht_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_strict_ht_consensus.tree"))
+kd_looms_bcov1111_strict_ht_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_strict_ht_consensus.tree"))
 if (!is.rooted(kd_looms_bcov1111_strict_ht_cs_tree)) {
   kd_looms_bcov1111_strict_ht_cs_tree$root.edge.length <- 0
 }
