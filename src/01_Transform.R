@@ -1,8 +1,10 @@
 library(here)
 library(phangorn)
 library(phytools)
+library(TreeTools)
 library(tracerer)
 library(HDInterval)
+library(ggtree)
 library(tidyverse)
 
 dir.create(here("output/trees"))
@@ -35,8 +37,8 @@ write.tree(
 
 # Languages binary covarion relaxed heterogeneous rate
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/kd-lgs_bcov_relaxed_ht.trees.zip"),
-      junkpaths = TRUE,
-      exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/")
+  junkpaths = TRUE,
+  exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/")
 )
 
 kd_lgs_bcov_relaxed_ht <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/kd-lgs_bcov_relaxed_ht.trees"))
@@ -107,7 +109,7 @@ if (!is.rooted(kd_looms_bcov1111_strict_uni_cs)) {
 }
 write.tree(
   kd_looms_bcov1111_strict_uni_cs,
-  here("output/trees/kd_looms_bcov1111_strict_uni_consensus.tree")
+  here("output/trees/kd-looms_bcov1111_strict_uni_consensus.tree")
 )
 
 ## Looms, binary covarion, all levels, no weighting, strict heterogeneous rate
@@ -297,8 +299,8 @@ kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   count(concept_id)
 
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/kd-lgs_bcov_relaxed_ht.log.zip"),
-      junkpaths = TRUE,
-      exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/")
+  junkpaths = TRUE,
+  exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/")
 )
 kd_lgs_mu_byconcept <- parse_beast_tracelog_file(
   here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/kd-lgs_bcov_relaxed_ht.log")
@@ -373,6 +375,7 @@ write_csv(kd_looms_mu_summary, here("output/data/kd-looms_mu_summary.csv"))
 
 # Model comparison --------------------------------------------------------
 
+## Extract the marginal likelihood values
 out_files <- list.files(
   c(here("data/kd-lgs/model_choice"), here("data/kd-looms/model_choice")),
   "\\.out",
@@ -382,15 +385,46 @@ out_files <- list.files(
 
 out_files |>
   map_df(~
-           read_lines(.x) |>
-           str_subset("Marginal likelihood") |>
-           tail(n = 1) |>
-           enframe(name = NULL) |>
-           mutate(data = str_extract(.x, "(?<=choice/kd-)(lgs|looms)")) |>
-           mutate(substitution = ifelse(str_detect(.x, "bcov"), "binary covarion", "CTMC")) |>
-           mutate(clock = str_extract(.x, "relaxed|strict")) |>
-           mutate(rate = ifelse(str_detect(.x, "ht"), "heterogeneous", "uniform")) |>
-           mutate(ML = str_extract(value, "(?<=hood: )-[0-9.]+") |> as.numeric()) |>
-           mutate(sd = str_extract(value, "(?<=SD=\\()[0-9.]+") |> as.numeric()) |>
-           select(-value)) |> 
+    read_lines(.x) |>
+      str_subset("Marginal likelihood") |>
+      tail(n = 1) |>
+      enframe(name = NULL) |>
+      mutate(data = str_extract(.x, "(?<=choice/kd-)(lgs|looms)")) |>
+      mutate(substitution = ifelse(str_detect(.x, "bcov"), "binary covarion", "CTMC")) |>
+      mutate(clock = str_extract(.x, "relaxed|strict")) |>
+      mutate(rate = ifelse(str_detect(.x, "ht"), "heterogeneous", "uniform")) |>
+      mutate(ML = str_extract(value, "(?<=hood: )-[0-9.]+") |> as.numeric()) |>
+      mutate(sd = str_extract(value, "(?<=SD=\\()[0-9.]+") |> as.numeric()) |>
+      select(-value)) |>
   write_csv(here("output/data/models_summary.csv"))
+
+## Prune the trees and unify the tip labels to later compute K
+
+kd_looms <- read_csv(here("data/kd-looms/kd-looms_datapoints.csv")) |>
+  mutate(lng_label = paste0(str_replace_na(lng_group_code, ""), lng)) |>
+  select(group, lng_label)
+kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
+  as_tibble() |>
+  colnames()
+kd_looms_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-looms_pruned.nex")) |>
+  as_tibble() |>
+  colnames()
+
+kd_lgs_phylo <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/kd-lgs_bcov_relaxed_ht.trees"))
+kd_lgs_phylo <- kd_lgs_phylo[ceiling(length(kd_lgs_phylo) * burnin):length(kd_lgs_phylo)]
+kd_lgs_phylo <- keep.tip(kd_lgs_phylo, kd_lgs_pruned_tips)
+write.tree(kd_lgs_phylo, here("output/trees/kd-lgs_prunedk.trees"))
+
+kd_looms_phylo <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov1111_strict_ht/kd-looms_bcov1111_strict_ht.trees")
+)
+kd_looms_phylo <- kd_looms_phylo[ceiling(length(kd_looms_phylo) * burnin):length(kd_looms_phylo)]
+kd_looms_phylo <- map(1:length(kd_looms_phylo), ~ kd_looms_phylo[[.x]] |>
+  keep.tip(kd_looms_pruned_tips) |>
+  fortify() |>
+  mutate(label = str_replace_all(label, "_", " ")) |>
+  left_join(kd_looms, by = c("label" = "group")) |>
+  mutate(label = lng_label) |>
+  as.phylo()) |>
+  as.multiPhylo()
+write.tree(kd_looms_phylo, here("output/trees/kd-looms_prunedk.trees"))
