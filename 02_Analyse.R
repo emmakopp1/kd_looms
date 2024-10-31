@@ -46,6 +46,8 @@ kd_looms_on_lgs_k |>
   write_csv(here("output/data/kd-looms_on_lgs_k.csv"))
 
 kd_lgs_on_looms_k |>
-  summarise(across(everything(), mean))
-kd_looms_on_lgs_k |>
-  summarise(across(everything(), mean))
+  mutate(data = "lgs on looms", .before = everything()) |>
+  bind_rows(mutate(kd_looms_on_lgs_k, data = "looms on lgs", .before = everything())) |>
+  group_by(data) |>
+  summarise(across(everything(), mean)) |>
+  write_csv("output/data/kd-k_summary.csv")
