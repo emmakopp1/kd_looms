@@ -127,7 +127,7 @@ if (!is.rooted(kd_looms_bcov1111_strict_ht_cs)) {
 }
 write.tree(
   kd_looms_bcov1111_strict_ht_cs,
-  here("output/trees/kd-looms_bcov_strict_ht_consensus.tree")
+  here("output/trees/kd-looms_bcov1111_strict_ht_consensus.tree")
 )
 
 ## Looms, binary covarion, all levels, no weighting, relaxed uniform rate
