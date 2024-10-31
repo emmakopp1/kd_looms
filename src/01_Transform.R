@@ -376,11 +376,16 @@ write_csv(kd_looms_mu_summary, here("output/data/kd-looms_mu_summary.csv"))
 # Model comparison --------------------------------------------------------
 
 ## Extract the marginal likelihood values
-out_files <- list.files(
-  c(here("data/kd-lgs/model_choice"), here("data/kd-looms/model_choice")),
-  "\\.out",
-  recursive = TRUE,
-  full.names = TRUE
+out_files <- c(
+  list.files(
+    c(here("data/kd-lgs/model_choice"), here("data/kd-looms/model_choice")),
+    "\\.out",
+    recursive = TRUE,
+    full.names = TRUE
+  ),
+  here("data/kd-pruned/kd-merged_pruned_bcov_strict_bd_ns/kd-merged_bcov_strict_bd_ns.out"),
+  here("data/kd-pruned/kd-looms_pruned_bcov_strict_bd_ns/kd-looms_pruned_bcov_strict_bd_ns.out"),
+  here("data/kd-pruned/kd-lgs_pruned_bcov_strict_bd_ns/kd-lgs_pruned_bcov_strict_bd_ns.out")
 )
 
 out_files |>
@@ -389,7 +394,8 @@ out_files |>
       str_subset("Marginal likelihood") |>
       tail(n = 1) |>
       enframe(name = NULL) |>
-      mutate(data = str_extract(.x, "(?<=choice/kd-)(lgs|looms)")) |>
+      mutate(type = ifelse(str_detect(.x, "pruned"), "pruned", "full")) |>
+      mutate(data = str_extract(.x, "(?<=(choice|pruned)/kd-)(lgs|looms|merged)")) |>
       mutate(substitution = ifelse(str_detect(.x, "bcov"), "binary covarion", "CTMC")) |>
       mutate(clock = str_extract(.x, "relaxed|strict")) |>
       mutate(rate = ifelse(str_detect(.x, "ht"), "heterogeneous", "uniform")) |>
