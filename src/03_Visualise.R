@@ -1015,8 +1015,8 @@ plot_crop(here("output/figures/kd-looms_Tsw_map.pdf"))
 models_summary <- read_csv(here("output/data/models_summary.csv"))
 
 models_summary |>
-  filter(data == "looms") |>
-  select(-data) |>
+  filter(data == "looms" & type == "full") |>
+  select(-data, -type) |>
   arrange(-ML) |>
   mutate(ML = round(ML)) |>
   mutate(` ` = ifelse(ML == max(ML), "\\ding{43}", ""), .before = everything()) |>
@@ -1027,8 +1027,8 @@ models_summary |>
   write_lines(here("output/tables/kd-looms_models_summary.tex"))
 
 models_summary |>
-  filter(data == "lgs") |>
-  select(-data) |>
+  filter(data == "lgs" & type == "full") |>
+  select(-data, -type) |>
   arrange(-ML) |>
   mutate(ML = round(ML)) |>
   mutate(` ` = ifelse(ML == max(ML), "\\ding{43}", ""), .before = everything()) |>
