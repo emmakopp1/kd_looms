@@ -267,7 +267,7 @@ kd_lgs_bcov_relaxed_ht_ages <- kd_lgs_bcov_relaxed_ht |>
     )
   )) |>
   pivot_longer(everything(), names_to = "group", values_to = "age")
-write_csv(kd_lgs_bcov_relaxed_ht_ages, here("output/data/kd_lgs_bcov_relaxed_ht_ages.csv"))
+write_csv(kd_lgs_bcov_relaxed_ht_ages, here("output/data/kd-lgs_bcov_relaxed_ht_ages.csv"))
 
 kd_lgs_bcov_relaxed_ht_ages_summary <- kd_lgs_bcov_relaxed_ht_ages |>
   group_by(group) |>
@@ -287,7 +287,7 @@ kd_lgs_bcov_relaxed_ht_ages_summary <- kd_lgs_bcov_relaxed_ht_ages |>
   relocate(n, .after = group) |>
   arrange(-n) |>
   rename(n_lgs = n)
-write_csv(kd_lgs_bcov_relaxed_ht_ages_summary, here("output/data/kd_lgs_bcov_relaxed_ht_ages_summary.csv"))
+write_csv(kd_lgs_bcov_relaxed_ht_ages_summary, here("output/data/kd-lgs_bcov_relaxed_ht_ages_summary.csv"))
 
 kd_lgs_bcov_relaxed_uni_ages <- kd_lgs_bcov_relaxed_uni |>
   seq_along() |>
@@ -306,7 +306,7 @@ kd_lgs_bcov_relaxed_uni_ages <- kd_lgs_bcov_relaxed_uni |>
     )
   )) |>
   pivot_longer(everything(), names_to = "group", values_to = "age")
-write_csv(kd_lgs_bcov_relaxed_uni_ages, here("output/data/kd_lgs_bcov_relaxed_uni_ages.csv"))
+write_csv(kd_lgs_bcov_relaxed_uni_ages, here("output/data/kd-lgs_bcov_relaxed_uni_ages.csv"))
 
 kd_lgs_bcov_relaxed_uni_ages_summary <- kd_lgs_bcov_relaxed_uni_ages |>
   group_by(group) |>
@@ -326,7 +326,33 @@ kd_lgs_bcov_relaxed_uni_ages_summary <- kd_lgs_bcov_relaxed_uni_ages |>
   relocate(n, .after = group) |>
   arrange(-n) |>
   rename(n_lgs = n)
-write_csv(kd_lgs_bcov_relaxed_uni_ages_summary, here("output/data/kd_lgs_bcov_relaxed_uni_ages_summary.csv"))
+write_csv(kd_lgs_bcov_relaxed_uni_ages_summary, here("output/data/kd-lgs_bcov_relaxed_uni_ages_summary.csv"))
+
+
+# Get clade probabilities -------------------------------------------------
+
+kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
+  str_subset("^(Ks|Tc|Tn|Tsw)")
+tai_yay <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
+  str_subset("^(Tc|Tn|Tsw)")
+
+kd_lgs_phylo <- list("bcov_relaxed_ht" = kd_lgs_bcov_relaxed_ht, "bcov_strict_uni" = kd_lgs_bcov_strict_uni, "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni)
+
+kd_lgs_clades_p <- map_df(1:length(kd_lgs_phylo), function(i) {
+  map_df(1:length(kd_lgs_phylo[[i]]), ~ tibble(
+    model = names(kd_lgs_phylo[i]),
+    kam_tai = is.monophyletic(kd_lgs_phylo[[i]][[.x]], kam_tai),
+    tai_yai = is.monophyletic(kd_lgs_phylo[[i]][[.x]], tai_yay)
+  )) |>
+    group_by(model) |>
+    summarise(across(everything(), mean))
+}) |>
+  mutate(model = str_replace(model, "bcov", "binary covarion")) |>
+  mutate(model = str_replace(model, "ht", "heterogeneous")) |>
+  mutate(model = str_replace(model, "uni", "uniform")) |>
+  separate_wider_delim(model, "_", names = c("substitution", "clock", "rate"))
+
+write_csv(kd_lgs_clades_p, here("output/data/kd-lgs_clades_p.csv"))
 
 
 # Mutation rates ---------------------------------------------------------------

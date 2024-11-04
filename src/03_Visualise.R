@@ -534,7 +534,7 @@ plot_crop(here("output/figures/kd-looms_bcov_patterns_strict_uni_cs_tree.pdf"))
 
 # Age density distribution for languages ---------------------------------------
 
-kd_lgs_ages <- read_csv(here("output/data/kd_lgs_bcov_relaxed_ht_ages.csv"))
+kd_lgs_ages <- read_csv(here("output/data/kd-lgs_bcov_relaxed_ht_ages.csv"))
 
 kd_lgs_ages_plot <- kd_lgs_ages |>
   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
@@ -575,7 +575,7 @@ ggsave(here("output/figures/kd-lgs_ages_plot.pdf"),
 )
 plot_crop(here("output/figures/kd-lgs_ages_plot.pdf"))
 
-kd_lgs_ages_summary <- read_csv(here("output/data/kd_lgs_bcov_relaxed_ht_ages_summary.csv"))
+kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_bcov_relaxed_ht_ages_summary.csv"))
 
 kd_lgs_ages_summary |>
   mutate(across(where(is.numeric), ~ round(.x, 2))) |>
