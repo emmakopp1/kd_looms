@@ -96,7 +96,7 @@ write_binary_nexus(
 ## Looms, weighted characters
 weights <- c(8, 4, 2, 1)
 
-kd_looms_matrix_weighted <- kd_looms_matrix |>
+kd_looms_weighted <- kd_looms_matrix |>
   mutate(across(everything(), as.character)) |>
   pivot_longer(
     cols = -Taxon,
@@ -104,12 +104,15 @@ kd_looms_matrix_weighted <- kd_looms_matrix |>
     values_to = "value"
   ) |>
   left_join(kd_looms_characters) |>
+  arrange(level) |>
   group_by(level) |>
   group_map(~ uncount(.x, weights[.y$level]), .keep = TRUE) |>
   bind_rows() |>
   group_by(Taxon, code, level) |>
   mutate(set = row_number(), code = paste0(code, "_", set)) |>
-  ungroup() |>
+  ungroup()
+
+kd_looms_matrix_weighted <- kd_looms_weighted |>
   select(-c(level, set, type)) |>
   pivot_wider(
     names_from = code,
@@ -126,9 +129,34 @@ write_binary_nexus(
   here("data/nexus/kd-looms_8421.nex")
 )
 
-## Looms, 4 variable rates
-# dir.create(here("data/kd-looms/kd-looms_ctmc4/"))
+## Looms, weighted characters, partitioned by level
 
+kd_looms_weighted_partition<- kd_looms_weighted |> 
+  distinct(code, level) |> 
+  rowid_to_column() |>
+  group_by(level) |>
+  summarise(charset = paste0(
+    "    charset level",
+    unique(level),
+    " = ",
+    min(rowid),
+    "-",
+    max(rowid), ";"
+  )) |>
+  pull(charset) |>
+  paste0(collapse = "\n")
+
+write_binary_nexus(
+  kd_looms_matrix8421,
+  here("data/nexus/kd-looms_8421_ht.nex")
+)
+
+write_file(str_glue("begin assumptions;\n{kd_looms_weighted_partition}\nend;\n"),
+           here("data/nexus/kd-looms_8421_ht.nex"),
+           append = TRUE
+)
+
+## Looms, unweighted characters, partitioned by level
 kd_looms_matrix_bylevel <- kd_looms_matrix |>
   mutate(across(everything(), as.character)) |>
   pivot_longer(
