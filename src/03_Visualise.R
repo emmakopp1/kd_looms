@@ -2,6 +2,7 @@ library(here)
 library(utils)
 library(phangorn)
 library(phytools)
+library(TreeTools)
 library(sf)
 library(rnaturalearth)
 library(ggspatial)
@@ -782,6 +783,178 @@ ggsave(here("output/figures/kd_cophylo_plot.pdf"),
   device = cairo_pdf, width = wd, height = ht * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
+
+kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
+  as_tibble() |>
+  colnames() |>
+  str_remove("^[A-Z][a-z]+(?=[A-Z])")
+
+kd_looms_cs <- kd_looms_bcov1111_strict_ht_cs_tree |>
+  fortify() |>
+  mutate(label = str_replace_all(label, "_", " ")) |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  mutate(label = ifelse(is.na(lng), label, lng)) |>
+  # mutate(label = ifelse(label %in% kd_loom_pb, label, lng)) |>
+  as.phylo()
+if (!is.rooted(kd_looms_cs)) {
+  kd_looms_cs$root.edge.length <- 0
+}
+
+kd_cophylo_pruned <- cophylo(keep.tip(kd_lgs_cs, kd_lgs_pruned_tips),
+                             keep.tip(kd_looms_cs, kd_lgs_pruned_tips),
+                             methods = c("pre", "post"), rotate.multi = FALSE
+)
+
+kd_lng_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[1]],
+                             ladderize = FALSE,
+                             size = lwd,
+                             branch.length = "none"
+)
+
+kd_loom_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[2]],
+                              ladderize = FALSE,
+                              size = lwd,
+                              branch.length = "none"
+)
+kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27)
+
+kd_lng_tree_pruned_data <- kd_lng_tree_pruned$data |>
+  mutate(lng = label) |>
+  left_join(select(kd_lgs, -label)) |>
+  left_join(select(kd_looms, group, lng))
+
+kd_loom_tree_pruned_data <- kd_loom_tree_pruned$data |>
+  mutate(lng = label) |>
+  left_join(kd_looms) |>
+  arrange(loom_type)
+
+kd_loom_tree_pruned_data$x <- ((kd_loom_tree_pruned_data$x - min(kd_loom_tree_pruned_data$x)) / (max(kd_loom_tree_pruned_data$x) - min(kd_loom_tree_pruned_data$x))) * (max(kd_lng_tree_pruned_data$x) - min(kd_lng_tree_pruned_data$x)) + min(kd_lng_tree_pruned_data$x)
+kd_loom_tree_pruned_data$x <- max(kd_loom_tree_pruned_data$x) - kd_loom_tree_pruned_data$x + max(kd_lng_tree_pruned_data$x)
+kd_loom_tree_pruned_data$x <- kd_loom_tree_pruned_data$x + (max(c(kd_lng_tree_pruned_data$x, kd_loom_tree_pruned_data$x)) - min(c(kd_lng_tree_pruned_data$x, kd_loom_tree_pruned_data$x))) / 100 * 70
+
+kd_lng_loom_tree_pruned <- kd_lng_tree_pruned +
+  geom_tree(data = kd_loom_tree_pruned_data, linewidth = lwd)
+kd_lng_loom_tree_pruned_data <- bind_rows(kd_lng_tree_pruned_data, kd_loom_tree_pruned_data) |>
+  filter(!is.na(group) & !is.na(lng)) |>
+  mutate(pb = group %in% kd_loom_pb)
+
+x1 <- max(filter(kd_lng_tree_pruned_data, isTip == TRUE)$x) + diff(range(
+  filter(kd_loom_tree_pruned_data, isTip == TRUE)$x,
+  filter(kd_lng_tree_pruned_data, isTip == TRUE)$x
+)) / 3.2
+x2 <- min(filter(kd_loom_tree_pruned_data, isTip == TRUE)$x) - diff(range(
+  filter(kd_loom_tree_pruned_data, isTip == TRUE)$x,
+  filter(kd_lng_tree_pruned_data, isTip == TRUE)$x
+)) / 3.2
+
+kd_lgs_looms_pruned_links <- kd_lng_loom_tree_pruned_data |>
+  add_count(lng) |>
+  filter(n == 2) |>
+  group_by(lng) |>
+  mutate(x = ifelse(x == min(x), x1 + .25, x2 - .25))
+
+imgs <- paste0(
+  "<img src='", here("data/images/"),
+  levels(kd_loom_tree_pruned_data$loom_type_code),
+  ".png' height=30>"
+)
+
+kd_cophylo_pruned_plot <- kd_lng_loom_tree_pruned +
+  geom_rootedge(1, linewidth = lwd) +
+  geom_segment(
+    data = filter(kd_loom_tree_pruned_data, parent == node),
+    aes(x = x, xend = x + 1, y = y, yend = y),
+    linewidth = lwd
+  ) +
+  geom_line(
+    data = kd_lgs_looms_pruned_links,
+    aes(x, y, group = lng, linetype = pb, color = pb)
+  ) +
+  scale_color_manual(guide = "none", values = c("grey50", "grey70")) +
+  new_scale_colour() +
+  geom_tippoint(
+    data = kd_lng_tree_pruned_data,
+    aes(color = color, fill = color),
+    show.legend = TRUE
+  ) +
+  geom_tiplab(
+    data = kd_lng_tree_pruned_data,
+    aes(label = label, color = color, fill = color, x = x1),
+    size = (base_font_size - 2) / .pt,
+    family = base_font2, hjust = 1,
+    show.legend = FALSE
+  ) +
+  scale_color_identity(
+    guide = guide_legend(
+      order = 1,
+      position = "left",
+      override.aes = list(size = 4),
+      theme = theme(
+        legend.key.spacing.y = unit(.35, "line"),
+        legend.margin = margin(0, -1.25, 0, 0, unit = "line")
+      )
+    ),
+    name = "Language group",
+    drop = FALSE,
+    breaks = levels(kd_lng_tree_pruned_data$color),
+    labels = levels(kd_lng_tree_pruned_data$lng_group)
+  ) +
+  xtheme +
+  scale_fill_identity(guide = "none") +
+  new_scale_colour() +
+  new_scale_fill() +
+  geom_tippoint(data = kd_loom_tree_pruned_data,
+                aes(color = color, fill = color)) +
+  geom_tiplab(
+    data = filter(kd_loom_tree_pruned_data, isTip == TRUE),
+    aes(
+      label = str_replace_all(lng, "(.+?)(?=[A-Z])", "\\1 ") |> str_wrap(10),
+      color = color,
+      x = x2
+    ),
+    hjust = 0,
+    size = (base_font_size - 2) / .pt,
+    family = base_font2,
+    lineheight = 1,
+    show.legend = FALSE
+  ) +
+  scale_color_identity(
+    guide = guide_legend(
+      order = 2,
+      position = "right",
+      label.vjust = 0,
+      override.aes = list(size = 4),
+      theme = theme(
+        legend.key.spacing.y = unit(1, "line"),
+        legend.text = element_markdown(),
+        legend.margin = margin(0, 0, 0, -.5, unit = "line")
+      )
+    ),
+    name = "Loom type",
+    labels = paste0(
+      str_wrap(levels(droplevels(kd_loom_tree_pruned_data$loom_type)), 20),
+      "\n",
+      imgs
+    ) |>
+      str_replace_all("\\n", "<br/>")
+  ) +
+  scale_fill_identity(
+    guide = "none"
+  ) +
+  scale_linetype(guide = "none") +
+  theme(
+    aspect.ratio = 1.5,
+    legend.box = "horizontal",
+    legend.text = element_text(size = base_font_size - 2, family = base_font2),
+    legend.key = element_rect(),
+    legend.box.margin = margin(0, 0, 0, 0, unit = "line"),
+    legend.background = element_blank()
+  )
+ggsave(here("output/figures/kd_cophylo_pruned_plot.pdf"),
+       kd_cophylo_pruned_plot,
+       device = cairo_pdf, width = wd, height = ht * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd_cophylo_pruned_plot.pdf"))
 
 
 # Mutation rates ---------------------------------------------------------------
