@@ -336,7 +336,11 @@ kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
 tai_yay <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
   str_subset("^(Tc|Tn|Tsw)")
 
-kd_lgs_phylo <- list("bcov_relaxed_ht" = kd_lgs_bcov_relaxed_ht, "bcov_strict_uni" = kd_lgs_bcov_strict_uni, "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni)
+kd_lgs_phylo <- list(
+  "bcov_relaxed_ht" = kd_lgs_bcov_relaxed_ht,
+  "bcov_strict_uni" = kd_lgs_bcov_strict_uni,
+  "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni
+)
 
 kd_lgs_clades_p <- map_df(1:length(kd_lgs_phylo), function(i) {
   map_df(1:length(kd_lgs_phylo[[i]]), ~ tibble(
