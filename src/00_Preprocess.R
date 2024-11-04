@@ -130,7 +130,6 @@ write_binary_nexus(
 )
 
 ## Looms, weighted characters, partitioned by level
-
 kd_looms_weighted_partition<- kd_looms_weighted |> 
   distinct(code, level) |> 
   rowid_to_column() |>
@@ -201,7 +200,6 @@ write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
 )
 
 ## Looms, basic features only
-
 kd_looms_matrix_basic <- select(
   kd_looms_matrix,
   Taxon,
@@ -216,8 +214,58 @@ write_binary_nexus(
   here("data/nexus/kd-looms_basic.nex")
 )
 
-## Looms, pattern features only
+## Looms, basic features only, partitioned by level
+kd_looms_matrix_basic_ht <- kd_looms_matrix |>
+  mutate(across(everything(), as.character)) |>
+  pivot_longer(
+    cols = -Taxon,
+    names_to = "code",
+    values_to = "value"
+  ) |>
+  left_join(kd_looms_characters) |>
+  filter(type == "Loom basics") |> 
+  arrange(level) |>
+  select(-c(level, type)) |>
+  pivot_wider(
+    names_from = code,
+    values_from = value
+  ) |>
+  column_to_rownames("Taxon") |>
+  as.matrix() |>
+  MatrixToPhyDat()
 
+write_binary_nexus(
+  kd_looms_matrix_basic_ht,
+  here("data/nexus/kd-looms_basic_ht.nex")
+)
+
+kd_looms_basic_partition <- select(
+  kd_looms_matrix,
+  filter(kd_looms_characters, type == "Loom basics")$code
+) |>
+  colnames() |> 
+  enframe(name = NULL, value = "code") |> 
+  left_join(kd_looms_characters) |>
+  arrange(level) |>
+  rowid_to_column() |>
+  group_by(level) |>
+  summarise(charset = paste0(
+    "    charset level",
+    unique(level),
+    " = ",
+    min(rowid),
+    "-",
+    max(rowid), ";"
+  )) |>
+  pull(charset) |>
+  paste0(collapse = "\n")
+
+write_file(str_glue("begin assumptions;\n{kd_looms_basic_partition}\nend;\n"),
+           here("data/nexus/kd-looms_basic_ht.nex"),
+           append = TRUE
+)
+
+## Looms, pattern features only
 kd_looms_matrix_patterns <- select(
   kd_looms_matrix,
   Taxon,
