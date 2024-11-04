@@ -250,7 +250,7 @@ getMRCA_age <- function(tree, tips) {
   root_age - node.depth.edgelength(tree)[mrca]
 }
 
-kd_lgs_ages <- kd_lgs_bcov_relaxed_ht |>
+kd_lgs_bcov_relaxed_ht_ages <- kd_lgs_bcov_relaxed_ht |>
   seq_along() |>
   map_df(~ tibble(
     `Kra-Dai` = getMRCA_age(
@@ -267,10 +267,9 @@ kd_lgs_ages <- kd_lgs_bcov_relaxed_ht |>
     )
   )) |>
   pivot_longer(everything(), names_to = "group", values_to = "age")
+write_csv(kd_lgs_bcov_relaxed_ht_ages, here("output/data/kd_lgs_bcov_relaxed_ht_ages.csv"))
 
-write_csv(kd_lgs_ages, here("output/data/kd-lgs_ages.csv"))
-
-kd_lgs_ages_summary <- kd_lgs_ages |>
+kd_lgs_bcov_relaxed_ht_ages_summary <- kd_lgs_bcov_relaxed_ht_ages |>
   group_by(group) |>
   summarise(
     mean = mean(age),
@@ -288,7 +287,46 @@ kd_lgs_ages_summary <- kd_lgs_ages |>
   relocate(n, .after = group) |>
   arrange(-n) |>
   rename(n_lgs = n)
-write_csv(kd_lgs_ages_summary, here("output/data/kd-lgs_ages_summary.csv"))
+write_csv(kd_lgs_bcov_relaxed_ht_ages_summary, here("output/data/kd_lgs_bcov_relaxed_ht_ages_summary.csv"))
+
+kd_lgs_bcov_relaxed_uni_ages <- kd_lgs_bcov_relaxed_uni |>
+  seq_along() |>
+  map_df(~ tibble(
+    `Kra-Dai` = getMRCA_age(
+      kd_lgs_bcov_relaxed_uni[[.x]],
+      kd_lgs_bcov_relaxed_uni[[1]]$tip.label
+    ),
+    `Kam-Tai` = getMRCA_age(
+      kd_lgs_bcov_relaxed_uni[[.x]],
+      str_subset(kd_lgs_bcov_relaxed_uni[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")
+    ),
+    `Tai-Yay` = getMRCA_age(
+      kd_lgs_bcov_relaxed_uni[[.x]],
+      str_subset(kd_lgs_bcov_relaxed_uni[[1]]$tip.label, "^(Tc|Tn|Tsw)")
+    )
+  )) |>
+  pivot_longer(everything(), names_to = "group", values_to = "age")
+write_csv(kd_lgs_bcov_relaxed_uni_ages, here("output/data/kd_lgs_bcov_relaxed_uni_ages.csv"))
+
+kd_lgs_bcov_relaxed_uni_ages_summary <- kd_lgs_bcov_relaxed_uni_ages |>
+  group_by(group) |>
+  summarise(
+    mean = mean(age),
+    median = median(age),
+    sd = sd(age),
+    HPDI_lower = hdi(age)["lower"],
+    HPDI_upper = hdi(age)["upper"]
+  ) |>
+  left_join(tribble(
+    ~group, ~n,
+    "Kam-Tai", length(str_subset(kd_lgs_bcov_relaxed_uni[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
+    "Tai-Yay", length(str_subset(kd_lgs_bcov_relaxed_uni[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
+    "Kra-Dai", length(kd_lgs_bcov_relaxed_uni[[1]]$tip.label)
+  )) |>
+  relocate(n, .after = group) |>
+  arrange(-n) |>
+  rename(n_lgs = n)
+write_csv(kd_lgs_bcov_relaxed_uni_ages_summary, here("output/data/kd_lgs_bcov_relaxed_uni_ages_summary.csv"))
 
 
 # Mutation rates ---------------------------------------------------------------
