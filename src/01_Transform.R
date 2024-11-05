@@ -260,12 +260,16 @@ kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
   str_subset("^(Ks|Tc|Tn|Tsw)")
 tai_yay <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
   str_subset("^(Tc|Tn|Tsw)")
+be_kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
+  str_subset("^(Be|Ks|Tc|Tn|Tsw)")
 
 kd_lgs_clade_ages <- map_df(1:length(kd_lgs_phylo), function(i) {
   map_df(1:length(kd_lgs_phylo[[i]]), ~ tibble(
     model = names(kd_lgs_phylo[i]),
     KraDai_age = getMRCA_age(kd_lgs_phylo[[i]][[.x]], kd_lgs_phylo[[i]][[.x]]$tip.label),
     KraDai_mono = TRUE,
+    BeKamTai_age = getMRCA_age(kd_lgs_phylo[[i]][[.x]], be_kam_tai),
+    BeKamTai_mono = is.monophyletic(kd_lgs_phylo[[i]][[.x]], be_kam_tai),
     KamTai_age = getMRCA_age(kd_lgs_phylo[[i]][[.x]], kam_tai),
     KamTai_mono = is.monophyletic(kd_lgs_phylo[[i]][[.x]], kam_tai),
     TaiYay_age = getMRCA_age(kd_lgs_phylo[[i]][[.x]], tai_yay),
@@ -276,7 +280,7 @@ kd_lgs_clade_ages <- map_df(1:length(kd_lgs_phylo), function(i) {
   pivot_longer(-c(rowid, model)) |>
   separate_wider_delim(name, "_", names = c("group", "type")) |>
   pivot_wider(names_from = type, values_from = value) |> 
-  mutate(group = str_replace(group, "(?<=[a-z])(?=[A-Z])", "-")) |>
+  mutate(group = str_replace_all(group, "(?<=[a-z])(?=[A-Z])", "-")) |>
   mutate(mono = as.logical(mono))
 write_csv(kd_lgs_clade_ages, here("output/data/kd-lgs_clade_ages.csv"))
 
@@ -293,6 +297,7 @@ kd_lgs_clade_ages_summary <- kd_lgs_clade_ages |>
   ungroup() |>
   mutate(n_lgs = case_when(
     group == "Kra-Dai" ~ length(kd_lgs_phylo[[1]][[1]]$tip.label),
+    group == "Be-Kam-Tai" ~ length(be_kam_tai),
     group == "Kam-Tai" ~ length(kam_tai),
     group == "Tai-Yay" ~ length(tai_yay)
   ), .after = group) |> 
