@@ -350,8 +350,8 @@ kd_looms_bcov1111_relaxed_uni_cs_tree_plot <- kd_looms_bcov1111_relaxed_uni_cs_t
 kd_looms_bcov1111_relaxed_uni_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_uni_cs_tree_plot, 32, 43)
 kd_looms_bcov1111_relaxed_uni_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_uni_cs_tree_plot, 50, 48)
 ggsave(here("output/figures/kd-looms_bcov1111_relaxed_uni_cs_tree.pdf"),
-       kd_looms_bcov1111_relaxed_uni_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_bcov1111_relaxed_uni_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov1111_relaxed_uni_cs_tree.pdf"))
 
@@ -383,8 +383,8 @@ kd_looms_bcov1111_strict_ht_cs_tree_plot <- kd_looms_bcov1111_strict_ht_cs_tree 
   theme(plot.margin = margin(0, 3.95, 0, 0, unit = "line"))
 kd_looms_bcov1111_strict_ht_cs_tree_plot <- flip(kd_looms_bcov1111_strict_ht_cs_tree_plot, 32, 43)
 ggsave(here("output/figures/kd-looms_bcov1111_strict_ht_cs_tree.pdf"),
-       kd_looms_bcov1111_strict_ht_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_bcov1111_strict_ht_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov1111_strict_ht_cs_tree.pdf"))
 
@@ -410,8 +410,8 @@ kd_looms_ctmc1111_stric_uni_cs_tree_plot <- kd_looms_ctmc1111_stric_uni_cs_tree 
   ) +
   theme(plot.margin = margin(0, 3.75, 0, 0, unit = "line"))
 ggsave(here("output/figures/kd-looms_ctmc1111_strict_uni_cs_tree.pdf"),
-       kd_looms_ctmc1111_stric_uni_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_ctmc1111_stric_uni_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_ctmc1111_strict_uni_cs_tree.pdf"))
 
@@ -443,8 +443,8 @@ kd_looms_ctmc1111_strict_ht_cs_tree_plot <- kd_looms_ctmc1111_strict_ht_cs_tree 
   theme(plot.margin = margin(0, 3.95, 0, 0, unit = "line"))
 kd_looms_ctmc1111_strict_ht_cs_tree_plot <- flip(kd_looms_ctmc1111_strict_ht_cs_tree_plot, 32, 43)
 ggsave(here("output/figures/kd-looms_ctmc1111_strict_ht_cs_tree.pdf"),
-       kd_looms_ctmc1111_strict_ht_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_ctmc1111_strict_ht_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_ctmc1111_strict_ht_cs_tree.pdf"))
 
@@ -538,7 +538,8 @@ plot_crop(here("output/figures/kd-looms_bcov_patterns_strict_uni_cs_tree.pdf"))
 kd_lgs_ages <- read_csv(here("output/data/kd-lgs_clade_ages.csv"))
 
 kd_lgs_ages_plot <- kd_lgs_ages |>
-  filter(model == "bcov_relaxed_uni") |> 
+  filter(model == "bcov_relaxed_uni") |>
+  filter(group != "Be-Kam-Tai") |>
   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
   ggplot(aes(x = age * 1000, y = group)) +
   stat_density_ridges(
@@ -580,13 +581,14 @@ plot_crop(here("output/figures/kd-lgs_ages_plot.pdf"))
 kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_clade_ages_summary.csv"))
 
 kd_lgs_ages_summary |>
-  filter(model == "bcov_relaxed_uni") |> 
-  select(-model) |> 
+  filter(model == "bcov_relaxed_uni") |>
+  filter(group != "Be-Kam-Tai") |>
+  select(-model) |>
   mutate(across(where(is.numeric), ~ round(.x, 2))) |>
   unite(hdi, HPDI_lower, HPDI_upper, sep = ", ") |>
   mutate(hdi = paste0("[", hdi, "]")) |>
   rename(languages = n_lgs, `95% HPDI` = hdi) |>
-  mutate(monophyletic = paste0(monophyletic * 100, "%")) |> 
+  mutate(monophyletic = paste0(monophyletic * 100, "%")) |>
   kbl(
     digits = 2,
     format = "latex", booktabs = TRUE,
@@ -644,9 +646,19 @@ kd_lng_tree <- ggtree(kd_cophylo$trees[[1]],
   size = lwd,
   branch.length = "none"
 ) |>
-  flip(167, 162) |>
-  flip(167, 154) |>
-  flip(162, 154)
+  rotate(105) |>
+  rotate(176) |>
+  rotate(143) |>
+  rotate(119) |>
+  rotate(132) |>
+  rotate(155) |>
+  flip(105, 113)
+# |>
+#   flip(167, 154) |>
+#   flip(105, 125)
+# flip(167, 162) |>
+# flip(167, 154) |>
+# flip(162, 154)
 #   flip(105, 125)
 # flip(113, 128) |>
 # flip(103,172)
@@ -654,7 +666,9 @@ kd_loom_tree <- ggtree(kd_cophylo$trees[[2]],
   ladderize = FALSE,
   size = lwd,
   branch.length = "none"
-)
+) |>
+  rotate(43) |>
+  rotate(47)
 
 kd_lng_tree_data <- kd_lng_tree$data |>
   mutate(lng = label) |>
@@ -805,23 +819,33 @@ if (!is.rooted(kd_looms_cs)) {
   kd_looms_cs$root.edge.length <- 0
 }
 
-kd_cophylo_pruned <- cophylo(keep.tip(kd_lgs_cs, kd_lgs_pruned_tips),
-                             keep.tip(kd_looms_cs, kd_lgs_pruned_tips),
-                             methods = c("pre", "post"), rotate.multi = FALSE
+kd_cophylo_pruned <- cophylo(
+  keep.tip(kd_lgs_cs, kd_lgs_pruned_tips),
+  keep.tip(kd_looms_cs, kd_lgs_pruned_tips),
+  methods = c("pre", "post"), rotate.multi = FALSE
 )
 
 kd_lng_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[1]],
-                             ladderize = FALSE,
-                             size = lwd,
-                             branch.length = "none"
+  ladderize = FALSE,
+  size = lwd,
+  branch.length = "none"
 )
-
+kd_lng_tree_pruned <- flip(kd_lng_tree_pruned, 22, 24) |> 
+  rotate(23) |> 
+  rotate(30)
 kd_loom_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[2]],
-                              ladderize = FALSE,
-                              size = lwd,
-                              branch.length = "none"
+  ladderize = FALSE,
+  size = lwd,
+  branch.length = "none"
 )
-kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27)
+kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27) |> 
+  rotate(24) |> 
+  # flip(1, 22) |> 
+  # rotate(25) |> 
+  rotate(27) |> 
+  rotate(28) |> 
+  rotate(21) |> 
+  rotate(22)
 
 kd_lng_tree_pruned_data <- kd_lng_tree_pruned$data |>
   mutate(lng = label) |>
@@ -846,11 +870,11 @@ kd_lng_loom_tree_pruned_data <- bind_rows(kd_lng_tree_pruned_data, kd_loom_tree_
 x1 <- max(filter(kd_lng_tree_pruned_data, isTip == TRUE)$x) + diff(range(
   filter(kd_loom_tree_pruned_data, isTip == TRUE)$x,
   filter(kd_lng_tree_pruned_data, isTip == TRUE)$x
-)) / 3.2
+)) / 2.8
 x2 <- min(filter(kd_loom_tree_pruned_data, isTip == TRUE)$x) - diff(range(
   filter(kd_loom_tree_pruned_data, isTip == TRUE)$x,
   filter(kd_lng_tree_pruned_data, isTip == TRUE)$x
-)) / 3.2
+)) / 2.8
 
 kd_lgs_looms_pruned_links <- kd_lng_loom_tree_pruned_data |>
   add_count(lng) |>
@@ -884,8 +908,12 @@ kd_cophylo_pruned_plot <- kd_lng_loom_tree_pruned +
   ) +
   geom_tiplab(
     data = kd_lng_tree_pruned_data,
-    aes(label = label, color = color, fill = color, x = x1),
-    size = (base_font_size - 2) / .pt,
+    aes(
+      label = str_replace_all(lng, "(?<=[a-z])(?=[A-Z])", " ") |> str_wrap(10),
+      color = color,
+      x = x1
+    ),
+    size = (base_font_size - 1) / .pt,
     family = base_font2, hjust = 1,
     show.legend = FALSE
   ) +
@@ -908,17 +936,19 @@ kd_cophylo_pruned_plot <- kd_lng_loom_tree_pruned +
   scale_fill_identity(guide = "none") +
   new_scale_colour() +
   new_scale_fill() +
-  geom_tippoint(data = kd_loom_tree_pruned_data,
-                aes(color = color, fill = color)) +
+  geom_tippoint(
+    data = kd_loom_tree_pruned_data,
+    aes(color = color, fill = color)
+  ) +
   geom_tiplab(
     data = filter(kd_loom_tree_pruned_data, isTip == TRUE),
     aes(
-      label = str_replace_all(lng, "(.+?)(?=[A-Z])", "\\1 ") |> str_wrap(10),
+      label = str_replace_all(lng, "(?<=[a-z])(?=[A-Z])", " ") |> str_wrap(10),
       color = color,
       x = x2
     ),
     hjust = 0,
-    size = (base_font_size - 2) / .pt,
+    size = (base_font_size - 1) / .pt,
     family = base_font2,
     lineheight = 1,
     show.legend = FALSE
@@ -956,8 +986,8 @@ kd_cophylo_pruned_plot <- kd_lng_loom_tree_pruned +
     legend.background = element_blank()
   )
 ggsave(here("output/figures/kd_cophylo_pruned_plot.pdf"),
-       kd_cophylo_pruned_plot,
-       device = cairo_pdf, width = wd, height = ht * 2, units = "cm"
+  kd_cophylo_pruned_plot,
+  device = cairo_pdf, width = wd, height = ht * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd_cophylo_pruned_plot.pdf"))
 
