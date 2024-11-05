@@ -535,9 +535,10 @@ plot_crop(here("output/figures/kd-looms_bcov_patterns_strict_uni_cs_tree.pdf"))
 
 # Age density distribution for languages ---------------------------------------
 
-kd_lgs_ages <- read_csv(here("output/data/kd-lgs_bcov_relaxed_ht_ages.csv"))
+kd_lgs_ages <- read_csv(here("output/data/kd-lgs_clade_ages.csv"))
 
 kd_lgs_ages_plot <- kd_lgs_ages |>
+  filter(model == "bcov_relaxed_uni") |> 
   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
   ggplot(aes(x = age * 1000, y = group)) +
   stat_density_ridges(
@@ -576,16 +577,20 @@ ggsave(here("output/figures/kd-lgs_ages_plot.pdf"),
 )
 plot_crop(here("output/figures/kd-lgs_ages_plot.pdf"))
 
-kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_bcov_relaxed_ht_ages_summary.csv"))
+kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_clade_ages_summary.csv"))
 
 kd_lgs_ages_summary |>
+  filter(model == "bcov_relaxed_uni") |> 
+  select(-model) |> 
   mutate(across(where(is.numeric), ~ round(.x, 2))) |>
   unite(hdi, HPDI_lower, HPDI_upper, sep = ", ") |>
   mutate(hdi = paste0("[", hdi, "]")) |>
   rename(languages = n_lgs, `95% HPDI` = hdi) |>
+  mutate(monophyletic = paste0(monophyletic * 100, "%")) |> 
   kbl(
     digits = 2,
-    format = "latex", booktabs = TRUE
+    format = "latex", booktabs = TRUE,
+    align = c("l", rep("r", 6))
   ) |>
   write_lines(here("output/tables/kd-lgs_ages_summary.tex"))
 
