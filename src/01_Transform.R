@@ -276,6 +276,7 @@ kd_lgs_clade_ages <- map_df(1:length(kd_lgs_phylo), function(i) {
   pivot_longer(-c(rowid, model)) |>
   separate_wider_delim(name, "_", names = c("group", "type")) |>
   pivot_wider(names_from = type, values_from = value) |> 
+  mutate(group = str_replace(group, "(?<=[a-z])(?=[A-Z])", "-")) |>
   mutate(mono = as.logical(mono))
 write_csv(kd_lgs_clade_ages, here("output/data/kd-lgs_clade_ages.csv"))
 
@@ -290,7 +291,6 @@ kd_lgs_clade_ages_summary <- kd_lgs_clade_ages |>
     monophyletic = mean(mono)
   ) |>
   ungroup() |>
-  mutate(group = str_replace(group, "(?<=[a-z])(?=[A-Z])", "-")) |>
   mutate(n_lgs = case_when(
     group == "Kra-Dai" ~ length(kd_lgs_phylo[[1]][[1]]$tip.label),
     group == "Kam-Tai" ~ length(kam_tai),
