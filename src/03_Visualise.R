@@ -597,7 +597,7 @@ kd_lgs_ages_summary |>
 
 # Cophylogeny ------------------------------------------------------------------
 
-kd_lgs_cs <- kd_lgs_bcov_relaxed_ht_cs_tree |>
+kd_lgs_cs <- kd_lgs_bcov_relaxed_uni_cs_tree |>
   fortify() |>
   left_join(kd_lgs) |>
   mutate(label = lng) |>
