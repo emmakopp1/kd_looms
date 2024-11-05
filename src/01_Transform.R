@@ -241,7 +241,8 @@ write.tree(
   here("output/trees/kd-looms_ctmc1111_strict_ht_consensus.tree")
 )
 
-# Ages in language trees -------------------------------------------------------
+
+# Age and probabilities of clades -----------------------------------------
 
 getMRCA_age <- function(tree, tips) {
   tips <- if (is.character(tips)) which(tree$tip.label %in% tips) else tips
@@ -250,113 +251,53 @@ getMRCA_age <- function(tree, tips) {
   root_age - node.depth.edgelength(tree)[mrca]
 }
 
-kd_lgs_bcov_relaxed_ht_ages <- kd_lgs_bcov_relaxed_ht |>
-  seq_along() |>
-  map_df(~ tibble(
-    `Kra-Dai` = getMRCA_age(
-      kd_lgs_bcov_relaxed_ht[[.x]],
-      kd_lgs_bcov_relaxed_ht[[1]]$tip.label
-    ),
-    `Kam-Tai` = getMRCA_age(
-      kd_lgs_bcov_relaxed_ht[[.x]],
-      str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")
-    ),
-    `Tai-Yay` = getMRCA_age(
-      kd_lgs_bcov_relaxed_ht[[.x]],
-      str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Tc|Tn|Tsw)")
-    )
-  )) |>
-  pivot_longer(everything(), names_to = "group", values_to = "age")
-write_csv(kd_lgs_bcov_relaxed_ht_ages, here("output/data/kd-lgs_bcov_relaxed_ht_ages.csv"))
-
-kd_lgs_bcov_relaxed_ht_ages_summary <- kd_lgs_bcov_relaxed_ht_ages |>
-  group_by(group) |>
-  summarise(
-    mean = mean(age),
-    median = median(age),
-    sd = sd(age),
-    HPDI_lower = hdi(age)["lower"],
-    HPDI_upper = hdi(age)["upper"]
-  ) |>
-  left_join(tribble(
-    ~group, ~n,
-    "Kam-Tai", length(str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
-    "Tai-Yay", length(str_subset(kd_lgs_bcov_relaxed_ht[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
-    "Kra-Dai", length(kd_lgs_bcov_relaxed_ht[[1]]$tip.label)
-  )) |>
-  relocate(n, .after = group) |>
-  arrange(-n) |>
-  rename(n_lgs = n)
-write_csv(kd_lgs_bcov_relaxed_ht_ages_summary, here("output/data/kd-lgs_bcov_relaxed_ht_ages_summary.csv"))
-
-kd_lgs_bcov_relaxed_uni_ages <- kd_lgs_bcov_relaxed_uni |>
-  seq_along() |>
-  map_df(~ tibble(
-    `Kra-Dai` = getMRCA_age(
-      kd_lgs_bcov_relaxed_uni[[.x]],
-      kd_lgs_bcov_relaxed_uni[[1]]$tip.label
-    ),
-    `Kam-Tai` = getMRCA_age(
-      kd_lgs_bcov_relaxed_uni[[.x]],
-      str_subset(kd_lgs_bcov_relaxed_uni[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")
-    ),
-    `Tai-Yay` = getMRCA_age(
-      kd_lgs_bcov_relaxed_uni[[.x]],
-      str_subset(kd_lgs_bcov_relaxed_uni[[1]]$tip.label, "^(Tc|Tn|Tsw)")
-    )
-  )) |>
-  pivot_longer(everything(), names_to = "group", values_to = "age")
-write_csv(kd_lgs_bcov_relaxed_uni_ages, here("output/data/kd-lgs_bcov_relaxed_uni_ages.csv"))
-
-kd_lgs_bcov_relaxed_uni_ages_summary <- kd_lgs_bcov_relaxed_uni_ages |>
-  group_by(group) |>
-  summarise(
-    mean = mean(age),
-    median = median(age),
-    sd = sd(age),
-    HPDI_lower = hdi(age)["lower"],
-    HPDI_upper = hdi(age)["upper"]
-  ) |>
-  left_join(tribble(
-    ~group, ~n,
-    "Kam-Tai", length(str_subset(kd_lgs_bcov_relaxed_uni[[1]]$tip.label, "^(Ks|Tc|Tn|Tsw)")),
-    "Tai-Yay", length(str_subset(kd_lgs_bcov_relaxed_uni[[1]]$tip.label, "^(Tc|Tn|Tsw)")),
-    "Kra-Dai", length(kd_lgs_bcov_relaxed_uni[[1]]$tip.label)
-  )) |>
-  relocate(n, .after = group) |>
-  arrange(-n) |>
-  rename(n_lgs = n)
-write_csv(kd_lgs_bcov_relaxed_uni_ages_summary, here("output/data/kd-lgs_bcov_relaxed_uni_ages_summary.csv"))
-
-
-# Get clade probabilities -------------------------------------------------
-
-kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
-  str_subset("^(Ks|Tc|Tn|Tsw)")
-tai_yay <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
-  str_subset("^(Tc|Tn|Tsw)")
-
 kd_lgs_phylo <- list(
   "bcov_relaxed_ht" = kd_lgs_bcov_relaxed_ht,
   "bcov_strict_uni" = kd_lgs_bcov_strict_uni,
   "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni
 )
+kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
+  str_subset("^(Ks|Tc|Tn|Tsw)")
+tai_yay <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
+  str_subset("^(Tc|Tn|Tsw)")
 
-kd_lgs_clades_p <- map_df(1:length(kd_lgs_phylo), function(i) {
+kd_lgs_clade_ages <- map_df(1:length(kd_lgs_phylo), function(i) {
   map_df(1:length(kd_lgs_phylo[[i]]), ~ tibble(
     model = names(kd_lgs_phylo[i]),
-    kam_tai = is.monophyletic(kd_lgs_phylo[[i]][[.x]], kam_tai),
-    tai_yai = is.monophyletic(kd_lgs_phylo[[i]][[.x]], tai_yay)
-  )) |>
-    group_by(model) |>
-    summarise(across(everything(), mean))
+    KraDai_age = getMRCA_age(kd_lgs_phylo[[i]][[.x]], kd_lgs_phylo[[i]][[.x]]$tip.label),
+    KraDai_mono = TRUE,
+    KamTai_age = getMRCA_age(kd_lgs_phylo[[i]][[.x]], kam_tai),
+    KamTai_mono = is.monophyletic(kd_lgs_phylo[[i]][[.x]], kam_tai),
+    TaiYay_age = getMRCA_age(kd_lgs_phylo[[i]][[.x]], tai_yay),
+    TaiYay_mono = is.monophyletic(kd_lgs_phylo[[i]][[.x]], tai_yay)
+  )) |> 
+    rowid_to_column()
 }) |>
-  mutate(model = str_replace(model, "bcov", "binary covarion")) |>
-  mutate(model = str_replace(model, "ht", "heterogeneous")) |>
-  mutate(model = str_replace(model, "uni", "uniform")) |>
-  separate_wider_delim(model, "_", names = c("substitution", "clock", "rate"))
+  pivot_longer(-c(rowid, model)) |>
+  separate_wider_delim(name, "_", names = c("group", "type")) |>
+  pivot_wider(names_from = type, values_from = value) |> 
+  mutate(mono = as.logical(mono))
+write_csv(kd_lgs_clade_ages, here("output/data/kd-lgs_clade_ages.csv"))
 
-write_csv(kd_lgs_clades_p, here("output/data/kd-lgs_clades_p.csv"))
+kd_lgs_clade_ages_summary <- kd_lgs_clade_ages |>
+  group_by(model, group) |>
+  summarise(
+    mean = mean(age),
+    median = median(age),
+    sd = sd(age),
+    HPDI_lower = hdi(age)["lower"],
+    HPDI_upper = hdi(age)["upper"],
+    monophyletic = mean(mono)
+  ) |>
+  ungroup() |>
+  mutate(group = str_replace(group, "(?<=[a-z])(?=[A-Z])", "-")) |>
+  mutate(n_lgs = case_when(
+    group == "Kra-Dai" ~ length(kd_lgs_phylo[[1]][[1]]$tip.label),
+    group == "Kam-Tai" ~ length(kam_tai),
+    group == "Tai-Yay" ~ length(tai_yay)
+  ), .after = group) |> 
+  arrange(model, -n_lgs)
+write_csv(kd_lgs_clade_ages_summary, here("output/data/kd-lgs_clade_ages_summary.csv"))
 
 
 # Mutation rates ---------------------------------------------------------------
