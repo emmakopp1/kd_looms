@@ -49,12 +49,12 @@ prune_trees <- function(trees) {
 
 # ------------- Trees -----------------------
 # Languages
-phylo_lg = readNexus(here("data/kd-lgs/kd-lgs_bcov_relaxed/kd-lgs_bcov_relaxed.trees"))
+phylo_lg = readNexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_uni/kd-lgs_bcov_relaxed_uni.trees"))
 phylo_lg = remove_burnin(phylo_lg,0.9)
 
 
 # Looms
-phylo_looms = readNexus(here("data/kd-looms/kd-looms_bcov1111_strict/kd-looms_bcov1111_strict.trees"))
+phylo_looms = readNexus(here("data/kd-looms/kd-looms_bcov1111_strict_ht/kd-looms_bcov1111_strict_ht.trees"))
 phylo_looms = remove_burnin(phylo_looms, 0.9)
 
 
@@ -77,9 +77,9 @@ for (i in 2:length(phylo_looms)){
 }
 
 # Test of both trees elaged
-#par(mfrow=c(1,2))
-#plot(phylo_lg2[[10]])
-#plot(phylo_looms2[[7]])
+par(mfrow=c(1,2))
+plot(phylo_lg2[[10]])
+plot(phylo_looms2[[7]])
 
 
 # Nexus -----------------------------------------------------------------------

@@ -254,7 +254,7 @@ TswYuanyang=0
                     <parameter id="rhoFBD.t:tree" spec="parameter.RealParameter" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
                 </distribution>
                 <prior id="bcov_alpha_prior.s:kd-lgs" name="distribution" x="@bcov_alpha.s:kd-lgs">
-                    <Uniform id="Uniform.1" name="distr" upper="Infinity"/>
+                    <Uniform id="Uniform.1" name="distr"  lower="1.0E-4" upper="1.0"/>
                 </prior>
                 <prior id="bcov_s_prior.s:kd-lgs" name="distribution" x="@bcov_s.s:kd-lgs">
                     <Gamma id="Gamma.0" name="distr">
@@ -263,10 +263,10 @@ TswYuanyang=0
                     </Gamma>
                 </prior>
                 <prior id="diversificationRatePriorFBD.t:tree" name="distribution" x="@diversificationRateFBD.t:tree">
-                    <Uniform id="Uniform" name="distr" upper="Infinity"/>
+                    <Uniform id="Uniform" name="distr"  lower="1.0E-4" upper="100.0"/>
                 </prior>
                 <prior id="originPriorFBD.t:tree" name="distribution" x="@originFBD.t:tree">
-                    <Uniform id="Uniform1" name="distr" upper="Infinity"/>
+                    <Uniform id="Uniform1" name="distr" lower="1.0E-4" upper="200.0"/>
                 </prior>
                 <prior id="samplingProportionPriorFBD.t:tree" name="distribution" x="@samplingProportionFBD.t:tree">
                     <Uniform id="Uniform2" name="distr"/>

@@ -167,6 +167,25 @@ write.tree(
   here("output/trees/kd-looms_bcov8421_strict_uni_consensus.tree")
 )
 
+
+## Looms, binary covarion, weighted characters, strict heterogenous rate
+kd_looms_bcov8421_strict_ht <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov8421_strict_ht/kd-looms_bcov8421_strict_ht.trees")
+)
+kd_looms_bcov8421_strict_ht <- kd_looms_bcov8421_strict_ht[ceiling(length(kd_looms_bcov8421_strict_ht) * burnin):length(kd_looms_bcov8421_strict_ht)]
+kd_looms_bcov8421_strict_ht_cs <- consensus(kd_looms_bcov8421_strict_ht, p = .5, rooted = TRUE)
+kd_looms_bcov8421_strict_ht_cs <- consensus.edges(kd_looms_bcov8421_strict_ht,
+                                                   consensus.tree = kd_looms_bcov8421_strict_ht_cs,
+                                                   rooted = TRUE
+)
+if (!is.rooted(kd_looms_bcov8421_strict_ht_cs)) {
+  kd_looms_bcov8421_strict_ht_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_looms_bcov8421_strict_ht_cs,
+  here("output/trees/kd-looms_bcov8421_strict_ht_consensus.tree")
+)
+
 ## Looms, binary covarion, basic features only, strict uniform rate
 kd_looms_bcov_basic_strict_uni <- read.nexus(
   here("data/kd-looms/kd-looms_bcov_basic_strict_uni/kd-looms_bcov_basic_strict_uni.trees")
@@ -185,6 +204,24 @@ write.tree(
   here("output/trees/kd-looms_bcov_basic_strict_uni_consensus.tree")
 )
 
+## Looms, binary covarion, basic features only, strict heterogeneous rate
+kd_looms_bcov_basic_strict_ht <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov_basic_strict_ht/kd-looms_bcov_basic_strict_ht.trees")
+)
+kd_looms_bcov_basic_strict_ht <- kd_looms_bcov_basic_strict_ht[ceiling(length(kd_looms_bcov_basic_strict_ht) * burnin):length(kd_looms_bcov_basic_strict_ht)]
+kd_looms_bcov_basic_strict_ht_cs <- consensus(kd_looms_bcov_basic_strict_ht, p = .5, rooted = TRUE)
+kd_looms_bcov_basic_strict_ht_cs <- consensus.edges(kd_looms_bcov_basic_strict_ht,
+                                                     consensus.tree = kd_looms_bcov_basic_strict_ht_cs,
+                                                     rooted = TRUE
+)
+if (!is.rooted(kd_looms_bcov_basic_strict_ht_cs)) {
+  kd_looms_bcov_basic_strict_ht_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_looms_bcov_basic_strict_ht_cs,
+  here("output/trees/kd-looms_bcov_basic_strict_ht_consensus.tree")
+)
+
 ## Looms, binary covarion, pattern features only, strict uniform rate
 kd_looms_bcov_patterns_strict_uni <- read.nexus(
   here("data/kd-looms/kd-looms_bcov_patterns_strict_uni/kd-looms_bcov_patterns_strict_uni.trees")
@@ -201,6 +238,24 @@ if (!is.rooted(kd_looms_bcov_patterns_strict_uni_cs)) {
 write.tree(
   kd_looms_bcov_patterns_strict_uni_cs,
   here("output/trees/kd-looms_bcov_patterns_strict_uni_consensus.tree")
+)
+
+## Looms, binary covarion, pattern features only, strict heterogeneous rate
+kd_looms_bcov_patterns_strict_ht <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov_patterns_strict_ht/kd-looms_bcov_patterns_strict_ht.trees")
+)
+kd_looms_bcov_patterns_strict_ht <- kd_looms_bcov_patterns_strict_ht[ceiling(length(kd_looms_bcov_patterns_strict_ht) * burnin):length(kd_looms_bcov_patterns_strict_ht)]
+kd_looms_bcov_patterns_strict_ht_cs <- consensus(kd_looms_bcov_patterns_strict_ht, p = .5, rooted = TRUE)
+kd_looms_bcov_patterns_strict_ht_cs <- consensus.edges(kd_looms_bcov_patterns_strict_ht,
+                                                        consensus.tree = kd_looms_bcov_patterns_strict_ht_cs,
+                                                        rooted = TRUE
+)
+if (!is.rooted(kd_looms_bcov_patterns_strict_ht_cs)) {
+  kd_looms_bcov_patterns_strict_ht_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_looms_bcov_patterns_strict_ht_cs,
+  here("output/trees/kd-looms_bcov_patterns_strict_ht_consensus.tree")
 )
 
 ## Looms, ctmc strict uniform rate
