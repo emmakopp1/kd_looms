@@ -1,8 +1,8 @@
 library(here)
 library(phangorn)
-library(phytools)
 library(TreeTools)
 library(tidyverse)
+library(fs)
 
 dir.create(here("data/kd-lgs/"))
 dir.create(here("data/kd-looms/"))
