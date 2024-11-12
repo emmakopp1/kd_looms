@@ -298,6 +298,49 @@ ggsave(here("output/figures/kd-lgs_bcov_strict_uni_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-lgs_bcov_strict_uni_cs_tree.pdf"))
 
+## Languages, binary covarion strict heterogeneous
+kd_lgs_bcov_strict_ht_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_strict_ht_consensus.tree"))
+if (!is.rooted(kd_lgs_bcov_strict_ht_cs_tree)) {
+  kd_lgs_bcov_strict_ht_cs_tree$root.edge.length <- 0
+}
+kd_lgs_bcov_strict_ht_cs_tree$node.label <- round(
+  as.numeric(kd_lgs_bcov_strict_ht_cs_tree$node.label),
+  2
+) * 100
+kd_lgs_bcov_strict_ht_cs_tree$node.label[1] <- NA
+kd_lgs_bcov_strict_ht_cs_tree$tip.label <- str_replace_all(
+  kd_lgs_bcov_strict_ht_cs_tree$tip.label,
+  "_",
+  " "
+)
+
+kd_lgs_bcov_strict_ht_cs_tree_plot <- kd_lgs_bcov_strict_ht_cs_tree |>
+  fortify() |>
+  left_join(kd_lgs, by = join_by(label == label)) |>
+  cs_tree(base_font_size - 1) +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_lgs_bcov_strict_ht_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  scale_fill_identity(
+    guide = guide_legend(),
+    labels = levels(kd_lgs$lng_group)
+  ) +
+  guides(fill = guide_legend(
+    title = "Language group",
+    override.aes = aes(label = "     ")
+  )) +
+  theme(
+    aspect.ratio = 2.25,
+    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
+  )
+kd_lgs_bcov_strict_ht_cs_tree_plot <- flip(kd_lgs_bcov_strict_ht_cs_tree_plot, 127, 108)
+ggsave(here("output/figures/kd-lgs_bcov_strict_ht_cs_tree.pdf"),
+       kd_lgs_bcov_strict_ht_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
+)
+plot_crop(here("output/figures/kd-lgs_bcov_strict_ht_cs_tree.pdf"))
+
 # Looms
 
 ## Looms, binary covarion, level 1 characters only, strict uniform
@@ -501,6 +544,31 @@ ggsave(here("output/figures/kd-looms_bcov8421_strict_uni_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_bcov8421_strict_uni_cs_tree.pdf"))
 
+## Looms, binary covarion, weighted characters, strict heterogeneous
+kd_looms_bcov8421_strict_ht_cs_tree <- read.tree(here("output/trees/kd-looms_bcov8421_strict_ht_consensus.tree"))
+if (!is.rooted(kd_looms_bcov8421_strict_ht_cs_tree)) {
+  kd_looms_bcov8421_strict_ht_cs_tree$root.edge.length <- 0
+}
+kd_looms_bcov8421_strict_ht_cs_tree$node.label <- round(as.numeric(kd_looms_bcov8421_strict_ht_cs_tree$node.label), 2) * 100
+kd_looms_bcov8421_strict_ht_cs_tree$node.label[1] <- NA
+kd_looms_bcov8421_strict_ht_cs_tree$tip.label <- str_replace_all(kd_looms_bcov8421_strict_ht_cs_tree$tip.label, "_", " ")
+
+kd_looms_bcov8421_strict_ht_cs_tree_plot <- kd_looms_bcov8421_strict_ht_cs_tree |>
+  fortify() |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
+  cs_tree() +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_looms_bcov8421_strict_ht_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  theme(plot.margin = margin(0, 3.95, 0, 0, unit = "line"))
+ggsave(here("output/figures/kd-looms_bcov8421_strict_ht_cs_tree.pdf"),
+       kd_looms_bcov8421_strict_ht_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd-looms_bcov8421_strict_ht_cs_tree.pdf"))
+
 ## Looms, binary covarion, basic features only, strict uni
 kd_looms_bcov_basic_strict_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_basic_strict_uni_consensus.tree"))
 if (!is.rooted(kd_looms_bcov_basic_strict_uni_cs_tree)) {
@@ -526,6 +594,32 @@ ggsave(here("output/figures/kd-looms_bcov_basic_strict_uni_cs_tree.pdf"),
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov_basic_strict_uni_cs_tree.pdf"))
+
+## Looms, binary covarion, basic features only, strict heterogeneous
+kd_looms_bcov_basic_strict_ht_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_basic_strict_ht_consensus.tree"))
+if (!is.rooted(kd_looms_bcov_basic_strict_ht_cs_tree)) {
+  kd_looms_bcov_basic_strict_ht_cs_tree$root.edge.length <- 0
+}
+kd_looms_bcov_basic_strict_ht_cs_tree$node.label <- round(as.numeric(kd_looms_bcov_basic_strict_ht_cs_tree$node.label), 2) * 100
+kd_looms_bcov_basic_strict_ht_cs_tree$node.label[1] <- NA
+kd_looms_bcov_basic_strict_ht_cs_tree$tip.label <- str_replace_all(kd_looms_bcov_basic_strict_ht_cs_tree$tip.label, "_", " ")
+
+kd_looms_bcov_basic_strict_ht_cs_tree_plot <- kd_looms_bcov_basic_strict_ht_cs_tree |>
+  fortify() |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
+  cs_tree() +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_looms_bcov_basic_strict_ht_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  theme(plot.margin = margin(0, 3.85, 0, 0, unit = "line"))
+kd_looms_bcov_basic_strict_ht_cs_tree_plot <- flip(kd_looms_bcov_basic_strict_ht_cs_tree_plot, 32, 41)
+ggsave(here("output/figures/kd-looms_bcov_basic_strict_ht_cs_tree.pdf"),
+       kd_looms_bcov_basic_strict_ht_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd-looms_bcov_basic_strict_ht_cs_tree.pdf"))
 
 ## Looms, binary covarion, pattern features only, strict uniform
 kd_looms_bcov_patterns_strict_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_patterns_strict_uni_consensus.tree"))
@@ -559,6 +653,39 @@ ggsave(here("output/figures/kd-looms_bcov_patterns_strict_uni_cs_tree.pdf"),
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov_patterns_strict_uni_cs_tree.pdf"))
+
+## Looms, binary covarion, pattern features only, strict heterogeneous
+kd_looms_bcov_patterns_strict_ht_cs_tree <- read.tree(here("output/trees/kd-looms_bcov_patterns_strict_ht_consensus.tree"))
+if (!is.rooted(kd_looms_bcov_patterns_strict_ht_cs_tree)) {
+  kd_looms_bcov_patterns_strict_ht_cs_tree$root.edge.length <- 0
+}
+kd_looms_bcov_patterns_strict_ht_cs_tree$node.label <- round(as.numeric(kd_looms_bcov_patterns_strict_ht_cs_tree$node.label), 2) * 100
+kd_looms_bcov_patterns_strict_ht_cs_tree$node.label[1] <- NA
+kd_looms_bcov_patterns_strict_ht_cs_tree$tip.label <- str_replace_all(kd_looms_bcov_patterns_strict_ht_cs_tree$tip.label, "_", " ")
+
+kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- kd_looms_bcov_patterns_strict_ht_cs_tree |>
+  fortify() |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
+  cs_tree() +
+  geom_rootedge(
+    max(node.depth.edgelength(kd_looms_bcov_patterns_strict_ht_cs_tree)) * .025,
+    linewidth = lwd
+  ) +
+  theme(
+    plot.margin = margin(0, 3, 0, 0, unit = "line"),
+    legend.background = element_blank(),
+    legend.key.spacing.y = unit(-.15, "line"),
+    legend.position = c(0, 1),
+    legend.justification = c(0, 0.2)
+  )
+kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- rotate(kd_looms_bcov_patterns_strict_ht_cs_tree_plot, 30)
+kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- rotate(kd_looms_bcov_patterns_strict_ht_cs_tree_plot, 31)
+ggsave(here("output/figures/kd-looms_bcov_patterns_strict_ht_cs_tree.pdf"),
+       kd_looms_bcov_patterns_strict_ht_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd-looms_bcov_patterns_strict_ht_cs_tree.pdf"))
 
 
 # Age density distribution for languages ---------------------------------------

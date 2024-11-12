@@ -4,6 +4,7 @@ library(phytools)
 library(TreeTools)
 library(FactoMineR)
 library(tidyverse)
+library(missMDA)
 
 kd_looms <- read_csv(here("data/kd-looms/kd-looms_datapoints.csv")) |>
   mutate(lng_label = paste0(str_replace_na(lng_group_code, ""), lng)) |>
@@ -22,6 +23,10 @@ pca_looms <- ReadAsPhyDat(here("data/nexus/kd-looms_pruned.nex")) |>
   PCA(graph = FALSE, scale.unit = FALSE)
 pc1_looms <- pca_looms$ind$coord[, 1]
 
+
+#write_csv(pca_looms$eig |> as_tibble(),
+#          "/Users/kopp/Desktop/loomsPCA.csv")
+
 pca_lgs <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
   as_tibble() |>
   mutate(across(everything(), ~ as.numeric(.x))) |>
@@ -29,6 +34,10 @@ pca_lgs <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
   t() |>
   PCA(graph = FALSE, scale.unit = FALSE)
 pc1_lgs <- pca_lgs$ind$coord[, 1]
+
+#write_csv(pca_lgs$eig |> as_tibble(),
+#          "/Users/kopp/Desktop/lgsPCA.csv")
+
 
 set.seed(973829350)
 kd_lgs_on_looms_k <- map_df(1:length(kd_looms_phylo), function(i) {

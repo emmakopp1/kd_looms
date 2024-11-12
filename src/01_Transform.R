@@ -74,6 +74,23 @@ write.tree(
   here("output/trees/kd-lgs_bcov_strict_uni_consensus.tree")
 )
 
+# Language binary covarion strict heterogeneous rate
+kd_lgs_bcov_strict_ht <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict_htt/kd-lgs_bcov_strict_ht.trees"))
+kd_lgs_bcov_strict_ht <- kd_lgs_bcov_strict_ht[ceiling(length(kd_lgs_bcov_strict_ht) * burnin):length(kd_lgs_bcov_strict_ht)]
+kd_lgs_bcov_strict_ht_cs <- consensus(kd_lgs_bcov_strict_ht, p = .5, rooted = TRUE)
+kd_lgs_bcov_strict_ht_cs <- consensus.edges(
+  kd_lgs_bcov_strict_ht,
+  consensus.tree = kd_lgs_bcov_strict_ht_cs,
+  rooted = TRUE
+)
+if (!is.rooted(kd_lgs_bcov_strict_ht_cs)) {
+  kd_lgs_bcov_strict_ht_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_lgs_bcov_strict_ht_cs,
+  here("output/trees/kd-lgs_bcov_strict_ht_consensus.tree")
+)
+
 # Looms
 
 ## Looms, binary covarion, level 1 characters only, strict uniform rate
