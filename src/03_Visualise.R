@@ -355,7 +355,7 @@ ggsave(here("output/figures/kd-looms_bcov1111_relaxed_uni_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-looms_bcov1111_relaxed_uni_cs_tree.pdf"))
 
-## Looms, binary covarion, strict, 4 variable rates
+## Looms, binary covarion, all levels, no weighting, strict, 4 variable rates
 kd_looms_bcov1111_strict_ht_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_strict_ht_consensus.tree"))
 if (!is.rooted(kd_looms_bcov1111_strict_ht_cs_tree)) {
   kd_looms_bcov1111_strict_ht_cs_tree$root.edge.length <- 0
@@ -387,6 +387,34 @@ ggsave(here("output/figures/kd-looms_bcov1111_strict_ht_cs_tree.pdf"),
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov1111_strict_ht_cs_tree.pdf"))
+
+## Looms, binary covarion, all levels, no weighting, strict uniform
+kd_looms_bcov1111_strict_uni_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_strict_uni_consensus.tree"))
+if (!is.rooted(kd_looms_bcov1111_strict_uni_cs_tree)) {
+  kd_looms_bcov1111_strict_uni_cs_tree$root.edge.length <- 0
+}
+kd_looms_bcov1111_strict_uni_cs_tree$node.label <- round(as.numeric(kd_looms_bcov1111_strict_uni_cs_tree$node.label), 2) * 100
+kd_looms_bcov1111_strict_uni_cs_tree$node.label[1] <- NA
+kd_looms_bcov1111_strict_uni_cs_tree$tip.label <- str_replace_all(kd_looms_bcov1111_strict_uni_cs_tree$tip.label, "_", " ")
+
+kd_looms_bcov1111_strict_uni_cs_tree_plot <- kd_looms_bcov1111_strict_uni_cs_tree |>
+  fortify() |>
+  left_join(kd_looms, by = join_by(label == group)) |>
+  mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
+  cs_tree() +
+  geom_rootedge(
+    max(
+      node.depth.edgelength(kd_looms_bcov1111_strict_uni_cs_tree)
+    ) * .025,
+    linewidth = lwd
+  ) +
+  theme(plot.margin = margin(0, 3.75, 0, 0, unit = "line"))
+kd_looms_bcov1111_strict_uni_cs_tree_plot <- flip(kd_looms_bcov1111_strict_uni_cs_tree_plot, 32, 43)
+ggsave(here("output/figures/kd-looms_bcov1111_strict_uni_cs_tree.pdf"),
+       kd_looms_bcov1111_strict_uni_cs_tree_plot,
+       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd-looms_bcov1111_strict_uni_cs_tree.pdf"))
 
 ## Looms, CTMC, all levels, no weighting, strict uniform
 kd_looms_ctmc1111_stric_uni_cs_tree <- read.tree(here("output/trees/kd-looms_ctmc1111_strict_uni_consensus.tree"))
@@ -830,21 +858,21 @@ kd_lng_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[1]],
   size = lwd,
   branch.length = "none"
 )
-kd_lng_tree_pruned <- flip(kd_lng_tree_pruned, 22, 24) |> 
-  rotate(23) |> 
+kd_lng_tree_pruned <- flip(kd_lng_tree_pruned, 22, 24) |>
+  rotate(23) |>
   rotate(30)
 kd_loom_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[2]],
   ladderize = FALSE,
   size = lwd,
   branch.length = "none"
 )
-kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27) |> 
-  rotate(24) |> 
-  # flip(1, 22) |> 
-  # rotate(25) |> 
-  rotate(27) |> 
-  rotate(28) |> 
-  rotate(21) |> 
+kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27) |>
+  rotate(24) |>
+  # flip(1, 22) |>
+  # rotate(25) |>
+  rotate(27) |>
+  rotate(28) |>
+  rotate(21) |>
   rotate(22)
 
 kd_lng_tree_pruned_data <- kd_lng_tree_pruned$data |>
