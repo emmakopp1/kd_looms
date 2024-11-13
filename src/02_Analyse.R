@@ -4,7 +4,6 @@ library(phytools)
 library(TreeTools)
 library(FactoMineR)
 library(tidyverse)
-library(missMDA)
 
 kd_looms <- read_csv(here("data/kd-looms/kd-looms_datapoints.csv")) |>
   mutate(lng_label = paste0(str_replace_na(lng_group_code, ""), lng)) |>

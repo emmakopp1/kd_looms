@@ -25,6 +25,7 @@ library(ggnewscale)
 library(knitr)
 library(kableExtra)
 library(patchwork)
+library(tree)
 
 dir.create(here("output/figures"))
 dir.create(here("output/tables"))
@@ -750,7 +751,6 @@ kd_lgs_ages_summary |>
     align = c("l", rep("r", 6))
   ) |>
   write_lines(here("output/tables/kd-lgs_ages_summary.tex"))
-
 
 # Cophylogeny ------------------------------------------------------------------
 
