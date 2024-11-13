@@ -91,6 +91,7 @@ write.tree(
   here("output/trees/kd-lgs_bcov_strict_ht_consensus.tree")
 )
 
+
 # Looms
 
 ## Looms, binary covarion, level 1 characters only, strict uniform rate
@@ -191,8 +192,8 @@ kd_looms_bcov8421_strict_ht <- read.nexus(
 kd_looms_bcov8421_strict_ht <- kd_looms_bcov8421_strict_ht[ceiling(length(kd_looms_bcov8421_strict_ht) * burnin):length(kd_looms_bcov8421_strict_ht)]
 kd_looms_bcov8421_strict_ht_cs <- consensus(kd_looms_bcov8421_strict_ht, p = .5, rooted = TRUE)
 kd_looms_bcov8421_strict_ht_cs <- consensus.edges(kd_looms_bcov8421_strict_ht,
-                                                   consensus.tree = kd_looms_bcov8421_strict_ht_cs,
-                                                   rooted = TRUE
+  consensus.tree = kd_looms_bcov8421_strict_ht_cs,
+  rooted = TRUE
 )
 if (!is.rooted(kd_looms_bcov8421_strict_ht_cs)) {
   kd_looms_bcov8421_strict_ht_cs$root.edge.length <- 0
@@ -227,8 +228,8 @@ kd_looms_bcov_basic_strict_ht <- read.nexus(
 kd_looms_bcov_basic_strict_ht <- kd_looms_bcov_basic_strict_ht[ceiling(length(kd_looms_bcov_basic_strict_ht) * burnin):length(kd_looms_bcov_basic_strict_ht)]
 kd_looms_bcov_basic_strict_ht_cs <- consensus(kd_looms_bcov_basic_strict_ht, p = .5, rooted = TRUE)
 kd_looms_bcov_basic_strict_ht_cs <- consensus.edges(kd_looms_bcov_basic_strict_ht,
-                                                     consensus.tree = kd_looms_bcov_basic_strict_ht_cs,
-                                                     rooted = TRUE
+  consensus.tree = kd_looms_bcov_basic_strict_ht_cs,
+  rooted = TRUE
 )
 if (!is.rooted(kd_looms_bcov_basic_strict_ht_cs)) {
   kd_looms_bcov_basic_strict_ht_cs$root.edge.length <- 0
@@ -263,8 +264,8 @@ kd_looms_bcov_patterns_strict_ht <- read.nexus(
 kd_looms_bcov_patterns_strict_ht <- kd_looms_bcov_patterns_strict_ht[ceiling(length(kd_looms_bcov_patterns_strict_ht) * burnin):length(kd_looms_bcov_patterns_strict_ht)]
 kd_looms_bcov_patterns_strict_ht_cs <- consensus(kd_looms_bcov_patterns_strict_ht, p = .5, rooted = TRUE)
 kd_looms_bcov_patterns_strict_ht_cs <- consensus.edges(kd_looms_bcov_patterns_strict_ht,
-                                                        consensus.tree = kd_looms_bcov_patterns_strict_ht_cs,
-                                                        rooted = TRUE
+  consensus.tree = kd_looms_bcov_patterns_strict_ht_cs,
+  rooted = TRUE
 )
 if (!is.rooted(kd_looms_bcov_patterns_strict_ht_cs)) {
   kd_looms_bcov_patterns_strict_ht_cs$root.edge.length <- 0
@@ -346,12 +347,12 @@ kd_lgs_clade_ages <- map_df(1:length(kd_lgs_phylo), function(i) {
     KamTai_mono = is.monophyletic(kd_lgs_phylo[[i]][[.x]], kam_tai),
     TaiYay_age = getMRCA_age(kd_lgs_phylo[[i]][[.x]], tai_yay),
     TaiYay_mono = is.monophyletic(kd_lgs_phylo[[i]][[.x]], tai_yay)
-  )) |> 
+  )) |>
     rowid_to_column()
 }) |>
   pivot_longer(-c(rowid, model)) |>
   separate_wider_delim(name, "_", names = c("group", "type")) |>
-  pivot_wider(names_from = type, values_from = value) |> 
+  pivot_wider(names_from = type, values_from = value) |>
   mutate(group = str_replace_all(group, "(?<=[a-z])(?=[A-Z])", "-")) |>
   mutate(mono = as.logical(mono))
 write_csv(kd_lgs_clade_ages, here("output/data/kd-lgs_clade_ages.csv"))
@@ -372,7 +373,7 @@ kd_lgs_clade_ages_summary <- kd_lgs_clade_ages |>
     group == "Be-Kam-Tai" ~ length(be_kam_tai),
     group == "Kam-Tai" ~ length(kam_tai),
     group == "Tai-Yay" ~ length(tai_yay)
-  ), .after = group) |> 
+  ), .after = group) |>
   arrange(model, -n_lgs)
 write_csv(kd_lgs_clade_ages_summary, here("output/data/kd-lgs_clade_ages_summary.csv"))
 
@@ -488,6 +489,7 @@ out_files |>
       mutate(ML = str_extract(value, "(?<=hood: )-[0-9.]+") |> as.numeric()) |>
       mutate(sd = str_extract(value, "(?<=SD=\\()[0-9.]+") |> as.numeric()) |>
       select(-value)) |>
+  arrange(type, data, -ML) |> 
   write_csv(here("output/data/models_summary.csv"))
 
 ## Prune the trees and unify the tip labels to later compute K
