@@ -614,7 +614,7 @@ kd_looms_bcov_basic_strict_ht_cs_tree_plot <- kd_looms_bcov_basic_strict_ht_cs_t
     linewidth = lwd
   ) +
   theme(plot.margin = margin(0, 3.85, 0, 0, unit = "line"))
-kd_looms_bcov_basic_strict_ht_cs_tree_plot <- flip(kd_looms_bcov_basic_strict_ht_cs_tree_plot, 32, 41)
+kd_looms_bcov_basic_strict_ht_cs_tree_plot <- flip(kd_looms_bcov_basic_strict_ht_cs_tree_plot, 32, 40)
 ggsave(here("output/figures/kd-looms_bcov_basic_strict_ht_cs_tree.pdf"),
        kd_looms_bcov_basic_strict_ht_cs_tree_plot,
        device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
@@ -679,7 +679,7 @@ kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- kd_looms_bcov_patterns_strict_h
     legend.position = c(0, 1),
     legend.justification = c(0, 0.2)
   )
-kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- rotate(kd_looms_bcov_patterns_strict_ht_cs_tree_plot, 30)
+kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- flip(kd_looms_bcov_patterns_strict_ht_cs_tree_plot, 41, 42)
 kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- rotate(kd_looms_bcov_patterns_strict_ht_cs_tree_plot, 31)
 ggsave(here("output/figures/kd-looms_bcov_patterns_strict_ht_cs_tree.pdf"),
        kd_looms_bcov_patterns_strict_ht_cs_tree_plot,
