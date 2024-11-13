@@ -139,9 +139,9 @@ Gernhard 2008. The conditioned reconstructed process. Journal of Theoretical Bio
 ===============================================================================
 Counting 78 parameters
 replacing logger tracelog with NSLogger
-Writing file kd-merged_bcov_strict_bd.trees
+Writing file kd-merged_pruned_bcov_strict_bd_ns.trees
          Sample      posterior ESS(posterior)     likelihood          prior
-Writing file kd-merged_bcov_strict_bd.log
+Writing file kd-merged_pruned_bcov_strict_bd_ns.log
 Start likelihood 0: -6131.482957051699 
 Start likelihood 1: -5831.466467055186 
 Start likelihood 2: -5854.881382391136 
@@ -1069,12 +1069,12 @@ Max ESS: 37.55229199624675
 
 
 Processing 441 trees from file.
-Log file written to kd-merged_bcov_strict_bd.posterior.trees
+Log file written to kd-merged_pruned_bcov_strict_bd_ns.posterior.trees
 Done!
 
 Marginal likelihood: -3228.533620355683 sqrt(H/N)=(4.922651147170918)=?=SD=(5.02132354921682) Information: 72.69748295022946
 Max ESS: 37.32248520021286
 
 
-Log file written to kd-merged_bcov_strict_bd.posterior.log
+Log file written to kd-merged_pruned_bcov_strict_bd_ns.posterior.log
 Done!

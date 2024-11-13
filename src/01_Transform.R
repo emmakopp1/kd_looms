@@ -469,7 +469,7 @@ out_files <- c(
     recursive = TRUE,
     full.names = TRUE
   ),
-  here("data/kd-pruned/kd-merged_pruned_bcov_strict_bd_ns/kd-merged_bcov_strict_bd_ns.out"),
+  here("data/kd-pruned/kd-merged_pruned_bcov_strict_bd_ns/kd-merged_pruned_bcov_strict_bd_ns.out"),
   here("data/kd-pruned/kd-looms_pruned_bcov_strict_bd_ns/kd-looms_pruned_bcov_strict_bd_ns.out"),
   here("data/kd-pruned/kd-lgs_pruned_bcov_strict_bd_ns/kd-lgs_pruned_bcov_strict_bd_ns.out")
 )
