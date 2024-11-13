@@ -324,8 +324,9 @@ getMRCA_age <- function(tree, tips) {
 
 kd_lgs_phylo <- list(
   "bcov_relaxed_ht" = kd_lgs_bcov_relaxed_ht,
-  "bcov_strict_uni" = kd_lgs_bcov_strict_uni,
-  "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni
+  "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni,
+  "bcov_strict_ht" = kd_lgs_bcov_strict_ht,
+  "bcov_strict_uni" = kd_lgs_bcov_strict_uni
 )
 kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
   str_subset("^(Ks|Tc|Tn|Tsw)")
