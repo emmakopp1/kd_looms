@@ -334,7 +334,7 @@ kd_lgs_bcov_strict_ht_cs_tree_plot <- kd_lgs_bcov_strict_ht_cs_tree |>
     aspect.ratio = 2.25,
     plot.margin = margin(0, 3.5, 0, 0, unit = "line")
   )
-kd_lgs_bcov_strict_ht_cs_tree_plot <- flip(kd_lgs_bcov_strict_ht_cs_tree_plot, 127, 108)
+kd_lgs_bcov_strict_ht_cs_tree_plot <- flip(kd_lgs_bcov_strict_ht_cs_tree_plot, 130, 108)
 ggsave(here("output/figures/kd-lgs_bcov_strict_ht_cs_tree.pdf"),
        kd_lgs_bcov_strict_ht_cs_tree_plot,
        device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
