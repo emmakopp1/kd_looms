@@ -130,7 +130,7 @@ filter="-">
     <operator id="BirthRateScaler.t:tree" spec="ScaleOperator" parameter="@BDBirthRate.t:tree" weight="3.0"/>
     <operator id="DeathRateScaler.t:tree" spec="ScaleOperator" parameter="@BDDeathRate.t:tree" weight="3.0"/>
     <operator id="StrictClockRateScaler.c:clock" spec="ScaleOperator" parameter="@clockRate.c:clock" weight="3.0"/>
-    <logger id="tracelog" spec="Logger" fileName="kd-merged_bcov_strict_bd.log" logEvery="10000" model="@posterior" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="kd-merged_pruned_bcov_strict_bd.log" logEvery="10000" model="@posterior" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -152,7 +152,7 @@ filter="-">
         <log idref="likelihood"/>
         <log idref="prior"/>
     </logger>
-    <logger id="treelog.t:tree" spec="Logger" fileName="kd-merged_bcov_strict_bd.trees" logEvery="10000" mode="tree">
+    <logger id="treelog.t:tree" spec="Logger" fileName="kd-merged_pruned_bcov_strict_bd.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:tree" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:tree"/>
     </logger>
 </run>

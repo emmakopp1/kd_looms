@@ -134,7 +134,7 @@ filter="-">
         <up idref="clockRate.c:clock"/>
         <down idref="Tree.t:tree"/>
     </operator>
-    <logger id="tracelog" spec="Logger" fileName="kd-merged_bcov_strict_bd.log" logEvery="10000" model="@posterior" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="kd-merged_pruned_bcov_strict_bd_ns.log" logEvery="10000" model="@posterior" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -156,7 +156,7 @@ filter="-">
         <log idref="likelihood"/>
         <log idref="prior"/>
     </logger>
-    <logger id="treelog.t:tree" spec="Logger" fileName="kd-merged_bcov_strict_bd.trees" logEvery="10000" mode="tree">
+    <logger id="treelog.t:tree" spec="Logger" fileName="kd-merged_pruned_bcov_strict_bd_ns.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:tree" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:tree"/>
     </logger>
 </run>

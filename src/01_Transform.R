@@ -75,7 +75,7 @@ write.tree(
 )
 
 # Language binary covarion strict heterogeneous rate
-kd_lgs_bcov_strict_ht <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict_htt/kd-lgs_bcov_strict_ht.trees"))
+kd_lgs_bcov_strict_ht <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict_ht/kd-lgs_bcov_strict_ht.trees"))
 kd_lgs_bcov_strict_ht <- kd_lgs_bcov_strict_ht[ceiling(length(kd_lgs_bcov_strict_ht) * burnin):length(kd_lgs_bcov_strict_ht)]
 kd_lgs_bcov_strict_ht_cs <- consensus(kd_lgs_bcov_strict_ht, p = .5, rooted = TRUE)
 kd_lgs_bcov_strict_ht_cs <- consensus.edges(
@@ -183,7 +183,6 @@ write.tree(
   kd_looms_bcov8421_strict_uni_cs,
   here("output/trees/kd-looms_bcov8421_strict_uni_consensus.tree")
 )
-
 
 ## Looms, binary covarion, weighted characters, strict heterogenous rate
 kd_looms_bcov8421_strict_ht <- read.nexus(
@@ -325,8 +324,9 @@ getMRCA_age <- function(tree, tips) {
 
 kd_lgs_phylo <- list(
   "bcov_relaxed_ht" = kd_lgs_bcov_relaxed_ht,
-  "bcov_strict_uni" = kd_lgs_bcov_strict_uni,
-  "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni
+  "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni,
+  "bcov_strict_ht" = kd_lgs_bcov_strict_ht,
+  "bcov_strict_uni" = kd_lgs_bcov_strict_uni
 )
 kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
   str_subset("^(Ks|Tc|Tn|Tsw)")
@@ -469,7 +469,7 @@ out_files <- c(
     recursive = TRUE,
     full.names = TRUE
   ),
-  here("data/kd-pruned/kd-merged_pruned_bcov_strict_bd_ns/kd-merged_bcov_strict_bd_ns.out"),
+  here("data/kd-pruned/kd-merged_pruned_bcov_strict_bd_ns/kd-merged_pruned_bcov_strict_bd_ns.out"),
   here("data/kd-pruned/kd-looms_pruned_bcov_strict_bd_ns/kd-looms_pruned_bcov_strict_bd_ns.out"),
   here("data/kd-pruned/kd-lgs_pruned_bcov_strict_bd_ns/kd-lgs_pruned_bcov_strict_bd_ns.out")
 )
