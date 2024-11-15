@@ -20,6 +20,8 @@ write_binary_nexus <- function(x, file) {
 }
 
 # Languages
+
+## Default
 kd_lgs_lx <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   pivot_longer(-c(concept, concept_id, cogid), names_to = "Taxon") |>
   filter(!is.na(value)) |>
@@ -57,6 +59,48 @@ kd_lgs_matrix <- kd_lgs_lx |>
 write_binary_nexus(
   kd_lgs_matrix,
   here("data/nexus/kd-lgs.nex")
+)
+
+## Languages, four levels, by number of cognate sets
+kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
+  count(concept_id) |>
+  mutate(level = cut_number(n, 4) |> as.integer())
+
+kd_lgs_partition <- kd_lgs_lx |>
+  left_join(kd_lgs_concepts) |>
+  arrange(level, id, Taxon) |>
+  distinct(id, level) |>
+  rowid_to_column() |>
+  group_by(level) |>
+  summarise(charset = paste0(
+    "    charset level",
+    unique(level),
+    " = ",
+    min(rowid),
+    "-",
+    max(rowid), ";"
+  )) |>
+  pull(charset) |>
+  paste0(collapse = "\n")
+
+kd_lgs_matrix_bylevel <- kd_lgs_lx |>
+  left_join(kd_lgs_concepts) |>
+  arrange(level, id, Taxon) |>
+  select(Taxon, id, value) |>
+  pivot_wider(names_from = id, values_from = value) |>
+  arrange(Taxon) |>
+  column_to_rownames("Taxon") |>
+  as.matrix() |>
+  MatrixToPhyDat()
+
+write_binary_nexus(
+  kd_lgs_matrix_bylevel,
+  here("data/nexus/kd-lgs_ht.nex")
+)
+
+write_file(str_glue("begin assumptions;\n{kd_lgs_partition}\nend;\n"),
+  here("data/nexus/kd-lgs_ht.nex"),
+  append = TRUE
 )
 
 # Looms
