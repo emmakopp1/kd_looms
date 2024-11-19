@@ -91,28 +91,39 @@ write.tree(
   here("output/trees/kd-lgs_bcov_strict_ht_consensus.tree")
 )
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 # Language binary covarion strict heterogeneous with 4 rates
-kd_lgs_bcov_strict_ht <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict_ht_4rates/kd-lgs_bcov_strict_ht_4rates.trees"))
-kd_lgs_bcov_strict_ht <- kd_lgs_bcov_strict_ht[ceiling(length(kd_lgs_bcov_strict_ht) * burnin):length(kd_lgs_bcov_strict_ht)]
-kd_lgs_bcov_strict_ht_cs <- consensus(kd_lgs_bcov_strict_ht, p = .5, rooted = TRUE)
-kd_lgs_bcov_strict_ht_cs <- consensus.edges(
-  kd_lgs_bcov_strict_ht,
-  consensus.tree = kd_lgs_bcov_strict_ht_cs,
+kd_lgs_bcov_strict_ht4 <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict_ht_4rates/kd-lgs_bcov_strict_ht_4rates.trees"))
+kd_lgs_bcov_strict_ht4 <- kd_lgs_bcov_strict_ht4[ceiling(length(kd_lgs_bcov_strict_ht4) * burnin):length(kd_lgs_bcov_strict_ht4)]
+kd_lgs_bcov_strict_ht4_cs <- consensus(kd_lgs_bcov_strict_ht4, p = .5, rooted = TRUE)
+kd_lgs_bcov_strict_ht4_cs <- consensus.edges(
+  kd_lgs_bcov_strict_ht4,
+  consensus.tree = kd_lgs_bcov_strict_ht4_cs,
   rooted = TRUE
 )
-if (!is.rooted(kd_lgs_bcov_strict_ht_cs)) {
-  kd_lgs_bcov_strict_ht_cs$root.edge.length <- 0
+if (!is.rooted(kd_lgs_bcov_strict_ht4_cs)) {
+  kd_lgs_bcov_strict_ht4_cs$root.edge.length <- 0
 }
 write.tree(
-  kd_lgs_bcov_strict_ht_cs,
-  here("output/trees/kd-lgs_bcov_strict_ht_4rates_consensus.tree")
+  kd_lgs_bcov_strict_ht4_cs,
+  here("output/trees/kd-lgs_bcov_strict_ht4_consensus.tree")
 )
-=======
->>>>>>> refs/remotes/origin/main
->>>>>>> Stashed changes
+
+# Language binary covarion relaxed heterogeneous with 4 rates
+kd_lgs_bcov_relaxed_ht4 <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht_4rates/kd-lgs_bcov_relaxed_ht_4rates.trees"))
+kd_lgs_bcov_relaxed_ht4 <- kd_lgs_bcov_relaxed_ht4[ceiling(length(kd_lgs_bcov_relaxed_ht4) * burnin):length(kd_lgs_bcov_relaxed_ht4)]
+kd_lgs_bcov_relaxed_ht4_cs <- consensus(kd_lgs_bcov_relaxed_ht4, p = .5, rooted = TRUE)
+kd_lgs_bcov_relaxed_ht4_cs <- consensus.edges(
+  kd_lgs_bcov_relaxed_ht4,
+  consensus.tree = kd_lgs_bcov_relaxed_ht4_cs,
+  rooted = TRUE
+)
+if (!is.rooted(kd_lgs_bcov_relaxed_ht4_cs)) {
+  kd_lgs_bcov_relaxed_ht4_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_lgs_bcov_relaxed_ht4_cs,
+  here("output/trees/kd-lgs_bcov_relaxed_ht_4rates_consensus.tree")
+)
 
 # Looms
 
@@ -346,9 +357,11 @@ getMRCA_age <- function(tree, tips) {
 }
 
 kd_lgs_phylo <- list(
+  "bcov_relaxed_ht4" = kd_lgs_bcov_relaxed_ht4,
   "bcov_relaxed_ht" = kd_lgs_bcov_relaxed_ht,
   "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni,
   "bcov_strict_ht" = kd_lgs_bcov_strict_ht,
+  "bcov_strict_ht4" = kd_lgs_bcov_strict_ht4,
   "bcov_strict_uni" = kd_lgs_bcov_strict_uni
 )
 kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
