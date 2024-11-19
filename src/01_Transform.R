@@ -122,7 +122,7 @@ if (!is.rooted(kd_lgs_bcov_relaxed_ht4_cs)) {
 }
 write.tree(
   kd_lgs_bcov_relaxed_ht4_cs,
-  here("output/trees/kd-lgs_bcov_relaxed_ht_4rates_consensus.tree")
+  here("output/trees/kd-lgs_bcov_relaxed_ht4_consensus.tree")
 )
 
 # Looms
