@@ -933,8 +933,8 @@ BEGIN DATA;
 END;
 
 begin assumptions;
-    charset adjective = 1-16;
-    charset noun = 17-68;
-    charset other = 69-75;
-    charset verb = 76-90;
+    charset adjective = 1-147;
+    charset noun = 148-466;
+    charset other = 467-515;
+    charset verb = 516-653;
 end;

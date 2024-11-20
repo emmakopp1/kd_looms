@@ -63,7 +63,7 @@ write_binary_nexus(
 
 ## Languages, four levels, by part-of-speech
 kd_lgs_matrix_pos <- kd_lgs_lx |>
-  arrange(pos, concept_id) |> 
+  arrange(pos, concept_id, id) |> 
   select(Taxon, id, value) |>
   pivot_wider(names_from = id, values_from = value) |>
   arrange(Taxon) |>
@@ -76,8 +76,8 @@ write_binary_nexus(
 )
 
 kd_lgs_partition_pos <- kd_lgs_lx |>
-  arrange(pos, concept_id) |>
-  distinct(pos, concept_id) |>
+  arrange(pos, concept_id, id) |>
+  distinct(pos, concept_id, id) |>
   rowid_to_column() |>
   group_by(pos) |>
   summarise(charset = paste0(
