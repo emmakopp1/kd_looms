@@ -23,9 +23,9 @@ write_binary_nexus <- function(x, file) {
 
 ## Default
 kd_lgs_lx <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
-  pivot_longer(-c(concept, concept_id, cogid), names_to = "Taxon") |>
+  pivot_longer(-c(concept, concept_id, pos, cogid), names_to = "Taxon") |>
   filter(!is.na(value)) |>
-  distinct(concept, concept_id, cogid, Taxon) |>
+  distinct(concept, concept_id, pos, cogid, Taxon) |>
   rowid_to_column() |>
   pivot_wider(
     names_from = Taxon,
@@ -34,18 +34,18 @@ kd_lgs_lx <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
     values_fn = length
   ) |>
   pivot_longer(
-    cols = !(concept | concept_id | cogid),
+    cols = !(concept | concept_id | pos | cogid),
     names_to = "Taxon",
     values_to = "value"
   ) |>
   mutate(value = as.character(value)) |>
-  group_by(concept, concept_id, Taxon) |>
+  group_by(concept, concept_id, pos, Taxon) |>
   mutate(allzero = sum(value != "0") == 0) |>
   rowwise() |>
   mutate(value = ifelse(allzero, "?", value)) |>
   ungroup() |>
   mutate(id = paste0(concept_id, "_", cogid)) |>
-  select(Taxon, concept, concept_id, id, value) |>
+  select(Taxon, concept, concept_id, pos, id, value) |>
   arrange(concept_id)
 
 kd_lgs_matrix <- kd_lgs_lx |>
@@ -59,6 +59,41 @@ kd_lgs_matrix <- kd_lgs_lx |>
 write_binary_nexus(
   kd_lgs_matrix,
   here("data/nexus/kd-lgs.nex")
+)
+
+## Languages, four levels, by part-of-speech
+kd_lgs_matrix_pos <- kd_lgs_lx |>
+  arrange(pos, concept_id) |> 
+  select(Taxon, id, value) |>
+  pivot_wider(names_from = id, values_from = value) |>
+  arrange(Taxon) |>
+  column_to_rownames("Taxon") |>
+  as.matrix() |>
+  MatrixToPhyDat()
+write_binary_nexus(
+  kd_lgs_matrix_pos,
+  here("data/nexus/kd-lgs_pos.nex")
+)
+
+kd_lgs_partition_pos <- kd_lgs_lx |>
+  arrange(pos, concept_id) |>
+  distinct(pos, concept_id) |>
+  rowid_to_column() |>
+  group_by(pos) |>
+  summarise(charset = paste0(
+    "    charset ",
+    unique(pos),
+    " = ",
+    min(rowid),
+    "-",
+    max(rowid), ";"
+  )) |>
+  pull(charset) |>
+  paste0(collapse = "\n")
+
+write_file(str_glue("begin assumptions;\n{kd_lgs_partition_pos}\nend;\n"),
+           here("data/nexus/kd-lgs_pos.nex"),
+           append = TRUE
 )
 
 ## Languages, four levels, by number of cognate sets
