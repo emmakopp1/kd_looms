@@ -779,7 +779,7 @@ plot_crop(here("output/figures/kd-looms_bcov_patterns_strict_ht_cs_tree.pdf"))
 kd_lgs_ages <- read_csv(here("output/data/kd-lgs_clade_ages.csv"))
 
 kd_lgs_ages_plot <- kd_lgs_ages |>
-  filter(model == "bcov_relaxed_uni") |>
+  filter(model == "bcov_relaxed_ht_pos") |>
   filter(group != "Be-Kam-Tai") |>
   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay"))) |>
   ggplot(aes(x = age * 1000, y = group)) +
@@ -822,7 +822,7 @@ plot_crop(here("output/figures/kd-lgs_ages_plot.pdf"))
 kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_clade_ages_summary.csv"))
 
 kd_lgs_ages_summary |>
-  filter(model == "bcov_relaxed_uni") |>
+  filter(model == "bcov_relaxed_ht_pos") |>
   filter(group != "Be-Kam-Tai") |>
   select(-model) |>
   mutate(across(where(is.numeric), ~ round(.x, 2))) |>
@@ -839,7 +839,8 @@ kd_lgs_ages_summary |>
 
 # Cophylogeny ------------------------------------------------------------------
 
-kd_lgs_cs <- kd_lgs_bcov_relaxed_uni_cs_tree |>
+kd_lgs_cs <- kd_lgs_bcov_relaxed_ht_pos_cs_tree |> 
+  # kd_lgs_bcov_relaxed_uni_cs_tree |>
   fortify() |>
   left_join(kd_lgs) |>
   mutate(label = lng) |>
@@ -886,13 +887,16 @@ kd_lng_tree <- ggtree(kd_cophylo$trees[[1]],
   size = lwd,
   branch.length = "none"
 ) |>
-  rotate(105) |>
-  rotate(176) |>
-  rotate(143) |>
-  rotate(119) |>
-  rotate(132) |>
-  rotate(155) |>
-  flip(105, 113)
+  # rotate(171) |> 
+  rotate(getMRCA(kd_lgs_cs, c("Libo", "Qianxi")))
+# rotate(getMRCA(kd_lgs_cs, c("KamLP", "KamRJ")))
+# rotate(105) |>
+  # rotate(176) |>
+  # rotate(143) |>
+  # rotate(119) |>
+  # rotate(132) |>
+  # rotate(155) |>
+  # flip(105, 113)
 # |>
 #   flip(167, 154) |>
 #   flip(105, 125)
@@ -907,8 +911,9 @@ kd_loom_tree <- ggtree(kd_cophylo$trees[[2]],
   size = lwd,
   branch.length = "none"
 ) |>
-  rotate(43) |>
-  rotate(47)
+  rotate(getMRCA(kd_looms_cs, c("Chiangmai", "Korat")))
+  # rotate(43) |>
+  # rotate(47)
 
 kd_lng_tree_data <- kd_lng_tree$data |>
   mutate(lng = label) |>
