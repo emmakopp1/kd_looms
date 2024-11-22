@@ -91,38 +91,38 @@ write.tree(
   here("output/trees/kd-lgs_bcov_strict_ht_consensus.tree")
 )
 
-# Language binary covarion strict heterogeneous with 4 rates
-kd_lgs_bcov_strict_ht4 <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict_ht_4rates/kd-lgs_bcov_strict_ht_4rates.trees"))
-kd_lgs_bcov_strict_ht4 <- kd_lgs_bcov_strict_ht4[ceiling(length(kd_lgs_bcov_strict_ht4) * burnin):length(kd_lgs_bcov_strict_ht4)]
-kd_lgs_bcov_strict_ht4_cs <- consensus(kd_lgs_bcov_strict_ht4, p = .5, rooted = TRUE)
-kd_lgs_bcov_strict_ht4_cs <- consensus.edges(
-  kd_lgs_bcov_strict_ht4,
-  consensus.tree = kd_lgs_bcov_strict_ht4_cs,
+# Language binary covarion strict heterogeneous by part of speech
+kd_lgs_bcov_strict_ht_pos <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_strict_ht_pos/kd-lgs_bcov_strict_ht_pos.trees"))
+kd_lgs_bcov_strict_ht_pos <- kd_lgs_bcov_strict_ht_pos[ceiling(length(kd_lgs_bcov_strict_ht_pos) * burnin):length(kd_lgs_bcov_strict_ht_pos)]
+kd_lgs_bcov_strict_ht_pos_cs <- consensus(kd_lgs_bcov_strict_ht_pos, p = .5, rooted = TRUE)
+kd_lgs_bcov_strict_ht_pos_cs <- consensus.edges(
+  kd_lgs_bcov_strict_ht_pos,
+  consensus.tree = kd_lgs_bcov_strict_ht_pos_cs,
   rooted = TRUE
 )
-if (!is.rooted(kd_lgs_bcov_strict_ht4_cs)) {
-  kd_lgs_bcov_strict_ht4_cs$root.edge.length <- 0
+if (!is.rooted(kd_lgs_bcov_strict_ht_pos_cs)) {
+  kd_lgs_bcov_strict_ht_pos_cs$root.edge.length <- 0
 }
 write.tree(
-  kd_lgs_bcov_strict_ht4_cs,
-  here("output/trees/kd-lgs_bcov_strict_ht4_consensus.tree")
+  kd_lgs_bcov_strict_ht_pos_cs,
+  here("output/trees/kd-lgs_bcov_strict_ht_pos_consensus.tree")
 )
 
-# Language binary covarion relaxed heterogeneous with 4 rates
-kd_lgs_bcov_relaxed_ht4 <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht_4rates/kd-lgs_bcov_relaxed_ht_4rates.trees"))
-kd_lgs_bcov_relaxed_ht4 <- kd_lgs_bcov_relaxed_ht4[ceiling(length(kd_lgs_bcov_relaxed_ht4) * burnin):length(kd_lgs_bcov_relaxed_ht4)]
-kd_lgs_bcov_relaxed_ht4_cs <- consensus(kd_lgs_bcov_relaxed_ht4, p = .5, rooted = TRUE)
-kd_lgs_bcov_relaxed_ht4_cs <- consensus.edges(
-  kd_lgs_bcov_relaxed_ht4,
-  consensus.tree = kd_lgs_bcov_relaxed_ht4_cs,
+# Language binary covarion relaxed heterogeneous by part of speech
+kd_lgs_bcov_relaxed_ht_pos <- read.nexus(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht_pos/kd-lgs_bcov_relaxed_ht_pos.trees"))
+kd_lgs_bcov_relaxed_ht_pos <- kd_lgs_bcov_relaxed_ht_pos[ceiling(length(kd_lgs_bcov_relaxed_ht_pos) * burnin):length(kd_lgs_bcov_relaxed_ht_pos)]
+kd_lgs_bcov_relaxed_ht_pos_cs <- consensus(kd_lgs_bcov_relaxed_ht_pos, p = .5, rooted = TRUE)
+kd_lgs_bcov_relaxed_ht_pos_cs <- consensus.edges(
+  kd_lgs_bcov_relaxed_ht_pos,
+  consensus.tree = kd_lgs_bcov_relaxed_ht_pos_cs,
   rooted = TRUE
 )
-if (!is.rooted(kd_lgs_bcov_relaxed_ht4_cs)) {
-  kd_lgs_bcov_relaxed_ht4_cs$root.edge.length <- 0
+if (!is.rooted(kd_lgs_bcov_relaxed_ht_pos_cs)) {
+  kd_lgs_bcov_relaxed_ht_pos_cs$root.edge.length <- 0
 }
 write.tree(
-  kd_lgs_bcov_relaxed_ht4_cs,
-  here("output/trees/kd-lgs_bcov_relaxed_ht4_consensus.tree")
+  kd_lgs_bcov_relaxed_ht_pos_cs,
+  here("output/trees/kd-lgs_bcov_relaxed_ht_pos_consensus.tree")
 )
 
 # Looms
@@ -357,11 +357,11 @@ getMRCA_age <- function(tree, tips) {
 }
 
 kd_lgs_phylo <- list(
-  "bcov_relaxed_ht4" = kd_lgs_bcov_relaxed_ht4,
+  "bcov_relaxed_ht_pos" = kd_lgs_bcov_relaxed_ht_pos,
   "bcov_relaxed_ht" = kd_lgs_bcov_relaxed_ht,
   "bcov_relaxed_uni" = kd_lgs_bcov_relaxed_uni,
   "bcov_strict_ht" = kd_lgs_bcov_strict_ht,
-  "bcov_strict_ht4" = kd_lgs_bcov_strict_ht4,
+  "bcov_strict_ht_pos" = kd_lgs_bcov_strict_ht_pos,
   "bcov_strict_uni" = kd_lgs_bcov_strict_uni
 )
 kam_tai <- kd_lgs_bcov_relaxed_ht[[1]]$tip.label |>
