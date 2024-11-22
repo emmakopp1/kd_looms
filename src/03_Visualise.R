@@ -169,28 +169,28 @@ cs_tree <- function(tr, fontsize = base_font_size) {
 
 # Languages
 
-## Languages, binary covarion relaxed heterogeneous, four rates
-kd_lgs_bcov_relaxed_ht4_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht4_consensus.tree"))
-if (!is.rooted(kd_lgs_bcov_relaxed_ht4_cs_tree)) {
-  kd_lgs_bcov_relaxed_ht4_cs_tree$root.edge.length <- 0
+## Languages, binary covarion relaxed heterogeneous, by part of speech
+kd_lgs_bcov_relaxed_ht_pos_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_pos_consensus.tree"))
+if (!is.rooted(kd_lgs_bcov_relaxed_ht_pos_cs_tree)) {
+  kd_lgs_bcov_relaxed_ht_pos_cs_tree$root.edge.length <- 0
 }
-kd_lgs_bcov_relaxed_ht4_cs_tree$node.label <- round(
-  as.numeric(kd_lgs_bcov_relaxed_ht4_cs_tree$node.label),
+kd_lgs_bcov_relaxed_ht_pos_cs_tree$node.label <- round(
+  as.numeric(kd_lgs_bcov_relaxed_ht_pos_cs_tree$node.label),
   2
 ) * 100
-kd_lgs_bcov_relaxed_ht4_cs_tree$node.label[1] <- NA
-kd_lgs_bcov_relaxed_ht4_cs_tree$tip.label <- str_replace_all(
-  kd_lgs_bcov_relaxed_ht4_cs_tree$tip.label,
+kd_lgs_bcov_relaxed_ht_pos_cs_tree$node.label[1] <- NA
+kd_lgs_bcov_relaxed_ht_pos_cs_tree$tip.label <- str_replace_all(
+  kd_lgs_bcov_relaxed_ht_pos_cs_tree$tip.label,
   "_",
   " "
 )
 
-kd_lgs_bcov_relaxed_ht4_cs_tree_plot <- kd_lgs_bcov_relaxed_ht4_cs_tree |>
+kd_lgs_bcov_relaxed_ht_pos_cs_tree_plot <- kd_lgs_bcov_relaxed_ht_pos_cs_tree |>
   fortify() |>
   left_join(kd_lgs, by = join_by(label == label)) |>
   cs_tree(base_font_size - 1) +
   geom_rootedge(
-    max(node.depth.edgelength(kd_lgs_bcov_relaxed_ht4_cs_tree)) * .025,
+    max(node.depth.edgelength(kd_lgs_bcov_relaxed_ht_pos_cs_tree)) * .025,
     linewidth = lwd
   ) +
   scale_fill_identity(
@@ -205,11 +205,11 @@ kd_lgs_bcov_relaxed_ht4_cs_tree_plot <- kd_lgs_bcov_relaxed_ht4_cs_tree |>
     aspect.ratio = 2.25,
     plot.margin = margin(0, 3.5, 0, 0, unit = "line")
   )
-ggsave(here("output/figures/kd-lgs_bcov_relaxed_ht4_cs_tree.pdf"),
-       kd_lgs_bcov_relaxed_ht4_cs_tree_plot,
+ggsave(here("output/figures/kd-lgs_bcov_relaxed_ht_pos_cs_tree.pdf"),
+       kd_lgs_bcov_relaxed_ht_pos_cs_tree_plot,
        device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
 )
-plot_crop(here("output/figures/kd-lgs_bcov_relaxed_ht4_cs_tree.pdf"))
+plot_crop(here("output/figures/kd-lgs_bcov_relaxed_ht_pos_cs_tree.pdf"))
 
 ## Languages, binary covarion relaxed heterogeneous
 kd_lgs_bcov_relaxed_ht_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_consensus.tree"))
