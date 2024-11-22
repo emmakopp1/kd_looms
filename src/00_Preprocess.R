@@ -96,48 +96,6 @@ write_file(str_glue("begin assumptions;\n{kd_lgs_partition_pos}\nend;\n"),
            append = TRUE
 )
 
-## Languages, four levels, by number of cognate sets
-kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
-  count(concept_id) |>
-  mutate(level = cut_number(n, 4) |> as.integer())
-
-kd_lgs_partition <- kd_lgs_lx |>
-  left_join(kd_lgs_concepts) |>
-  arrange(level, id, Taxon) |>
-  distinct(id, level) |>
-  rowid_to_column() |>
-  group_by(level) |>
-  summarise(charset = paste0(
-    "    charset level",
-    unique(level),
-    " = ",
-    min(rowid),
-    "-",
-    max(rowid), ";"
-  )) |>
-  pull(charset) |>
-  paste0(collapse = "\n")
-
-kd_lgs_matrix_bylevel <- kd_lgs_lx |>
-  left_join(kd_lgs_concepts) |>
-  arrange(level, id, Taxon) |>
-  select(Taxon, id, value) |>
-  pivot_wider(names_from = id, values_from = value) |>
-  arrange(Taxon) |>
-  column_to_rownames("Taxon") |>
-  as.matrix() |>
-  MatrixToPhyDat()
-
-write_binary_nexus(
-  kd_lgs_matrix_bylevel,
-  here("data/nexus/kd-lgs_ht.nex")
-)
-
-write_file(str_glue("begin assumptions;\n{kd_lgs_partition}\nend;\n"),
-  here("data/nexus/kd-lgs_ht.nex"),
-  append = TRUE
-)
-
 # Looms
 kd_looms_characters <- read_csv(here("data/kd-looms/kd-looms_characters.csv")) |>
   select(code, level, type)
