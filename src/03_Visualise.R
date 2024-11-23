@@ -820,6 +820,10 @@ plot_crop(here("output/figures/kd-looms_bcov_patterns_strict_ht_cs_tree.pdf"))
 # Age density distribution for languages ---------------------------------------
 
 kd_lgs_ages <- read_csv(here("output/data/kd-lgs_clade_ages.csv"))
+# kd_lgs_ages_summary <- read_csv(here("output/data/kd-lgs_clade_ages_summary.csv")) |>
+#   filter(model == "bcov_relaxed_ht_pos") |>
+#   filter(group != "Be-Kam-Tai") |>
+#   mutate(group = fct(group, levels = c("Kra-Dai", "Kam-Tai", "Tai-Yay")))
 
 kd_lgs_ages_plot <- kd_lgs_ages |>
   filter(model == "bcov_relaxed_ht_pos") |>
@@ -845,7 +849,7 @@ kd_lgs_ages_plot <- kd_lgs_ages |>
     limits = c(0, .5),
     name = "Tail\nprobability"
   ) +
-  scale_x_reverse(limits = c(12500, 0)) +
+  scale_x_reverse() +
   xlab("Age (years BP)") +
   ylab("Language group") +
   theme_minimal(base_size = base_font_size, base_family = base_font) +
