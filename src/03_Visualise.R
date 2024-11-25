@@ -1380,6 +1380,18 @@ ggsave(here("output/figures/kd-lgs_mu_plot.pdf"),
 )
 plot_crop(here("output/figures/kd-lgs_mu_plot.pdf"))
 
+kd_lgs_mu_summary <- read_csv(here("output/data/kd-lgs_mu_pos_summary.csv"))
+kd_lgs_mu_summary |>
+  mutate(across(-pos, ~ round(.x, 2))) |>
+  unite(hdi, HPDI_lower, HPDI_upper, sep = ", ") |>
+  mutate(hdi = paste0("[", hdi, "]")) |>
+  rename(`95% HPDI` = hdi) |>
+  kbl(
+    digits = 2,
+    format = "latex", booktabs = TRUE
+  ) |>
+  write_lines(here("output/tables/kd-lgs_mu_summary.tex"))
+
 
 # Maps -------------------------------------------------------------------------
 
