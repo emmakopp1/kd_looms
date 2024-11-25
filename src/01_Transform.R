@@ -419,6 +419,8 @@ burnin <- .1
 # Languages
 kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   count(concept_id)
+kd_lgs_pos <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
+  count(pos)
 
 kd_lgs_mu_pos <- parse_beast_tracelog_file(
   here("data/kd-lgs/kd-lgs_bcov_relaxed_ht_pos/kd-lgs_bcov_relaxed_ht_pos.log")
@@ -442,7 +444,9 @@ kd_lgs_mu_pos_summary <- kd_lgs_mu_pos_tb |>
     sd = sd(rate),
     HPDI_lower = hdi(rate)["lower"],
     HPDI_upper = hdi(rate)["upper"]
-  )
+  ) |> 
+  left_join(kd_lgs_pos) |>
+  relocate(n, .after = pos)
 write_csv(kd_lgs_mu_pos_summary, here("output/data/kd-lgs_mu_pos_summary.csv"))
 
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/kd-lgs_bcov_relaxed_ht.log.zip"),
