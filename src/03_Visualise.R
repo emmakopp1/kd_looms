@@ -1337,6 +1337,49 @@ kd_looms_mu_summary |>
   ) |>
   write_lines(here("output/tables/kd-looms_mu_summary.tex"))
 
+kd_lgs_mu_pos_tb <- read_csv(here("output/data/kd-lgs_mu_pos.csv"))
+kd_lgs_mu_plot <- kd_lgs_mu_pos_tb |>
+  ggplot(aes(y = factor(pos), x = rate)) +
+  stat_density_ridges(
+    aes(fill = .5 - abs(.5 - after_stat(ecdf))),
+    geom = "density_ridges_gradient",
+    calc_ecdf = TRUE,
+    scale = 1,
+    panel_scaling = FALSE,
+    color = "gray50",
+    linewidth = lwd
+  ) +
+  stat_summary(
+    geom = "text",
+    fun = "median",
+    aes(label = after_stat(round(x, 2))),
+    family = base_font,
+    size = base_font_size / .pt,
+    vjust = 1.5
+  ) +
+  ylab("Part-of-speech") +
+  xlab("Mutation rate") +
+  # xlim(0, 2) +
+  scale_fill_distiller(
+    palette = "PuBu",
+    direction = 1,
+    limits = c(0, .5),
+    name = "Tail\nprobability"
+  ) +
+  theme_minimal(base_size = base_font_size, base_family = base_font) +
+  xtheme +
+  theme(
+    plot.margin = margin(0, 0, 0, 0, unit = "line"),
+    aspect.ratio = 0.618,
+    legend.position = "right",
+    legend.background = element_rect(color = NA)
+  )
+ggsave(here("output/figures/kd-lgs_mu_plot.pdf"),
+       kd_lgs_mu_plot,
+       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+)
+plot_crop(here("output/figures/kd-lgs_mu_plot.pdf"))
+
 
 # Maps -------------------------------------------------------------------------
 
