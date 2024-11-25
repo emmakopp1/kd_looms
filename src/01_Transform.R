@@ -420,6 +420,31 @@ burnin <- .1
 kd_lgs_concepts <- read_csv(here("data/kd-lgs/kd-lgs_lx.csv")) |>
   count(concept_id)
 
+kd_lgs_mu_pos <- parse_beast_tracelog_file(
+  here("data/kd-lgs/kd-lgs_bcov_relaxed_ht_pos/kd-lgs_bcov_relaxed_ht_pos.log")
+) |>
+  as_tibble() |>
+  select(Sample, starts_with("mutationRate.s."))
+kd_lgs_mu_pos_tb <- kd_lgs_mu_pos |>
+  rowid_to_column() |>
+  mutate(burnin = rowid <= max(rowid) * burnin) |>
+  filter(burnin == FALSE) |>
+  select(-burnin, -rowid) |>
+  pivot_longer(-Sample, names_to = "pos", values_to = "rate") |>
+  mutate(pos = str_remove(pos, "mutationRate.s."))
+write_csv(kd_lgs_mu_pos_tb, here("output/data/kd-lgs_mu_pos.csv"))
+
+kd_lgs_mu_pos_summary <- kd_lgs_mu_pos_tb |>
+  group_by(pos) |>
+  summarise(
+    mean = mean(rate),
+    median = median(rate),
+    sd = sd(rate),
+    HPDI_lower = hdi(rate)["lower"],
+    HPDI_upper = hdi(rate)["upper"]
+  )
+write_csv(kd_lgs_mu_pos_summary, here("output/data/kd-lgs_mu_pos_summary.csv"))
+
 unzip(here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/kd-lgs_bcov_relaxed_ht.log.zip"),
   junkpaths = TRUE,
   exdir = here("data/kd-lgs/kd-lgs_bcov_relaxed_ht/")
