@@ -200,6 +200,25 @@ write.tree(
   here("output/trees/kd-looms_bcov1111_relaxed_uni_consensus.tree")
 )
 
+## Looms, binary covarion, all levels, no weighting, relaxed heterogenous rate
+kd_looms_bcov1111_relaxed_ht <- read.nexus(
+  here("data/kd-looms/kd-looms_bcov1111_relaxed_ht/kd_looms_bcov_relaxed_ht.trees")
+)
+kd_looms_bcov1111_relaxed_ht <- kd_looms_bcov1111_relaxed_ht[ceiling(length(kd_looms_bcov1111_relaxed_ht) * burnin):length(kd_looms_bcov1111_relaxed_ht)]
+kd_looms_bcov1111_relaxed_ht_cs <- consensus(kd_looms_bcov1111_relaxed_ht, p = .5, rooted = TRUE)
+kd_looms_bcov1111_relaxed_ht_cs <- consensus.edges(
+  kd_looms_bcov1111_relaxed_ht,
+  consensus.tree = kd_looms_bcov1111_relaxed_ht_cs,
+  rooted = TRUE
+)
+if (!is.rooted(kd_looms_bcov1111_relaxed_ht_cs)) {
+  kd_looms_bcov1111_relaxed_ht_cs$root.edge.length <- 0
+}
+write.tree(
+  kd_looms_bcov1111_relaxed_ht_cs,
+  here("output/trees/kd-looms_bcov1111_relaxed_ht_consensus.tree")
+)
+
 ## Looms, binary covarion, weighted characters, strict uniform rate
 kd_looms_bcov8421_strict_uni <- read.nexus(
   here("data/kd-looms/kd-looms_bcov8421_strict_uni/kd-looms_bcov8421_strict_uni.trees")
