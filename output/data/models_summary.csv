@@ -2,6 +2,7 @@ type,data,substitution,clock,rate,ML,sd
 full,lgs,binary covarion,strict,heterogeneous,-7126.154787023328,14.251173424405037
 full,lgs,binary covarion,relaxed,uniform,-8619.293651936794,14.366246864222582
 full,lgs,binary covarion,strict,uniform,-8702.276610411216,12.693442024939765
+full,looms,binary covarion,relaxed,heterogeneous,-2025.3240179287652,6.621257269402848
 full,looms,binary covarion,strict,heterogeneous,-2041.518026174738,6.249124298736318
 full,looms,CTMC,strict,heterogeneous,-2049.577891420966,6.484759061783148
 full,looms,binary covarion,strict,uniform,-2072.681083831027,6.04272174715692
