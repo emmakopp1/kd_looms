@@ -254,51 +254,6 @@ ggsave(here("output/figures/kd-lgs_bcov_strict_ht_pos_cs_tree.pdf"),
 )
 plot_crop(here("output/figures/kd-lgs_bcov_strict_ht_pos_cs_tree.pdf"))
 
-## Languages, binary covarion relaxed heterogeneous
-kd_lgs_bcov_relaxed_ht_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_consensus.tree"))
-if (!is.rooted(kd_lgs_bcov_relaxed_ht_cs_tree)) {
-  kd_lgs_bcov_relaxed_ht_cs_tree$root.edge.length <- 0
-}
-kd_lgs_bcov_relaxed_ht_cs_tree$node.label <- round(
-  as.numeric(kd_lgs_bcov_relaxed_ht_cs_tree$node.label),
-  2
-) * 100
-kd_lgs_bcov_relaxed_ht_cs_tree$node.label[1] <- NA
-kd_lgs_bcov_relaxed_ht_cs_tree$tip.label <- str_replace_all(
-  kd_lgs_bcov_relaxed_ht_cs_tree$tip.label,
-  "_",
-  " "
-)
-
-kd_lgs_bcov_relaxed_ht_cs_tree_plot <- kd_lgs_bcov_relaxed_ht_cs_tree |>
-  fortify() |>
-  left_join(kd_lgs, by = join_by(label == label)) |>
-  cs_tree(base_font_size - 1) +
-  geom_rootedge(
-    max(node.depth.edgelength(kd_lgs_bcov_relaxed_ht_cs_tree)) * .025,
-    linewidth = lwd
-  ) +
-  scale_fill_identity(
-    guide = guide_legend(),
-    labels = levels(kd_lgs$lng_group)
-  ) +
-  guides(fill = guide_legend(
-    title = "Language group",
-    override.aes = aes(label = "     ")
-  )) +
-  theme(
-    aspect.ratio = 2.25,
-    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
-  )
-kd_lgs_bcov_relaxed_ht_cs_tree_plot <- flip(kd_lgs_bcov_relaxed_ht_cs_tree_plot, 167, 162) |>
-  flip(167, 154) |>
-  flip(105, 125)
-ggsave(here("output/figures/kd-lgs_bcov_relaxed_ht_cs_tree.pdf"),
-  kd_lgs_bcov_relaxed_ht_cs_tree_plot,
-  device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
-)
-plot_crop(here("output/figures/kd-lgs_bcov_relaxed_ht_cs_tree.pdf"))
-
 ## Languages, binary covarion relaxed uniform
 kd_lgs_bcov_relaxed_uni_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_uni_consensus.tree"))
 if (!is.rooted(kd_lgs_bcov_relaxed_uni_cs_tree)) {
@@ -383,92 +338,6 @@ ggsave(here("output/figures/kd-lgs_bcov_strict_uni_cs_tree.pdf"),
   device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
 )
 plot_crop(here("output/figures/kd-lgs_bcov_strict_uni_cs_tree.pdf"))
-
-## Languages, binary covarion strict heterogeneous
-kd_lgs_bcov_strict_ht_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_strict_ht_consensus.tree"))
-if (!is.rooted(kd_lgs_bcov_strict_ht_cs_tree)) {
-  kd_lgs_bcov_strict_ht_cs_tree$root.edge.length <- 0
-}
-kd_lgs_bcov_strict_ht_cs_tree$node.label <- round(
-  as.numeric(kd_lgs_bcov_strict_ht_cs_tree$node.label),
-  2
-) * 100
-kd_lgs_bcov_strict_ht_cs_tree$node.label[1] <- NA
-kd_lgs_bcov_strict_ht_cs_tree$tip.label <- str_replace_all(
-  kd_lgs_bcov_strict_ht_cs_tree$tip.label,
-  "_",
-  " "
-)
-
-kd_lgs_bcov_strict_ht_cs_tree_plot <- kd_lgs_bcov_strict_ht_cs_tree |>
-  fortify() |>
-  left_join(kd_lgs, by = join_by(label == label)) |>
-  cs_tree(base_font_size - 1) +
-  geom_rootedge(
-    max(node.depth.edgelength(kd_lgs_bcov_strict_ht_cs_tree)) * .025,
-    linewidth = lwd
-  ) +
-  scale_fill_identity(
-    guide = guide_legend(),
-    labels = levels(kd_lgs$lng_group)
-  ) +
-  guides(fill = guide_legend(
-    title = "Language group",
-    override.aes = aes(label = "     ")
-  )) +
-  theme(
-    aspect.ratio = 2.25,
-    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
-  )
-kd_lgs_bcov_strict_ht_cs_tree_plot <- flip(kd_lgs_bcov_strict_ht_cs_tree_plot, 130, 108)
-ggsave(here("output/figures/kd-lgs_bcov_strict_ht_cs_tree.pdf"),
-       kd_lgs_bcov_strict_ht_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
-)
-plot_crop(here("output/figures/kd-lgs_bcov_strict_ht_cs_tree.pdf"))
-
-## Languages, binary covarion strict heterogeneous with 4 rates
-kd_lgs_bcov_strict_ht_cs_tree <- read.tree(here("output/trees/kd-lgs_bcov_strict_ht_4rates_consensus.tree"))
-if (!is.rooted(kd_lgs_bcov_strict_ht_cs_tree)) {
-  kd_lgs_bcov_strict_ht_cs_tree$root.edge.length <- 0
-}
-kd_lgs_bcov_strict_ht_cs_tree$node.label <- round(
-  as.numeric(kd_lgs_bcov_strict_ht_cs_tree$node.label),
-  2
-) * 100
-kd_lgs_bcov_strict_ht_cs_tree$node.label[1] <- NA
-kd_lgs_bcov_strict_ht_cs_tree$tip.label <- str_replace_all(
-  kd_lgs_bcov_strict_ht_cs_tree$tip.label,
-  "_",
-  " "
-)
-
-kd_lgs_bcov_strict_ht_cs_tree_plot <- kd_lgs_bcov_strict_ht_cs_tree |>
-  fortify() |>
-  left_join(kd_lgs, by = join_by(label == label)) |>
-  cs_tree(base_font_size - 1) +
-  geom_rootedge(
-    max(node.depth.edgelength(kd_lgs_bcov_strict_ht_cs_tree)) * .025,
-    linewidth = lwd
-  ) +
-  scale_fill_identity(
-    guide = guide_legend(),
-    labels = levels(kd_lgs$lng_group)
-  ) +
-  guides(fill = guide_legend(
-    title = "Language group",
-    override.aes = aes(label = "     ")
-  )) +
-  theme(
-    aspect.ratio = 2.25,
-    plot.margin = margin(0, 3.5, 0, 0, unit = "line")
-  )
-kd_lgs_bcov_strict_ht_cs_tree_plot <- flip(kd_lgs_bcov_strict_ht_cs_tree_plot, 130, 108)
-ggsave(here("output/figures/kd-lgs_bcov_strict_ht_cs_tree.pdf"),
-       kd_lgs_bcov_strict_ht_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
-)
-plot_crop(here("output/figures/kd-lgs_bcov_strict_ht_cs_tree.pdf"))
 
 # Looms
 
@@ -555,8 +424,6 @@ ggsave(here("output/figures/kd-looms_bcov1111_relaxed_ht_cs_tree.pdf"),
        device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov1111_relaxed_ht_cs_tree.pdf"))
-
-
 
 ## Looms, binary covarion, all levels, no weighting, strict, 4 variable rates
 kd_looms_bcov1111_strict_ht_cs_tree <- read.tree(here("output/trees/kd-looms_bcov1111_strict_ht_consensus.tree"))
@@ -914,7 +781,6 @@ kd_lgs_ages_summary |>
 # Cophylogeny ------------------------------------------------------------------
 
 kd_lgs_cs <- kd_lgs_bcov_relaxed_ht_pos_cs_tree |> 
-  # kd_lgs_bcov_relaxed_uni_cs_tree |>
   fortify() |>
   left_join(kd_lgs) |>
   mutate(label = lng) |>
@@ -933,206 +799,16 @@ kd_loom_pb <- c(
   "Tai Phake"
 )
 
-kd_looms_cs <- kd_looms_bcov1111_strict_ht_cs_tree |>
-  fortify() |>
-  left_join(kd_looms, by = join_by(label == group)) |>
-  mutate(label = ifelse(label %in% kd_loom_pb, label, lng)) |>
-  as.phylo()
-if (!is.rooted(kd_looms_cs)) {
-  kd_looms_cs$root.edge.length <- 0
-}
-
-kd_cophylo <- cophylo(kd_lgs_cs, kd_looms_cs,
-  methods = c("pre", "post"), rotate.multi = FALSE
-)
-kd_cophylo$trees[[2]]$tip.label <- stri_replace_all_fixed(
-  str = kd_cophylo$trees[[2]]$tip.label, pattern = kd_looms$group,
-  replacement = kd_looms$lng,
-  vectorise_all = FALSE
-)
-kd_cophylo$trees[[2]] <- kd_cophylo$trees[[2]] |>
-  fortify() |>
-  left_join(kd_looms, by = join_by(label == lng)) |>
-  mutate(label = group) |>
-  as.phylo()
-
-kd_lng_tree <- ggtree(kd_cophylo$trees[[1]],
-  ladderize = FALSE,
-  size = lwd,
-  branch.length = "none"
-) |>
-  # rotate(171) |> 
-  rotate(getMRCA(kd_lgs_cs, c("Libo", "Qianxi")))
-# rotate(getMRCA(kd_lgs_cs, c("KamLP", "KamRJ")))
-# rotate(105) |>
-  # rotate(176) |>
-  # rotate(143) |>
-  # rotate(119) |>
-  # rotate(132) |>
-  # rotate(155) |>
-  # flip(105, 113)
-# |>
-#   flip(167, 154) |>
-#   flip(105, 125)
-# flip(167, 162) |>
-# flip(167, 154) |>
-# flip(162, 154)
-#   flip(105, 125)
-# flip(113, 128) |>
-# flip(103,172)
-kd_loom_tree <- ggtree(kd_cophylo$trees[[2]],
-  ladderize = FALSE,
-  size = lwd,
-  branch.length = "none"
-) |>
-  rotate(getMRCA(kd_looms_cs, c("Chiangmai", "Korat")))
-  # rotate(43) |>
-  # rotate(47)
-
-kd_lng_tree_data <- kd_lng_tree$data |>
-  mutate(lng = label) |>
-  left_join(select(kd_lgs, -label)) |>
-  left_join(select(kd_looms, group, lng))
-
-kd_loom_tree_data <- kd_loom_tree$data |>
-  mutate(group = label) |>
-  left_join(kd_looms) |>
-  arrange(loom_type)
-
-ry <- kd_lng_tree_data$y
-kd_loom_tree_data$x <- ((kd_loom_tree_data$x - min(kd_loom_tree_data$x)) / (max(kd_loom_tree_data$x) - min(kd_loom_tree_data$x))) * (max(kd_lng_tree_data$x) - min(kd_lng_tree_data$x)) + min(kd_lng_tree_data$x)
-kd_loom_tree_data$x <- max(kd_loom_tree_data$x) - kd_loom_tree_data$x + max(kd_lng_tree_data$x)
-kd_loom_tree_data$x <- kd_loom_tree_data$x + (max(c(kd_lng_tree_data$x, kd_loom_tree_data$x)) - min(c(kd_lng_tree_data$x, kd_loom_tree_data$x))) / 100 * 70
-kd_loom_tree_data$y <- ((kd_loom_tree_data$y - min(kd_loom_tree_data$y)) / (max(kd_loom_tree_data$y) - min(kd_loom_tree_data$y))) * (max(ry) - min(ry)) + min(ry)
-
-kd_lng_loom_tree <- kd_lng_tree +
-  geom_tree(data = kd_loom_tree_data, linewidth = lwd)
-kd_lng_loom_tree_data <- bind_rows(kd_lng_tree_data, kd_loom_tree_data) |>
-  filter(!is.na(group) & !is.na(lng)) |>
-  mutate(pb = group %in% kd_loom_pb)
-
-x1 <- max(filter(kd_lng_tree_data, isTip == TRUE)$x) + diff(range(
-  filter(kd_loom_tree_data, isTip == TRUE)$x,
-  filter(kd_lng_tree_data, isTip == TRUE)$x
-)) / 2.6
-x2 <- min(filter(kd_loom_tree_data, isTip == TRUE)$x) - diff(range(
-  filter(kd_loom_tree_data, isTip == TRUE)$x,
-  filter(kd_lng_tree_data, isTip == TRUE)$x
-)) / 3.2
-
-kd_lgs_looms_links <- kd_lng_loom_tree_data |>
-  add_count(lng) |>
-  filter(n == 2) |>
-  group_by(lng) |>
-  mutate(x = ifelse(x == min(x), x1 + .25, x2 - .25))
-
-imgs <- paste0(
-  "<img src='", here("data/images/"),
-  levels(kd_loom_tree_data$loom_type_code),
-  ".png' height=60>"
-)
-
-kd_cophylo_plot <- kd_lng_loom_tree +
-  geom_rootedge(1, linewidth = lwd) +
-  geom_segment(
-    data = filter(kd_loom_tree_data, parent == node),
-    aes(x = x, xend = x + 1, y = y, yend = y),
-    linewidth = lwd
-  ) +
-  geom_line(
-    data = kd_lgs_looms_links,
-    aes(x, y, group = lng, linetype = pb, color = pb)
-  ) +
-  scale_color_manual(guide = "none", values = c("grey50", "grey70")) +
-  new_scale_colour() +
-  geom_tippoint(data = kd_lng_tree_data, aes(color = color, fill = color)) +
-  geom_tiplab(
-    data = kd_lng_tree_data,
-    aes(label = label, color = color, fill = color, x = x1),
-    size = (base_font_size - 2) / .pt,
-    family = base_font2, hjust = 1,
-    show.legend = FALSE
-  ) +
-  scale_color_identity(
-    guide = guide_legend(
-      order = 1,
-      position = "left",
-      override.aes = list(size = 4),
-      theme = theme(
-        legend.key.spacing.y = unit(.35, "line"),
-        legend.margin = margin(0, -1.25, 0, 0, unit = "line")
-      )
-    ),
-    name = "Language group",
-    labels = levels(kd_lng_tree_data$lng_group)
-  ) +
-  xtheme +
-  scale_fill_identity(guide = "none") +
-  new_scale_colour() +
-  new_scale_fill() +
-  geom_tippoint(data = kd_loom_tree_data, aes(color = color, fill = color)) +
-  geom_tiplab(
-    data = filter(kd_loom_tree_data, isTip == TRUE),
-    aes(
-      label = str_replace_all(lng, "(.+?)(?=[A-Z])", "\\1 ") |> str_wrap(10),
-      color = color,
-      x = x2
-    ),
-    hjust = 0,
-    size = (base_font_size - 2) / .pt,
-    family = base_font2,
-    lineheight = 1,
-    show.legend = FALSE
-  ) +
-  scale_color_identity(
-    guide = guide_legend(
-      order = 2,
-      position = "right",
-      label.vjust = 0,
-      override.aes = list(size = 4),
-      theme = theme(
-        legend.key.spacing.y = unit(1, "line"),
-        legend.text = element_markdown(),
-        legend.margin = margin(0, 0, 0, -.5, unit = "line")
-      )
-    ),
-    name = "Loom type",
-    labels = paste0(
-      str_wrap(levels(kd_loom_tree_data$loom_type), 20),
-      "\n",
-      imgs
-    ) |>
-      str_replace_all("\\n", "<br/>")
-  ) +
-  scale_fill_identity(
-    guide = "none"
-  ) +
-  scale_linetype(guide = "none") +
-  theme(
-    aspect.ratio = 3,
-    legend.box = "horizontal",
-    legend.text = element_text(size = base_font_size - 2, family = base_font2),
-    legend.key = element_rect(),
-    legend.box.margin = margin(0, 0, 0, 0, unit = "line"),
-    legend.background = element_blank()
-  )
-ggsave(here("output/figures/kd_cophylo_plot.pdf"),
-  kd_cophylo_plot,
-  device = cairo_pdf, width = wd, height = ht * 2, units = "cm"
-)
-plot_crop(here("output/figures/kd_cophylo_plot.pdf"))
-
 kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
   as_tibble() |>
   colnames() |>
   str_remove("^[A-Z][a-z]+(?=[A-Z])")
 
-kd_looms_cs <- kd_looms_bcov1111_strict_ht_cs_tree |>
+kd_looms_cs <- kd_looms_bcov1111_relaxed_ht_cs_tree |>
   fortify() |>
   mutate(label = str_replace_all(label, "_", " ")) |>
   left_join(kd_looms, by = join_by(label == group)) |>
   mutate(label = ifelse(is.na(lng), label, lng)) |>
-  # mutate(label = ifelse(label %in% kd_loom_pb, label, lng)) |>
   as.phylo()
 if (!is.rooted(kd_looms_cs)) {
   kd_looms_cs$root.edge.length <- 0
@@ -1157,14 +833,14 @@ kd_loom_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[2]],
   size = lwd,
   branch.length = "none"
 )
-kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27) |>
-  rotate(24) |>
-  # flip(1, 22) |>
-  # rotate(25) |>
-  rotate(27) |>
-  rotate(28) |>
-  rotate(21) |>
-  rotate(22)
+# kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27) |>
+#   rotate(24) |>
+#   # flip(1, 22) |>
+#   # rotate(25) |>
+#   rotate(27) |>
+#   rotate(28) |>
+#   rotate(21) |>
+#   rotate(22)
 
 kd_lng_tree_pruned_data <- kd_lng_tree_pruned$data |>
   mutate(lng = label) |>
@@ -1666,15 +1342,3 @@ models_summary |>
     format = "latex", booktabs = TRUE, escape = FALSE
   ) |>
   write_lines(here("output/tables/kd-looms_models_summary.tex"))
-
-models_summary |>
-  filter(data == "lgs" & type == "full") |>
-  select(-data, -type) |>
-  arrange(-ML) |>
-  mutate(ML = round(ML)) |>
-  mutate(` ` = ifelse(ML == max(ML), "\\ding{43}", ""), .before = everything()) |>
-  kbl(
-    digits = 2,
-    format = "latex", booktabs = TRUE, escape = FALSE
-  ) |>
-  write_lines(here("output/tables/kd-lgs_models_summary.tex"))
