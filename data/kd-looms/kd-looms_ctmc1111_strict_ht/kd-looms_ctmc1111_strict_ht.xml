@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='BinaryCTMC' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
 
     <data
-id="kd-looms_ctmc4"
+id="kd-looms_1111_ht"
 spec="Alignment"
 dataType="standard">
                             <sequence id="seq_Liangzhu" spec="Sequence" taxon="Liangzhu" totalcount="2" value="11011011001100011?00000110?0000100000100000000000000000000000000110011010000000??000000000000?00000100000000?00000000000000000000000000000000000000000000100000000000000000100000000000000000000000000000000000000000000"/>
@@ -83,7 +83,7 @@ Buyi_Libo=0,
 Tay_Ban_Rang=0,
 Tay_Lung_Noi=0                <taxa id="TaxonSet.level1" spec="TaxonSet">
                     <alignment id="level1" spec="FilteredAlignment" filter="1-36">
-                        <data idref="kd-looms_ctmc4"/>
+                        <data idref="kd-looms_1111_ht"/>
                     </alignment>
                 </taxa>
             </trait>
@@ -163,7 +163,7 @@ filter="::">
                     <data
 id="level2"
 spec="FilteredAlignment"
-data="@kd-looms_ctmc4"
+data="@kd-looms_1111_ht"
 filter="37-138"/>
                     <userDataType id="Binary.1" spec="beast.evolution.datatype.Binary"/>
                 </data>
@@ -186,7 +186,7 @@ filter="::">
                     <data
 id="level3"
 spec="FilteredAlignment"
-data="@kd-looms_ctmc4"
+data="@kd-looms_1111_ht"
 filter="139-203"/>
                     <userDataType id="Binary.2" spec="beast.evolution.datatype.Binary"/>
                 </data>
@@ -209,7 +209,7 @@ filter="::">
                     <data
 id="level4"
 spec="FilteredAlignment"
-data="@kd-looms_ctmc4"
+data="@kd-looms_1111_ht"
 filter="204-216"/>
                     <userDataType id="Binary.3" spec="beast.evolution.datatype.Binary"/>
                 </data>
