@@ -780,6 +780,12 @@ kd_lgs_ages_summary |>
 
 # Cophylogeny ------------------------------------------------------------------
 
+imgs <- paste0(
+  "<img src='", here("data/images/"),
+  levels(kd_loom_tree_pruned_data$loom_type_code),
+  ".png' height=30>"
+)
+
 kd_lgs_cs <- kd_lgs_bcov_relaxed_ht_pos_cs_tree |> 
   fortify() |>
   left_join(kd_lgs) |>
@@ -794,9 +800,11 @@ kd_loom_pb <- c(
   "Dai Yuxi Yuanjiang",
   "Dai Jinghong",
   "Zhuang Napo",
-  "Zhuang Longzhou",
-  "Nung An",
-  "Tai Phake"
+  # "Zhuang Longzhou",
+  # "Nung An",
+  "Tai Phake",
+  "Buyi Libo",
+  "Buyi Xingyi"
 )
 
 kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
@@ -826,13 +834,23 @@ kd_lng_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[1]],
   branch.length = "none"
 )
 kd_lng_tree_pruned <- flip(kd_lng_tree_pruned, 22, 24) |>
-  rotate(23) |>
-  rotate(30)
+  # rotate(23) |>
+  rotate(30) |> 
+  rotate(31)
 kd_loom_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[2]],
   ladderize = FALSE,
   size = lwd,
   branch.length = "none"
 )
+kd_loom_tree_pruned <- kd_loom_tree_pruned |> 
+  rotate(30) |> 
+  rotate(31) |> 
+  rotate(25) |> 
+  rotate(27) |> 
+  rotate(29) |> 
+  rotate(28) |> 
+  flip(10, 26) |> 
+  flip(6, 7)
 # kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27) |>
 #   rotate(24) |>
 #   # flip(1, 22) |>
@@ -876,12 +894,6 @@ kd_lgs_looms_pruned_links <- kd_lng_loom_tree_pruned_data |>
   filter(n == 2) |>
   group_by(lng) |>
   mutate(x = ifelse(x == min(x), x1 + .25, x2 - .25))
-
-imgs <- paste0(
-  "<img src='", here("data/images/"),
-  levels(kd_loom_tree_pruned_data$loom_type_code),
-  ".png' height=30>"
-)
 
 kd_cophylo_pruned_plot <- kd_lng_loom_tree_pruned +
   geom_rootedge(1, linewidth = lwd) +
