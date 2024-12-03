@@ -206,8 +206,8 @@ kd_lgs_bcov_relaxed_ht_pos_cs_tree_plot <- kd_lgs_bcov_relaxed_ht_pos_cs_tree |>
     plot.margin = margin(0, 3.5, 0, 0, unit = "line")
   )
 ggsave(here("output/figures/kd-lgs_bcov_relaxed_ht_pos_cs_tree.pdf"),
-       kd_lgs_bcov_relaxed_ht_pos_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
+  kd_lgs_bcov_relaxed_ht_pos_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
 )
 plot_crop(here("output/figures/kd-lgs_bcov_relaxed_ht_pos_cs_tree.pdf"))
 
@@ -249,8 +249,8 @@ kd_lgs_bcov_strict_ht_pos_cs_tree_plot <- kd_lgs_bcov_strict_ht_pos_cs_tree |>
   )
 kd_lgs_bcov_strict_ht_pos_cs_tree_plot <- flip(kd_lgs_bcov_strict_ht_pos_cs_tree_plot, 107, 127)
 ggsave(here("output/figures/kd-lgs_bcov_strict_ht_pos_cs_tree.pdf"),
-       kd_lgs_bcov_strict_ht_pos_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
+  kd_lgs_bcov_strict_ht_pos_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 3, units = "cm"
 )
 plot_crop(here("output/figures/kd-lgs_bcov_strict_ht_pos_cs_tree.pdf"))
 
@@ -420,8 +420,8 @@ kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- kd_looms_bcov1111_relaxed_ht_cs_tre
 kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_ht_cs_tree_plot, 32, 43)
 kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_ht_cs_tree_plot, 50, 48)
 ggsave(here("output/figures/kd-looms_bcov1111_relaxed_ht_cs_tree.pdf"),
-       kd_looms_bcov1111_relaxed_ht_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_bcov1111_relaxed_ht_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov1111_relaxed_ht_cs_tree.pdf"))
 
@@ -481,8 +481,8 @@ kd_looms_bcov1111_strict_uni_cs_tree_plot <- kd_looms_bcov1111_strict_uni_cs_tre
   theme(plot.margin = margin(0, 3.75, 0, 0, unit = "line"))
 kd_looms_bcov1111_strict_uni_cs_tree_plot <- flip(kd_looms_bcov1111_strict_uni_cs_tree_plot, 32, 43)
 ggsave(here("output/figures/kd-looms_bcov1111_strict_uni_cs_tree.pdf"),
-       kd_looms_bcov1111_strict_uni_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_bcov1111_strict_uni_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov1111_strict_uni_cs_tree.pdf"))
 
@@ -591,8 +591,8 @@ kd_looms_bcov8421_strict_ht_cs_tree_plot <- kd_looms_bcov8421_strict_ht_cs_tree 
   ) +
   theme(plot.margin = margin(0, 3.95, 0, 0, unit = "line"))
 ggsave(here("output/figures/kd-looms_bcov8421_strict_ht_cs_tree.pdf"),
-       kd_looms_bcov8421_strict_ht_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_bcov8421_strict_ht_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov8421_strict_ht_cs_tree.pdf"))
 
@@ -643,8 +643,8 @@ kd_looms_bcov_basic_strict_ht_cs_tree_plot <- kd_looms_bcov_basic_strict_ht_cs_t
   theme(plot.margin = margin(0, 3.85, 0, 0, unit = "line"))
 kd_looms_bcov_basic_strict_ht_cs_tree_plot <- flip(kd_looms_bcov_basic_strict_ht_cs_tree_plot, 32, 40)
 ggsave(here("output/figures/kd-looms_bcov_basic_strict_ht_cs_tree.pdf"),
-       kd_looms_bcov_basic_strict_ht_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_bcov_basic_strict_ht_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov_basic_strict_ht_cs_tree.pdf"))
 
@@ -709,8 +709,8 @@ kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- kd_looms_bcov_patterns_strict_h
 kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- flip(kd_looms_bcov_patterns_strict_ht_cs_tree_plot, 41, 42)
 kd_looms_bcov_patterns_strict_ht_cs_tree_plot <- rotate(kd_looms_bcov_patterns_strict_ht_cs_tree_plot, 31)
 ggsave(here("output/figures/kd-looms_bcov_patterns_strict_ht_cs_tree.pdf"),
-       kd_looms_bcov_patterns_strict_ht_cs_tree_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_looms_bcov_patterns_strict_ht_cs_tree_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-looms_bcov_patterns_strict_ht_cs_tree.pdf"))
 
@@ -786,7 +786,7 @@ imgs <- paste0(
   ".png' height=30>"
 )
 
-kd_lgs_cs <- kd_lgs_bcov_relaxed_ht_pos_cs_tree |> 
+kd_lgs_cs <- kd_lgs_bcov_relaxed_ht_pos_cs_tree |>
   fortify() |>
   left_join(kd_lgs) |>
   mutate(label = lng) |>
@@ -835,21 +835,21 @@ kd_lng_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[1]],
 )
 kd_lng_tree_pruned <- flip(kd_lng_tree_pruned, 22, 24) |>
   # rotate(23) |>
-  rotate(30) |> 
+  rotate(30) |>
   rotate(31)
 kd_loom_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[2]],
   ladderize = FALSE,
   size = lwd,
   branch.length = "none"
 )
-kd_loom_tree_pruned <- kd_loom_tree_pruned |> 
-  rotate(30) |> 
-  rotate(31) |> 
-  rotate(25) |> 
-  rotate(27) |> 
-  rotate(29) |> 
-  rotate(28) |> 
-  flip(10, 26) |> 
+kd_loom_tree_pruned <- kd_loom_tree_pruned |>
+  rotate(30) |>
+  rotate(31) |>
+  rotate(25) |>
+  rotate(27) |>
+  rotate(29) |>
+  rotate(28) |>
+  flip(10, 26) |>
   flip(6, 7)
 # kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27) |>
 #   rotate(24) |>
@@ -1094,8 +1094,8 @@ kd_lgs_mu_plot <- kd_lgs_mu_pos_tb |>
     legend.background = element_rect(color = NA)
   )
 ggsave(here("output/figures/kd-lgs_mu_plot.pdf"),
-       kd_lgs_mu_plot,
-       device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
+  kd_lgs_mu_plot,
+  device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
 )
 plot_crop(here("output/figures/kd-lgs_mu_plot.pdf"))
 
