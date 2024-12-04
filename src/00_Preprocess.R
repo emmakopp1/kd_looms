@@ -63,7 +63,7 @@ write_binary_nexus(
 
 ## Languages, four levels, by part of speech
 kd_lgs_matrix_pos <- kd_lgs_lx |>
-  arrange(pos, concept_id, id) |> 
+  arrange(pos, concept_id, id) |>
   select(Taxon, id, value) |>
   pivot_wider(names_from = id, values_from = value) |>
   arrange(Taxon) |>
@@ -92,8 +92,8 @@ kd_lgs_partition_pos <- kd_lgs_lx |>
   paste0(collapse = "\n")
 
 write_file(str_glue("begin assumptions;\n{kd_lgs_partition_pos}\nend;\n"),
-           here("data/nexus/kd-lgs_pos.nex"),
-           append = TRUE
+  here("data/nexus/kd-lgs_pos.nex"),
+  append = TRUE
 )
 
 # Looms
@@ -153,8 +153,8 @@ write_binary_nexus(
 )
 
 write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
-           here("data/nexus/kd-looms_1111_ht.nex"),
-           append = TRUE
+  here("data/nexus/kd-looms_1111_ht.nex"),
+  append = TRUE
 )
 
 ## Looms, level 1 characters only

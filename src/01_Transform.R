@@ -417,7 +417,7 @@ kd_lgs_mu_pos_summary <- kd_lgs_mu_pos_tb |>
     sd = sd(rate),
     HPDI_lower = hdi(rate)["lower"],
     HPDI_upper = hdi(rate)["upper"]
-  ) |> 
+  ) |>
   left_join(kd_lgs_pos) |>
   relocate(n, .after = pos)
 write_csv(kd_lgs_mu_pos_summary, here("output/data/kd-lgs_mu_pos_summary.csv"))
@@ -491,7 +491,7 @@ out_files |>
       mutate(ML = str_extract(value, "(?<=hood: )-[0-9.]+") |> as.numeric()) |>
       mutate(sd = str_extract(value, "(?<=SD=\\()[0-9.]+") |> as.numeric()) |>
       select(-value)) |>
-  arrange(type, data, -ML) |> 
+  arrange(type, data, -ML) |>
   write_csv(here("output/data/models_summary.csv"))
 
 ## Prune the trees and unify the tip labels to later compute K

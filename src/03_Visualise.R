@@ -799,8 +799,6 @@ kd_loom_pb <- c(
   "Yuanjiang",
   "Mangshi",
   "Napo",
-  # # "Zhuang Longzhou",
-  # # "Nung An",
   "Phake",
   "Libo",
   "Qianxi"
@@ -833,7 +831,6 @@ kd_lng_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[1]],
   branch.length = "none"
 )
 kd_lng_tree_pruned <- flip(kd_lng_tree_pruned, 22, 24) |>
-  # rotate(23) |>
   rotate(30) |>
   rotate(31)
 kd_loom_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[2]],
@@ -850,14 +847,6 @@ kd_loom_tree_pruned <- kd_loom_tree_pruned |>
   rotate(28) |>
   flip(10, 26) |>
   flip(6, 7)
-# kd_loom_tree_pruned <- flip(kd_loom_tree_pruned, 8, 27) |>
-#   rotate(24) |>
-#   # flip(1, 22) |>
-#   # rotate(25) |>
-#   rotate(27) |>
-#   rotate(28) |>
-#   rotate(21) |>
-#   rotate(22)
 
 kd_lng_tree_pruned_data <- kd_lng_tree_pruned$data |>
   mutate(lng = label) |>
@@ -1022,7 +1011,6 @@ kd_looms_mu_plot <- kd_looms_mu_bylevel |>
   ) +
   ylab("Level") +
   xlab("Mutation rate") +
-  # xlim(0, 2) +
   scale_fill_distiller(
     palette = "PuBu",
     direction = 1,
@@ -1078,7 +1066,6 @@ kd_lgs_mu_plot <- kd_lgs_mu_pos_tb |>
   ) +
   ylab("Part of speech") +
   xlab("Mutation rate") +
-  # xlim(0, 2) +
   scale_fill_distiller(
     palette = "PuBu",
     direction = 1,
