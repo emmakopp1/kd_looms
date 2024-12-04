@@ -25,7 +25,6 @@ library(ggnewscale)
 library(knitr)
 library(kableExtra)
 library(patchwork)
-library(tree)
 
 dir.create(here("output/figures"))
 dir.create(here("output/tables"))
@@ -769,11 +768,11 @@ kd_lgs_ages_summary |>
   mutate(across(where(is.numeric), ~ round(.x, 2))) |>
   unite(hdi, HPDI_lower, HPDI_upper, sep = ", ") |>
   mutate(hdi = paste0("[", hdi, "]")) |>
-  rename(languages = n_lgs, `95% HPDI` = hdi) |>
-  mutate(monophyletic = paste0(monophyletic * 100, "%")) |>
+  rename(languages = n_lgs, `95\\% \\mkbibacro{HPDI}` = hdi) |>
+  mutate(monophyletic = paste0(monophyletic * 100, "\\%")) |>
   kbl(
     digits = 2,
-    format = "latex", booktabs = TRUE,
+    format = "latex", booktabs = TRUE, escape = FALSE, linesep = "",
     align = c("l", rep("r", 6))
   ) |>
   write_lines(here("output/tables/kd-lgs_ages_summary.tex"))
@@ -796,15 +795,15 @@ if (!is.rooted(kd_lgs_cs)) {
 }
 
 kd_loom_pb <- c(
-  "Dai Huayao",
-  "Dai Yuxi Yuanjiang",
-  "Dai Jinghong",
-  "Zhuang Napo",
-  # "Zhuang Longzhou",
-  # "Nung An",
-  "Tai Phake",
-  "Buyi Libo",
-  "Buyi Xingyi"
+  "Huayao",
+  "Yuanjiang",
+  "Mangshi",
+  "Napo",
+  # # "Zhuang Longzhou",
+  # # "Nung An",
+  "Phake",
+  "Libo",
+  "Qianxi"
 )
 
 kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
@@ -878,7 +877,7 @@ kd_lng_loom_tree_pruned <- kd_lng_tree_pruned +
   geom_tree(data = kd_loom_tree_pruned_data, linewidth = lwd)
 kd_lng_loom_tree_pruned_data <- bind_rows(kd_lng_tree_pruned_data, kd_loom_tree_pruned_data) |>
   filter(!is.na(group) & !is.na(lng)) |>
-  mutate(pb = group %in% kd_loom_pb)
+  mutate(pb = label %in% kd_loom_pb)
 
 x1 <- max(filter(kd_lng_tree_pruned_data, isTip == TRUE)$x) + diff(range(
   filter(kd_loom_tree_pruned_data, isTip == TRUE)$x,
@@ -1049,15 +1048,16 @@ kd_looms_mu_summary |>
   mutate(across(everything(), ~ round(.x, 2))) |>
   unite(hdi, HPDI_lower, HPDI_upper, sep = ", ") |>
   mutate(hdi = paste0("[", hdi, "]")) |>
-  rename(characters = n_chars, `95% HPDI` = hdi) |>
+  rename(characters = n_chars, `95\\% \\mkbibacro{HPDI}` = hdi) |>
   kbl(
     digits = 2,
-    format = "latex", booktabs = TRUE
+    format = "latex", booktabs = TRUE, escape = FALSE, linesep = ""
   ) |>
   write_lines(here("output/tables/kd-looms_mu_summary.tex"))
 
 kd_lgs_mu_pos_tb <- read_csv(here("output/data/kd-lgs_mu_pos.csv"))
 kd_lgs_mu_plot <- kd_lgs_mu_pos_tb |>
+  mutate(pos = paste0(pos, "s")) |>
   ggplot(aes(y = factor(pos), x = rate)) +
   stat_density_ridges(
     aes(fill = .5 - abs(.5 - after_stat(ecdf))),
@@ -1076,7 +1076,7 @@ kd_lgs_mu_plot <- kd_lgs_mu_pos_tb |>
     size = base_font_size / .pt,
     vjust = 1.5
   ) +
-  ylab("Part-of-speech") +
+  ylab("Part of speech") +
   xlab("Mutation rate") +
   # xlim(0, 2) +
   scale_fill_distiller(
@@ -1104,10 +1104,13 @@ kd_lgs_mu_summary |>
   mutate(across(-pos, ~ round(.x, 2))) |>
   unite(hdi, HPDI_lower, HPDI_upper, sep = ", ") |>
   mutate(hdi = paste0("[", hdi, "]")) |>
-  rename(`95% HPDI` = hdi) |>
+  rename(`95\\% \\mkbibacro{HPDI}` = hdi) |>
+  mutate(pos = paste0(pos, "s")) |>
+  rename(`Part of speech` = pos) |>
+  rename(characters = n) |>
   kbl(
     digits = 2,
-    format = "latex", booktabs = TRUE
+    format = "latex", booktabs = TRUE, escape = FALSE, linesep = ""
   ) |>
   write_lines(here("output/tables/kd-lgs_mu_summary.tex"))
 
@@ -1349,8 +1352,9 @@ models_summary |>
   arrange(-ML) |>
   mutate(ML = round(ML)) |>
   mutate(` ` = ifelse(ML == max(ML), "\\ding{43}", ""), .before = everything()) |>
+  mutate(substitution = str_replace(substitution, "CTMC", "\\\\mkbibacro{CTMC}")) |>
   kbl(
     digits = 2,
-    format = "latex", booktabs = TRUE, escape = FALSE
+    format = "latex", booktabs = TRUE, escape = FALSE, linesep = ""
   ) |>
   write_lines(here("output/tables/kd-looms_models_summary.tex"))
