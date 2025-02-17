@@ -32,10 +32,7 @@ pca_lgs <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
   PCA(graph = FALSE, scale.unit = FALSE)
 pc1_lgs <- pca_lgs$ind$coord[, 1]
 
-<<<<<<< HEAD
 
-=======
->>>>>>> refs/remotes/origin/main
 set.seed(973829350)
 kd_lgs_on_looms_k <- map_df(1:length(kd_looms_phylo), function(i) {
   ksig <- phylosig(kd_looms_phylo[[i]], pc1_lgs, method = "K", test = TRUE)
