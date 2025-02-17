@@ -1144,6 +1144,11 @@ kd_cophylo_pruned <- cophylo(
   methods = c("pre", "post"), rotate.multi = FALSE
 )
 
+# write both pruned consensus tree in output 
+# language kd_lgs_bcov_relaxed_ht_pos_cs_tree
+write_tree(kd_cophylo_pruned$trees[[1]], here("output/trees/kd-lgs_bcov_relaxed_ht_pos_pruned_cs.tree"))
+write_tree(kd_cophylo_pruned$trees[[2]], here("output/trees/kd-looms_bcov1111_strict_ht_pruned_cs.tree"))
+
 kd_lng_tree_pruned <- ggtree(kd_cophylo_pruned$trees[[1]],
   ladderize = FALSE,
   size = lwd,
