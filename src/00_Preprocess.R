@@ -61,9 +61,9 @@ write_binary_nexus(
   here("data/nexus/kd-lgs.nex")
 )
 
-## Languages, four levels, by part-of-speech
+## Languages, four levels, by part of speech
 kd_lgs_matrix_pos <- kd_lgs_lx |>
-  arrange(pos, concept_id, id) |> 
+  arrange(pos, concept_id, id) |>
   select(Taxon, id, value) |>
   pivot_wider(names_from = id, values_from = value) |>
   arrange(Taxon) |>
@@ -92,8 +92,8 @@ kd_lgs_partition_pos <- kd_lgs_lx |>
   paste0(collapse = "\n")
 
 write_file(str_glue("begin assumptions;\n{kd_lgs_partition_pos}\nend;\n"),
-           here("data/nexus/kd-lgs_pos.nex"),
-           append = TRUE
+  here("data/nexus/kd-lgs_pos.nex"),
+  append = TRUE
 )
 
 # Looms
@@ -111,6 +111,50 @@ kd_looms_matrix1111 <- kd_looms_matrix |>
 write_binary_nexus(
   kd_looms_matrix1111,
   here("data/nexus/kd-looms_1111.nex")
+)
+
+## Looms, unweighted characters, partitioned by level
+kd_looms_matrix_bylevel <- kd_looms_matrix |>
+  mutate(across(everything(), as.character)) |>
+  pivot_longer(
+    cols = -Taxon,
+    names_to = "code",
+    values_to = "value"
+  ) |>
+  left_join(kd_looms_characters) |>
+  arrange(level) |>
+  select(-c(level, type)) |>
+  pivot_wider(
+    names_from = code,
+    values_from = value
+  ) |>
+  column_to_rownames("Taxon") |>
+  as.matrix() |>
+  MatrixToPhyDat()
+
+kd_looms_partition <- kd_looms_characters |>
+  arrange(level) |>
+  rowid_to_column() |>
+  group_by(level) |>
+  summarise(charset = paste0(
+    "    charset level",
+    unique(level),
+    " = ",
+    min(rowid),
+    "-",
+    max(rowid), ";"
+  )) |>
+  pull(charset) |>
+  paste0(collapse = "\n")
+
+write_binary_nexus(
+  kd_looms_matrix_bylevel,
+  here("data/nexus/kd-looms_1111_ht.nex")
+)
+
+write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
+  here("data/nexus/kd-looms_1111_ht.nex"),
+  append = TRUE
 )
 
 ## Looms, level 1 characters only
@@ -187,50 +231,6 @@ write_binary_nexus(
 
 write_file(str_glue("begin assumptions;\n{kd_looms_weighted_partition}\nend;\n"),
   here("data/nexus/kd-looms_8421_ht.nex"),
-  append = TRUE
-)
-
-## Looms, unweighted characters, partitioned by level
-kd_looms_matrix_bylevel <- kd_looms_matrix |>
-  mutate(across(everything(), as.character)) |>
-  pivot_longer(
-    cols = -Taxon,
-    names_to = "code",
-    values_to = "value"
-  ) |>
-  left_join(kd_looms_characters) |>
-  arrange(level) |>
-  select(-c(level, type)) |>
-  pivot_wider(
-    names_from = code,
-    values_from = value
-  ) |>
-  column_to_rownames("Taxon") |>
-  as.matrix() |>
-  MatrixToPhyDat()
-
-kd_looms_partition <- kd_looms_characters |>
-  arrange(level) |>
-  rowid_to_column() |>
-  group_by(level) |>
-  summarise(charset = paste0(
-    "    charset level",
-    unique(level),
-    " = ",
-    min(rowid),
-    "-",
-    max(rowid), ";"
-  )) |>
-  pull(charset) |>
-  paste0(collapse = "\n")
-
-write_binary_nexus(
-  kd_looms_matrix_bylevel,
-  here("data/nexus/kd-looms_ctmc4.nex")
-)
-
-write_file(str_glue("begin assumptions;\n{kd_looms_partition}\nend;\n"),
-  here("data/nexus/kd-looms_ctmc4.nex"),
   append = TRUE
 )
 
