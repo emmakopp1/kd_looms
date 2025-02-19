@@ -61,10 +61,20 @@ kd_lgs_on_looms_k |>
 ## Correlation test following Brown (2017)
 
 ### Average
-lg_dist_ms <- map(kd_lgs_phylo, ~ cophenetic(.x) / max(node.depth.edgelength(.x)))
+lg_dist_ms <- map(
+  kd_lgs_phylo,
+  ~ get_all_pairwise_distances(.x,
+    only_clades = sort(.x$tip.label)
+  ) / max(node.depth.edgelength(.x))
+)
 lg_dist_m <- Reduce("+", lg_dist_ms) / length(lg_dist_ms)
 
-looms_dist_ms <-  map(kd_looms_phylo, ~ cophenetic(.x) / max(node.depth.edgelength(.x)))
+looms_dist_ms <- map(
+  kd_looms_phylo,
+  ~ get_all_pairwise_distances(.x,
+    only_clades = sort(.x$tip.label)
+  ) / max(node.depth.edgelength(.x))
+)
 looms_dist_m <- Reduce("+", looms_dist_ms) / length(looms_dist_ms)
 
 mantel.test(lg_dist_m, looms_dist_m, nperm = 1e4)
@@ -73,7 +83,7 @@ mantel.test(lg_dist_m, looms_dist_m, nperm = 1e4)
 kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
   as_tibble() |>
   colnames()
-kd_lgs_cs <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_pos_consensus.tree")) |> 
+kd_lgs_cs <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_pos_consensus.tree")) |>
   keep.tip(kd_lgs_pruned_tips)
 if (!is.rooted(kd_lgs_cs)) {
   kd_lgs_cs$root.edge.length <- 0
@@ -84,28 +94,33 @@ kd_looms_cs <- read.tree(here("output/trees/kd-looms_bcov1111_relaxed_ht_consens
   mutate(label = str_replace_all(label, "_", " ")) |>
   left_join(kd_looms, by = join_by(label == group)) |>
   mutate(label = ifelse(is.na(lng_label), label, lng_label)) |>
-  as.phylo() |> 
+  as.phylo() |>
   keep.tip(kd_lgs_pruned_tips)
 if (!is.rooted(kd_looms_cs)) {
   kd_looms_cs$root.edge.length <- 0
 }
 
-lg_cs_dist_m <- cophenetic(kd_lgs_cs) / max(node.depth.edgelength(kd_lgs_cs))
-
-looms_cs_dist_m <- cophenetic(kd_looms_cs) / max(node.depth.edgelength(kd_looms_cs))
+lg_cs_dist_m <- get_all_pairwise_distances(
+  kd_lgs_cs,
+  only_clades = sort(kd_lgs_cs$tip.label)
+) / max(node.depth.edgelength(kd_lgs_cs))
+looms_cs_dist_m <- get_all_pairwise_distances(
+  kd_looms_cs,
+  only_clades = sort(kd_looms_cs$tip.label)
+) / max(node.depth.edgelength(kd_lgs_cs))
 
 mantel.test(lg_cs_dist_m, looms_cs_dist_m, nperm = 1e4)
 
-# 
+#
 # # average on all phylogenies
 # M_lg <- length(kd_lg_tree)
 # kd_lg_tree <- kd_lg_tree[seq(0.2 * M_lg, M_lg, length = 1000)]
 # M_lg <- length(kd_lg_tree)
-# 
+#
 # # kd_lg_tree <- kd_pruned_consensus_lg # obtained from visualise.R
 # N <- Ntip(kd_lg_tree[1])
 # sorted_tips <- sort(kd_lg_tree[[1]]$tip.label)
-# 
+#
 # # Pairwise mean distance
 # lg_distance_matrix <- outer(
 #   sorted_tips,
@@ -114,21 +129,21 @@ mantel.test(lg_cs_dist_m, looms_cs_dist_m, nperm = 1e4)
 #     distances <- sapply(kd_lg_tree, function(tree) {
 #       get_pairwise_distances(tree, tip_i, tip_j) / max(node.depth.edgelength(tree))
 #     })
-# 
+#
 #     # Calculer la moyenne des distances sur tous les arbres
 #     mean(distances)
 #   })
 # )
-# 
+#
 # lg_distance_matrix <- round(lg_distance_matrix, 3)
-# 
+#
 # # looms
 # kd_looms_tree <- read.tree(here("output/trees/kd-looms_prunedk.trees"))
 # M_looms <- length(kd_looms_tree)
 # kd_looms_tree <- kd_looms_tree[seq(0.2 * M_looms, M_looms, length = 1000)]
 # M_looms <- length(kd_looms_tree)
-# 
-# 
+#
+#
 # looms_distance_matrix <- outer(
 #   sorted_tips,
 #   sorted_tips,
@@ -136,23 +151,23 @@ mantel.test(lg_cs_dist_m, looms_cs_dist_m, nperm = 1e4)
 #     distances <- sapply(kd_looms_tree, function(tree) {
 #       get_pairwise_distances(tree, tip_i, tip_j) / max(node.depth.edgelength(tree))
 #     })
-# 
+#
 #     # mean over all trees
 #     mean(distances)
 #   })
 # )
-# 
+#
 # looms_distance_matrix <- round(looms_distance_matrix, 3)
-# 
+#
 # # mantel test
 # mantel.test(looms_distance_matrix, lg_distance_matrix, nperm = 1e4)
-# 
-# 
+#
+#
 # # methodology : on consensus trees
 # kd_lg_tree_cs <- read.tree(here("output/trees/kd-lgs_bcov_relaxed_ht_pos_pruned_cs.tree"))
 # N <- Ntip(kd_lg_tree_cs)[1]
 # sorted_tips <- sort(kd_lg_tree_cs$tip.label)
-# 
+#
 # lg_distance_matrix_cs <- outer(
 #   sorted_tips,
 #   sorted_tips,
@@ -161,10 +176,10 @@ mantel.test(lg_cs_dist_m, looms_cs_dist_m, nperm = 1e4)
 #   })
 # )
 # lg_distance_matrix_cs <- round(lg_distance_matrix_cs, 3)
-# 
+#
 # # looms
 # kd_looms_tree_cs <- read.tree(here("output/trees/kd-looms_bcov1111_strict_ht_pruned_cs.tree"))
-# 
+#
 # looms_distance_matrix_cs <- outer(
 #   sorted_tips,
 #   sorted_tips,
@@ -173,6 +188,6 @@ mantel.test(lg_cs_dist_m, looms_cs_dist_m, nperm = 1e4)
 #   })
 # )
 # looms_distance_matrix_cs <- round(looms_distance_matrix_cs, 3)
-# 
+#
 # # mantel test
 # mantel.test(looms_distance_matrix_cs, lg_distance_matrix_cs, nperm = 1e4)
