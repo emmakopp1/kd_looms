@@ -56,13 +56,15 @@ kd_lgs_on_looms_k |>
   bind_rows(mutate(kd_looms_on_lgs_k, data = "looms on lgs", .before = everything())) |>
   group_by(data) |>
   summarise(across(everything(), mean)) |>
-  write_csv("output/data/kd-k_summary.csv")
+  write_csv(here("output/data/kd-k_summary.csv"))
 
 ## Correlation test following Brown (2017)
 
+set.seed(2340706)
+
 ### Average
 lg_dist_ms <- map(
-  kd_lgs_phylo,
+  kd_lgs_phylo[seq(1, length(kd_lgs_phylo), length.out = 1000)],
   ~ get_all_pairwise_distances(.x,
     only_clades = sort(.x$tip.label)
   ) / max(node.depth.edgelength(.x))
@@ -70,14 +72,14 @@ lg_dist_ms <- map(
 lg_dist_m <- Reduce("+", lg_dist_ms) / length(lg_dist_ms)
 
 looms_dist_ms <- map(
-  kd_looms_phylo,
+  kd_looms_phylo[seq(1, length(kd_looms_phylo), length.out = 1000)],
   ~ get_all_pairwise_distances(.x,
     only_clades = sort(.x$tip.label)
   ) / max(node.depth.edgelength(.x))
 )
 looms_dist_m <- Reduce("+", looms_dist_ms) / length(looms_dist_ms)
 
-mantel.test(lg_dist_m, looms_dist_m, nperm = 1e4)
+mt_mean <- mantel.test(lg_dist_m, looms_dist_m, nperm = 1e4)
 
 ### On consensus trees
 kd_lgs_pruned_tips <- ReadAsPhyDat(here("data/nexus/kd-lgs_pruned.nex")) |>
@@ -109,7 +111,16 @@ looms_cs_dist_m <- get_all_pairwise_distances(
   only_clades = sort(kd_looms_cs$tip.label)
 ) / max(node.depth.edgelength(kd_lgs_cs))
 
-mantel.test(lg_cs_dist_m, looms_cs_dist_m, nperm = 1e4)
+mt_cs <- mantel.test(lg_cs_dist_m, looms_cs_dist_m, nperm = 1e4)
+
+mt_mean |>
+  as_tibble() |>
+  mutate(method = "mean") |>
+  bind_rows(mt_cs |>
+    as_tibble() |>
+    mutate(method = "consensus")) |>
+  write_csv(here("output/data/kd-mantel.csv"))
+
 
 #
 # # average on all phylogenies
