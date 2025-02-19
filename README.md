@@ -201,6 +201,7 @@ The repository has the following structure:
 │   │   ├── kd-looms_mu_bylevel.csv
 │   │   ├── kd-looms_mu_summary.csv
 │   │   ├── kd-looms_on_lgs_k.csv
+│   │   ├── kd-mantel.csv
 │   │   └── models_summary.csv
 │   ├── figures
 │   │   ├── kd_cophylo_pruned_plot.pdf
