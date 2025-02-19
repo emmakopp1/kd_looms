@@ -1046,7 +1046,8 @@ kd_looms_mu_summary |>
 kd_lgs_mu_pos_tb <- read_csv(here("output/data/kd-lgs_mu_pos.csv"))
 kd_lgs_mu_plot <- kd_lgs_mu_pos_tb |>
   mutate(pos = paste0(pos, "s")) |>
-  ggplot(aes(y = factor(pos), x = rate)) +
+  mutate(pos = factor(pos, level = c("adjectives", "nouns", "verbs", "others"))) |> 
+  ggplot(aes(y = pos, x = rate)) +
   stat_density_ridges(
     aes(fill = .5 - abs(.5 - after_stat(ecdf))),
     geom = "density_ridges_gradient",
@@ -1093,6 +1094,8 @@ kd_lgs_mu_summary |>
   mutate(hdi = paste0("[", hdi, "]")) |>
   rename(`95\\% \\mkbibacro{HPDI}` = hdi) |>
   mutate(pos = paste0(pos, "s")) |>
+  mutate(pos = factor(pos, level = c("adjectives", "nouns", "verbs", "others"))) |>
+  arrange(pos) |> 
   rename(`Part of speech` = pos) |>
   rename(characters = n) |>
   kbl(
