@@ -59,8 +59,19 @@ kd_lgs_on_looms_k |>
   write_csv("output/data/kd-k_summary.csv")
 
 ## Correlation test following Brown (2017)
+
+# lg_dist_ms <- map(kd_lg_tree[1:10], ~ get_all_pairwise_distances(.x, .x$tip.label))
+lg_dist_ms <- map(kd_lgs_phylo, cophenetic)
+lg_dist_ms <- map(kd_lgs_phylo, ~ cophenetic(.x) / max(node.depth.edgelength(.x)))
+lg_dist_m <- Reduce("+", lg_dist_ms) / length(lg_dist_ms)
+
+looms_dist_ms <- map(kd_looms_phylo, cophenetic)
+looms_dist_m <- Reduce("+", looms_dist_ms) / length(looms_dist_ms)
+
+mantel.test(lg_dist_m, looms_dist_m, nperm = 1e4)
+
+
 # average on all phylogenies
-kd_lg_tree <- read.tree(here("output/trees/kd-lgs_prunedk.trees"))
 M_lg <- length(kd_lg_tree)
 kd_lg_tree <- kd_lg_tree[seq(0.2 * M_lg, M_lg, length = 1000)]
 M_lg <- length(kd_lg_tree)
@@ -68,10 +79,6 @@ M_lg <- length(kd_lg_tree)
 # kd_lg_tree <- kd_pruned_consensus_lg # obtained from visualise.R
 N <- Ntip(kd_lg_tree[1])
 sorted_tips <- sort(kd_lg_tree[[1]]$tip.label)
-
-# map(kd_lg_tree[1:2], cophenetic) |> mean()
-# mantel.test(cophenetic(kd_lg_tree[[1]]), cophenetic(kd_lg_tree[[2]]), 100)
-# get_all_pairwise_distances(kd_lg_tree[[1]], kd_lg_tree[[1]]$tip.label) / max(node.depth.edgelength(kd_lg_tree[[1]]))
 
 # Pairwise mean distance
 lg_distance_matrix <- outer(
