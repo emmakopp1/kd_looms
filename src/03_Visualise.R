@@ -416,8 +416,6 @@ kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- kd_looms_bcov1111_relaxed_ht_cs_tre
     linewidth = lwd
   ) +
   theme(plot.margin = margin(0, 3.75, 0, 0, unit = "line"))
-# kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_ht_cs_tree_plot, 32, 43)
-# kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_ht_cs_tree_plot, 50, 48)
 ggsave(here("output/figures/kd-looms_bcov1111_relaxed_ht_cs_tree.pdf"),
   kd_looms_bcov1111_relaxed_ht_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
@@ -779,12 +777,6 @@ kd_lgs_ages_summary |>
 
 # Cophylogeny ------------------------------------------------------------------
 
-imgs <- paste0(
-  "<img src='", here("data/images/"),
-  levels(kd_loom_tree_pruned_data$loom_type_code),
-  ".png' height=30>"
-)
-
 kd_lgs_cs <- kd_lgs_bcov_relaxed_ht_pos_cs_tree |>
   fortify() |>
   left_join(kd_lgs) |>
@@ -882,6 +874,12 @@ kd_lgs_looms_pruned_links <- kd_lng_loom_tree_pruned_data |>
   filter(n == 2) |>
   group_by(lng) |>
   mutate(x = ifelse(x == min(x), x1 + .25, x2 - .25))
+
+imgs <- paste0(
+  "<img src='", here("data/images/"),
+  levels(kd_loom_tree_pruned_data$loom_type_code),
+  ".png' height=30>"
+)
 
 kd_cophylo_pruned_plot <- kd_lng_loom_tree_pruned +
   geom_rootedge(1, linewidth = lwd) +
@@ -1046,7 +1044,7 @@ kd_looms_mu_summary |>
 kd_lgs_mu_pos_tb <- read_csv(here("output/data/kd-lgs_mu_pos.csv"))
 kd_lgs_mu_plot <- kd_lgs_mu_pos_tb |>
   mutate(pos = paste0(pos, "s")) |>
-  mutate(pos = factor(pos, level = c("adjectives", "nouns", "verbs", "others"))) |> 
+  mutate(pos = factor(pos, level = c("adjectives", "nouns", "verbs", "others"))) |>
   ggplot(aes(y = pos, x = rate)) +
   stat_density_ridges(
     aes(fill = .5 - abs(.5 - after_stat(ecdf))),
@@ -1095,7 +1093,7 @@ kd_lgs_mu_summary |>
   rename(`95\\% \\mkbibacro{HPDI}` = hdi) |>
   mutate(pos = paste0(pos, "s")) |>
   mutate(pos = factor(pos, level = c("adjectives", "nouns", "verbs", "others"))) |>
-  arrange(pos) |> 
+  arrange(pos) |>
   rename(`Part of speech` = pos) |>
   rename(characters = n) |>
   kbl(
