@@ -416,8 +416,8 @@ kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- kd_looms_bcov1111_relaxed_ht_cs_tre
     linewidth = lwd
   ) +
   theme(plot.margin = margin(0, 3.75, 0, 0, unit = "line"))
-kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_ht_cs_tree_plot, 32, 43)
-kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_ht_cs_tree_plot, 50, 48)
+# kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_ht_cs_tree_plot, 32, 43)
+# kd_looms_bcov1111_relaxed_ht_cs_tree_plot <- flip(kd_looms_bcov1111_relaxed_ht_cs_tree_plot, 50, 48)
 ggsave(here("output/figures/kd-looms_bcov1111_relaxed_ht_cs_tree.pdf"),
   kd_looms_bcov1111_relaxed_ht_cs_tree_plot,
   device = cairo_pdf, width = wd, height = wd * 2, units = "cm"
