@@ -7,6 +7,7 @@ library(HDInterval)
 library(ggtree)
 library(tidyverse)
 
+dir.create(here("output"))
 dir.create(here("output/trees"))
 dir.create(here("output/data"))
 
