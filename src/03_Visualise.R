@@ -139,7 +139,7 @@ cs_tree <- function(tr, fontsize = base_font_size) {
     geom_tiplab(aes(fill = color),
       geom = "label",
       label.size = 0,
-      label.padding = unit(.1, "lines"),
+      label.padding = unit(.05, "lines"),
       family = base_font, size = fontsize / .pt
     ) +
     geom_nodelab(
