@@ -282,6 +282,7 @@ install.packages(c(
   "FactoMineR",
   "HDInterval",
   "TreeTools",
+  "castor",
   "fs",
   "ggforce",
   "ggnewscale",
